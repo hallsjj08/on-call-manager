@@ -1,0 +1,129 @@
+package jordan_jefferson.com.oncallphonemanager;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+
+public class ContactInfoFragment extends Fragment {
+
+    private int position;
+    private Contact contact = null;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        final View view = inflater.inflate(R.layout.activity_contact_info, container, false);
+
+        Button bSubmit = view.findViewById(R.id.bSubmit);
+        Button bCancel = view.findViewById(R.id.bCancel);
+        ImageButton bDelete = view.findViewById(R.id.bDelete);
+        ContactsList.getInstance(view.getContext());
+
+        bDelete.setVisibility(View.INVISIBLE);
+
+        Bundle bundle = this.getArguments();
+        if(bundle != null){
+            position = bundle.getInt("position");
+            contact = (Contact) bundle.getSerializable("contact");
+        }
+
+        final TextInputLayout inputLayout = view.findViewById(R.id.textInputLayout3);
+        final EditText etPhone = view.findViewById(R.id.edPhone);
+        final EditText etContactName = view.findViewById(R.id.edContactName);
+        final EditText etCompanyName = view.findViewById(R.id.edCompanyName);
+
+        if(contact != null){
+
+            etContactName.setText(contact.get_contactName());
+            etCompanyName.setText(contact.get_companyName());
+            etPhone.setText(contact.get_contactDisplayNumber());
+            bSubmit.setText("Update");
+            bDelete.setVisibility(View.VISIBLE);
+
+        }else{
+            etPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                /**
+                 * Called when the focus state of a view has changed.
+                 *
+                 * @param v        The view whose state has changed.
+                 * @param hasFocus The new focus state of v.
+                 */
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    etPhone.setHint("Ex. (123) 456-####");
+                    inputLayout.setError("Replace unknown digits with \"#\".");
+                }
+            });
+        }
+
+        bSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String contactName = etContactName.getText().toString();
+                String companyName = etCompanyName.getText().toString();
+                String number = etPhone.getText().toString();
+
+                String regexNumber = number.replaceAll("#", "\\\\d");
+                Log.w("Phone Number", number);
+
+                if(contact != null){
+                    contact.set_contactName(contactName);
+                    contact.set_companyName(companyName);
+                    contact.set_contactDisplayNumber(number);
+                    contact.set_contactRegexNumber(regexNumber);
+                    ContactsList.getInstance(view.getContext()).updateContact(contact, position);
+                }else{
+                    contact = new Contact(contactName, companyName, number, regexNumber);
+                    ContactsList.getInstance(view.getContext()).addContact(contact);
+                }
+
+                FragmentManager fm = getFragmentManager();
+                Fragment fragment = new ContactListFragment();
+
+                CallManagerActivity.setFabVisibility(true);
+
+                fm.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
+            }
+        });
+
+        bCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                CallManagerActivity.setFabVisibility(true);
+                fm.popBackStack();
+            }
+        });
+
+        bDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ContactsList.getInstance(getContext()).removeContact(contact, position);
+                FragmentManager fm = getFragmentManager();
+                Fragment fragment = new ContactListFragment();
+
+                CallManagerActivity.setFabVisibility(true);
+                fm.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
+            }
+        });
+        return view;
+    }
+}

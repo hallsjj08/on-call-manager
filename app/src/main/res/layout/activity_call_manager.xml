@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CallManagerActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/main.appbar"
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="Contacts"
+            app:titleMarginStart="72dp"
+            app:titleMarginTop="80dp"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginBottom="72dp"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:backgroundTint="@color/secondaryColor"
+        android:clickable="true"
+        android:tint="@color/primaryTextColor"
+        app:elevation="16dp"
+        app:fabSize="mini"
+        app:layout_anchor="@+id/main.appbar"
+        app:layout_anchorGravity="left|bottom"
+        app:srcCompat="@android:drawable/ic_input_add"/>
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+        <Switch
+            android:id="@+id/bEnableReceiverObserver"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom"
+            android:background="@color/primaryDarkColor"
+            android:checked="false"
+            android:contentDescription="Hey"
+            android:padding="16dp"
+            android:text="Enable On Call Phone Manager"
+            android:textColor="@color/secondaryColor"/>
+    </FrameLayout>
+
+</android.support.design.widget.CoordinatorLayout>

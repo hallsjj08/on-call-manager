@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">On Call Phone Manager</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_contact_info">ContactInfo</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="company">Company</string>
+    <string name="submit">Submit</string>
+    <string name="phone">Phone</string>
+    <string name="digits">0123456789+()</string>
+    <string name="area_code">Area Code</string>
+</resources>
