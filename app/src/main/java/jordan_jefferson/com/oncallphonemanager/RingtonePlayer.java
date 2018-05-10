@@ -5,6 +5,10 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
+/*
+A Singleton class that creates a single instance of a ringtone player. One instance of this
+ringtone player ensures that multiple ringtones can't play at the same time.
+ */
 public class RingtonePlayer {
 
     private static RingtonePlayer sRingtonePlayer;

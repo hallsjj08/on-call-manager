@@ -4,6 +4,13 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+/*
+A Singleton class that retrieves a list of contacts from the database and places them in an arraylist.
+This arraylist is passed to the adapter to be displayed to the user. It also handles the addition,
+update, and deletion of contacts from the arraylist and the database. This class also provides the
+phoneNumberAnalyzer method which compares an incoming call's phone number to the phone numbers in the
+contact list.
+ */
 public class ContactsList {
 
     private static ContactsList sContactsList;

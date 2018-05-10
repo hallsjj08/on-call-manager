@@ -11,6 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/*
+A Fragment that displays the a list of contacts. This class sets up the RecyclerView, the Adapter,
+and the interface to handle onItemClickEvents
+ */
 public class ContactListFragment extends Fragment implements RecyclerViewItemClickListener{
 
     RecyclerView mRecyclerView;
@@ -41,6 +45,10 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
         return view;
     }
 
+    /*
+    This method takes in the view and position of the item clicked and passes the contact info to
+    ContactInfoFragment where the user can update or delete the contact.
+     */
     @Override
     public void recyclerViewItemClicked(View v, int position){
 

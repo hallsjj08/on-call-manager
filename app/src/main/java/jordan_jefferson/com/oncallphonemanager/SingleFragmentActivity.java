@@ -6,6 +6,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
+/*
+Currently unused class. This class will be used to handle all fragment transactions.
+ */
 public class SingleFragmentActivity extends FragmentActivity {
 
     /**

@@ -2,6 +2,10 @@ package jordan_jefferson.com.oncallphonemanager;
 
 import android.provider.BaseColumns;
 
+/*
+A class that sets a contract for the layout of tables for DBManager.
+ */
+
 public final class DBContract {
 
     private DBContract(){}

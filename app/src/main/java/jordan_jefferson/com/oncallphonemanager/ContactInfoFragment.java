@@ -14,6 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+/*
+ContactInfoFragment is a UI that lets the user either create a new contact for their contact list,
+update an existing contact, or delete a contact.
+ */
 public class ContactInfoFragment extends Fragment {
 
     private int position;
@@ -38,6 +42,11 @@ public class ContactInfoFragment extends Fragment {
 
         bDelete.setVisibility(View.INVISIBLE);
 
+        /*
+        Checks whether or not the user wants to edit an existing contact based on their selection
+        from the contact list. The contact information gets passed to this fragment depending on
+        which contact they selected.
+         */
         Bundle bundle = this.getArguments();
         if(bundle != null){
             position = bundle.getInt("position");
@@ -49,6 +58,7 @@ public class ContactInfoFragment extends Fragment {
         final EditText etContactName = view.findViewById(R.id.edContactName);
         final EditText etCompanyName = view.findViewById(R.id.edCompanyName);
 
+        //Checks if a contact was passed from the previous screen and populates the text boxes accordingly.
         if(contact != null){
 
             etContactName.setText(contact.get_contactName());
@@ -73,6 +83,7 @@ public class ContactInfoFragment extends Fragment {
             });
         }
 
+        //A button that updates an existing contact or adds a new one to the list.
         bSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +115,7 @@ public class ContactInfoFragment extends Fragment {
             }
         });
 
+        //A Cancel button that returns to the previous fragment state.
         bCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +125,8 @@ public class ContactInfoFragment extends Fragment {
             }
         });
 
+        //An image button that only shows if a user is updating a contact, giving them the option to delete.
+        //TODO: Allow the user to swipe left on a contact to show delete button and remove this button.
         bDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

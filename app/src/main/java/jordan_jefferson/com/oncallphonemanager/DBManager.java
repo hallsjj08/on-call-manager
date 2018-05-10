@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
-
+/*
+DBManager manages the database information for the users contact list. It has basic CRUD methods.
+ */
 public class DBManager extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_ENTRIES =
@@ -37,6 +39,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     }
 
+    //TODO: update onUpgrade to handle upgraded tables so users don't lose their local data.
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion1) {
 

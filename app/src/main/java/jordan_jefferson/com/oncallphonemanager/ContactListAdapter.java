@@ -14,12 +14,16 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/*
+An adapter class that displays Contacts in the recyclerview.
+ */
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ViewHolder> {
 
     private ArrayList<Contact> mContacts;
     private Context mContext;
     private static RecyclerViewItemClickListener mItemListener;
 
+    //This Viewholder class implements OnClickListener and returns the view and position of the item clicked.
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView tvContactName;
         public TextView tvCompanyName;
@@ -55,12 +59,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         this.mItemListener = itemListener;
     }
 
-
-    /*
-    TODO: Create subheader "Contacts" for contact list. XML Textview 16sp, Container 48dp according
-         to material design specs on google's material design website
-         @Link https://material.io/guidelines/components/subheaders.html#subheaders-list-subheaders
-     */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 

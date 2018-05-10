@@ -6,6 +6,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.provider.Settings;
 
+/*
+A Singleton that determines whether or not the user has granted Do Not Disturb Access and can set
+DnD priorities. The class needs to be edited to remove the Singleton Pattern. Possibly combine with
+Permissions checks and make permissions class.
+ */
 public class NotificationSettings {
 
     private Context mContext;

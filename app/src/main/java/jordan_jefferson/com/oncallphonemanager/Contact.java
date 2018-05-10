@@ -2,6 +2,15 @@ package jordan_jefferson.com.oncallphonemanager;
 
 import java.io.Serializable;
 
+/*
+Contact implements Serializable to transfer data across activities and config changes.
+Parameters:
+    _id: an autoincremented id associated with class DBManager.
+    _contactName: User defined contactName stored in a local database.
+    _companyName: User defined companyName stored in a local database.
+    _contactDisplayNumber: User defined phone number stored in a local database.
+    _contactRegexNumber: A number used to compare with incoming phone calls stored in a local database.
+ */
 public class Contact implements Serializable {
 
     private int _id;
@@ -10,9 +19,6 @@ public class Contact implements Serializable {
     private String _contactDisplayNumber;
     private String _contactRegexNumber;
 
-    public Contact(){
-
-    }
 
     public Contact(String contactName, String companyName, String contactDisplayNumber, String contactRegexNumber){
         this._contactName = contactName;

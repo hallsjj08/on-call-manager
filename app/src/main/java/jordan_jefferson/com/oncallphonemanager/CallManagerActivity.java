@@ -23,6 +23,10 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+/*
+CallManagerActivity is the launcher activity and the only activity in the app.
+ */
+
 public class CallManagerActivity extends AppCompatActivity {
 
     private static FloatingActionButton fab;
@@ -40,9 +44,12 @@ public class CallManagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_manager);
+
+        //Sets up the actionbar/toolbar for the app.
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Handles rotation changes
         if(savedInstanceState == null){
             mFragment = new ContactListFragment();
             mFragment.setArguments(getIntent().getExtras());
@@ -54,10 +61,18 @@ public class CallManagerActivity extends AppCompatActivity {
 
         Log.w(DEBUG_TAG, "Created");
 
+        //Creates all objects that involve Broadcast Receivers.
         final ReceiverFactory receiverFactory = new ReceiverFactory(getApplicationContext());
         fab = findViewById(R.id.floatingActionButton);
         alb = new AlertDialog.Builder(this);
 
+        /*
+        This switch buttons allows the user to enable and disable the Broadcast Receivers to listen
+        to listen for incoming phone calls. It also checks for needed permissions to enable this
+        this feature and prompts the user enable them. The switch turns off and the Broadcast
+        Receivers aren't registered if the user declines to enable permissions.
+         */
+        //TODO: Separate concerns. Make separate classes permission handling and alert dialog prompts.
         final Switch bEnabled = findViewById(R.id.bEnableReceiverObserver);
         bEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -136,6 +151,10 @@ public class CallManagerActivity extends AppCompatActivity {
 
     }
 
+    /*
+    This static class sets the visibility of the floating action button. Made static so that this
+    instance can be accessed from other classes.
+     */
     public static void setFabVisibility(boolean visible){
         if(visible){
             fab.setVisibility(FloatingActionButton.VISIBLE);
@@ -155,6 +174,10 @@ public class CallManagerActivity extends AppCompatActivity {
         fab.setVisibility(fab.VISIBLE);
     }
 
+    /*
+    An Android method that is called when the static method .requestPermissions(Activity activity,
+    String[] permissions, int requestCode) is called.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -170,6 +193,7 @@ public class CallManagerActivity extends AppCompatActivity {
 
     }
 
+    //TODO: Create a fragment that handles menu options
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -177,6 +201,9 @@ public class CallManagerActivity extends AppCompatActivity {
         return true;
     }
 
+    /*
+    Handles which settings item was clicked and performs actions accordingly.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -186,6 +213,8 @@ public class CallManagerActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         switch (id){
+
+            //Allows the user to manage app permissions.
                 case R.id.phone_read_permissions:
                     Intent intent = new Intent();
                     intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -193,6 +222,8 @@ public class CallManagerActivity extends AppCompatActivity {
                     intent.setData(uri);
                     startActivity(intent);
                     return true;
+
+            //Allows the user manage Do Not Disturb access.
                 case R.id.DnD_Permission:
                     NotificationSettings.getNotificationSettings(getApplicationContext());
                     NotificationSettings.getNotificationSettings(getApplicationContext()).requestNotificationAccess();
@@ -204,27 +235,20 @@ public class CallManagerActivity extends AppCompatActivity {
 
     @Override
     public void onStart() {
-
         super.onStart();
-
         Log.w(DEBUG_TAG, "Started");
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         Log.w(DEBUG_TAG, "Resumed");
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.w(DEBUG_TAG, "Paused");
-
-        //ContactListFragment.contactListUpdated();
     }
 
     @Override
@@ -236,16 +260,6 @@ public class CallManagerActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         Log.w(DEBUG_TAG, "Destroyed");
-
-//        try{
-////            receiverFactory.unregisterReceivers();
-////        }catch(Exception e){
-////            e.printStackTrace();
-////        }
-
-
-        //finishAffinity();
     }
 }

@@ -7,6 +7,9 @@ import android.media.AudioManager;
 import android.telephony.PhoneStateListener;
 import android.util.Log;
 
+/*
+A Broadcast Receiver that listens for call state changes i.e. incoming, idle, and answered.
+ */
 public class ServiceReceiver extends BroadcastReceiver {
 
     private AudioManager am;
@@ -31,6 +34,11 @@ public class ServiceReceiver extends BroadcastReceiver {
     }
 
     public PhoneStateListener phoneStateListener = new PhoneStateListener() {
+        /*
+        Parameters:
+            int state: 0 = idle, 1 = incoming, 2 = call answered
+            String incomingNumber: displays in states 1 and 2.
+         */
         @Override
         public synchronized void onCallStateChanged(int state, String incomingNumber) {
             super.onCallStateChanged(state, incomingNumber);
@@ -45,16 +53,14 @@ public class ServiceReceiver extends BroadcastReceiver {
 
                             Log.w("MATCHED", "" + isMatch);
 
-                            int maxVolume = am.getStreamMaxVolume(AudioManager.STREAM_RING);
-                            previousRingerMode = am.getRingerMode();
-                            previousRingerVolume = am.getStreamVolume(AudioManager.STREAM_RING);
-
                             if (isMatch && am.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
+
+                                int maxVolume = am.getStreamMaxVolume(AudioManager.STREAM_RING);
+                                previousRingerMode = am.getRingerMode();
+                                previousRingerVolume = am.getStreamVolume(AudioManager.STREAM_RING);
+
                                 am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
                                 am.setStreamVolume(AudioManager.STREAM_RING, maxVolume - 2, 0);
-//                                for(int i = 0; i < 10; i++){
-//                                    am.adjustStreamVolume(AudioManager.STREAM_RING, AudioManager.ADJUST_RAISE, 0);
-//                                }
 
                                 RingtonePlayer.getRingtonePlayer(mContext).play();
                             }
