@@ -15,3 +15,4 @@ Incoming Call: (123) 555-4567
 Contacts List: (123) 555-####
 
 The above incoming call's number matches the format needed. The app then overrides the audio settings and sets the ringer mode to normal.
+The audio settings will reset once the user is finished with the call.
