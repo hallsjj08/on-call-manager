@@ -1,11 +1,14 @@
 package jordan_jefferson.com.oncallphonemanager;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -34,7 +37,9 @@ public class CallManagerActivity extends AppCompatActivity {
     private AlertDialog.Builder alb;
     private AlertDialog al;
     private Fragment mFragment;
+    private Switch bEnabled;
 
+    private ReceiverFactory receiverFactory;
     public final String DEBUG_TAG = "MY_ACTIVITY_INFO";
     public final String FRAGMENT_TAG = "MY_FRAGMENT_TAG";
     private final String[] myPermissions = {Manifest.permission.READ_PHONE_STATE,
@@ -44,6 +49,15 @@ public class CallManagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_manager);
+
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        // Check if we need to display our OnboardingFragment
+        if (!sharedPreferences.getBoolean(
+                NewUserOnBoardingActivity.COMPLETED_ONBOARDING_PREF_NAME, false)) {
+            // The user hasn't seen the OnboardingFragment yet, so show it
+            startActivity(new Intent(this, NewUserOnBoardingActivity.class));
+        }
 
         //Sets up the actionbar/toolbar for the app.
         final Toolbar toolbar = findViewById(R.id.toolbar);
@@ -62,7 +76,7 @@ public class CallManagerActivity extends AppCompatActivity {
         Log.w(DEBUG_TAG, "Created");
 
         //Creates all objects that involve Broadcast Receivers.
-        final ReceiverFactory receiverFactory = new ReceiverFactory(getApplicationContext());
+        receiverFactory = new ReceiverFactory(getApplicationContext());
         fab = findViewById(R.id.floatingActionButton);
         alb = new AlertDialog.Builder(this);
 
@@ -73,7 +87,7 @@ public class CallManagerActivity extends AppCompatActivity {
         Receivers aren't registered if the user declines to enable permissions.
          */
         //TODO: Separate concerns. Make separate classes permission handling and alert dialog prompts.
-        final Switch bEnabled = findViewById(R.id.bEnableReceiverObserver);
+        bEnabled = findViewById(R.id.bEnableReceiverObserver);
         bEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isOn) {
@@ -185,9 +199,10 @@ public class CallManagerActivity extends AppCompatActivity {
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    receiverFactory.registerReceivers();
                     return;
                 } else {
-                    this.finishAndRemoveTask();
+                    bEnabled.setChecked(false);
                 }
         }
 

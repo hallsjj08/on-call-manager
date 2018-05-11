@@ -9,4 +9,6 @@
     <string name="phone">Phone</string>
     <string name="digits">0123456789+()</string>
     <string name="area_code">Area Code</string>
+    <string name="title_activity_new_user_on_boarding">NewUserOnBoardingActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
