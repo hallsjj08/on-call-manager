@@ -11,6 +11,7 @@ The user can then enable the On Call feature of the app. The app compares an inc
 The phone number has to match the digits that the user difines, but "#" can be any digit. 
 
 Incoming Call: (123) 555-4567
+
 Contacts List: (123) 555-####
 
 The above incoming call's number matches the format needed. The app then overrides the audio settings and sets the ringer mode to normal.
