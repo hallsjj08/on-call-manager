@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 /*
 ContactInfoFragment is a UI that lets the user either create a new contact for their contact list,
@@ -22,6 +23,7 @@ public class ContactInfoFragment extends Fragment {
 
     private int position;
     private Contact contact = null;
+    private boolean numberFormatted;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +43,9 @@ public class ContactInfoFragment extends Fragment {
         ContactsList.getInstance(view.getContext());
 
         bDelete.setVisibility(View.INVISIBLE);
+
+        final FragmentManager fm = getFragmentManager();
+        final Fragment fragment = new ContactListFragment();
 
         /*
         Checks whether or not the user wants to edit an existing contact based on their selection
@@ -92,6 +97,12 @@ public class ContactInfoFragment extends Fragment {
                 String companyName = etCompanyName.getText().toString();
                 String number = etPhone.getText().toString();
 
+                if(number.length() != 10){
+                    numberFormatted = false;
+                }else{
+                    numberFormatted = true;
+                }
+
                 String regexNumber = number.replaceAll("#", "\\\\d");
                 Log.w("Phone Number", number);
 
@@ -101,17 +112,19 @@ public class ContactInfoFragment extends Fragment {
                     contact.set_contactDisplayNumber(number);
                     contact.set_contactRegexNumber(regexNumber);
                     ContactsList.getInstance(view.getContext()).updateContact(contact, position);
-                }else{
+                }else if(contact == null && numberFormatted){
                     contact = new Contact(contactName, companyName, number, regexNumber);
                     ContactsList.getInstance(view.getContext()).addContact(contact);
                 }
 
-                FragmentManager fm = getFragmentManager();
-                Fragment fragment = new ContactListFragment();
+                if(numberFormatted){
+                    CallManagerActivity.setFabVisibility(true);
+                    fm.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
+                }else{
+                    Toast.makeText(view.getContext(), "Please enter a valid phone number.", Toast.LENGTH_LONG).show();
+                }
 
-                CallManagerActivity.setFabVisibility(true);
 
-                fm.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
             }
         });
 

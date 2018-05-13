@@ -1,6 +1,5 @@
 package jordan_jefferson.com.oncallphonemanager;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -10,8 +9,6 @@ import com.codemybrainsout.onboarder.AhoyOnboarderCard;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.security.AccessController.getContext;
 
 public class NewUserOnBoardingActivity extends AhoyOnboarderActivity {
 
@@ -29,12 +26,13 @@ public class NewUserOnBoardingActivity extends AhoyOnboarderActivity {
 
         String card3Description = "Allow Do not Disturb access if you would like to receive " +
                 "calls from contacts added in this app while your phone is on silent. This can be " +
-                "in settings.";
+                "accessed in settings.";
 
-        String card4Description = "Your contact list and call history are not shared with anyone. " +
-                "All data is stored locally on your phone and cannot be accessed from outside sources.";
+        String card4Description = "You will be prompted to allow this app to make and manage phone " +
+                "calls after this tutorial. Allowing this permission will allow you to enable the On " +
+                "Call feature of this app.";
 
-        AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("Welcome", card1Description, null);
+        AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("Welcome", card1Description, R.mipmap.ic_launcher_round);
         ahoyOnboarderCard1.setBackgroundColor(R.color.black_transparent);
         ahoyOnboarderCard1.setTitleColor(R.color.secondaryColor);
         ahoyOnboarderCard1.setDescriptionColor(R.color.secondaryColor);
@@ -50,7 +48,7 @@ public class NewUserOnBoardingActivity extends AhoyOnboarderActivity {
         ahoyOnboarderCard2.setDescriptionTextSize(dpToPixels(6, this));
         //ahoyOnboarderCard2.setIconLayoutParams(iconWidth, iconHeight, marginTop, marginLeft, marginRight, marginBottom);
 
-        AhoyOnboarderCard ahoyOnboarderCard3 = new AhoyOnboarderCard("Silent Mode", card3Description, null);
+        AhoyOnboarderCard ahoyOnboarderCard3 = new AhoyOnboarderCard("Silent Mode", card3Description, R.drawable.ic_notifications_active_secondary_108dp);
         ahoyOnboarderCard3.setBackgroundColor(R.color.black_transparent);
         ahoyOnboarderCard3.setTitleColor(R.color.secondaryColor);
         ahoyOnboarderCard3.setDescriptionColor(R.color.secondaryColor);
@@ -58,7 +56,7 @@ public class NewUserOnBoardingActivity extends AhoyOnboarderActivity {
         ahoyOnboarderCard3.setDescriptionTextSize(dpToPixels(6, this));
         //ahoyOnboarderCard3.setIconLayoutParams(iconWidth, iconHeight, marginTop, marginLeft, marginRight, marginBottom);
 
-        AhoyOnboarderCard ahoyOnboarderCard4 = new AhoyOnboarderCard("Security", card4Description, null);
+        AhoyOnboarderCard ahoyOnboarderCard4 = new AhoyOnboarderCard("App Permissions", card4Description, R.drawable.ic_phone_in_talk_secondary_108dp);
         ahoyOnboarderCard4.setBackgroundColor(R.color.black_transparent);
         ahoyOnboarderCard4.setTitleColor(R.color.secondaryColor);
         ahoyOnboarderCard4.setDescriptionColor(R.color.secondaryColor);
