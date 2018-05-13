@@ -40,13 +40,13 @@ public class NewUserOnBoardingActivity extends AhoyOnboarderActivity {
         ahoyOnboarderCard1.setDescriptionTextSize(dpToPixels(6, this));
         //ahoyOnboarderCard1.setIconLayoutParams(iconWidth, iconHeight, marginTop, marginLeft, marginRight, marginBottom);
 
-        AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Example", card2Description, null);
+        AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Example", card2Description, R.drawable.number);
         ahoyOnboarderCard2.setBackgroundColor(R.color.black_transparent);
         ahoyOnboarderCard2.setTitleColor(R.color.secondaryColor);
         ahoyOnboarderCard2.setDescriptionColor(R.color.secondaryColor);
         ahoyOnboarderCard2.setTitleTextSize(dpToPixels(10, this));
         ahoyOnboarderCard2.setDescriptionTextSize(dpToPixels(6, this));
-        //ahoyOnboarderCard2.setIconLayoutParams(iconWidth, iconHeight, marginTop, marginLeft, marginRight, marginBottom);
+        ahoyOnboarderCard2.setIconLayoutParams(512, 512, 0, 0, 0, 0);
 
         AhoyOnboarderCard ahoyOnboarderCard3 = new AhoyOnboarderCard("Silent Mode", card3Description, R.drawable.ic_notifications_active_secondary_108dp);
         ahoyOnboarderCard3.setBackgroundColor(R.color.black_transparent);
