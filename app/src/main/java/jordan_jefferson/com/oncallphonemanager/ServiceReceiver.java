@@ -28,10 +28,6 @@ public class ServiceReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if(NotificationSettings.getNotificationSettings(context).isAccessGranted()){
-
-        };
-
     }
 
     public PhoneStateListener phoneStateListener = new PhoneStateListener() {

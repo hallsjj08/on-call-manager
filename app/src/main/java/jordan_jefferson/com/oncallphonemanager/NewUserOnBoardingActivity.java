@@ -44,7 +44,6 @@ public class NewUserOnBoardingActivity extends AhoyOnboarderActivity {
         ahoyOnboarderCard1.setDescriptionColor(R.color.secondaryColor);
         ahoyOnboarderCard1.setTitleTextSize(dpToPixels(6, this));
         ahoyOnboarderCard1.setDescriptionTextSize(dpToPixels(4, this));
-        //ahoyOnboarderCard1.setIconLayoutParams((displayWidth), displayHeight, 0 , 0, 0, 0);
 
         AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Example", card2Description, R.drawable.number);
         ahoyOnboarderCard2.setBackgroundColor(R.color.black_transparent);
@@ -60,7 +59,6 @@ public class NewUserOnBoardingActivity extends AhoyOnboarderActivity {
         ahoyOnboarderCard3.setDescriptionColor(R.color.secondaryColor);
         ahoyOnboarderCard3.setTitleTextSize(dpToPixels(6, this));
         ahoyOnboarderCard3.setDescriptionTextSize(dpToPixels(4, this));
-        //ahoyOnboarderCard3.setIconLayoutParams(iconWidth, iconHeight, marginTop, marginLeft, marginRight, marginBottom);
 
         AhoyOnboarderCard ahoyOnboarderCard4 = new AhoyOnboarderCard("App Permissions", card4Description, R.drawable.ic_phone_in_talk_secondary_108dp);
         ahoyOnboarderCard4.setBackgroundColor(R.color.black_transparent);
@@ -68,7 +66,6 @@ public class NewUserOnBoardingActivity extends AhoyOnboarderActivity {
         ahoyOnboarderCard4.setDescriptionColor(R.color.secondaryColor);
         ahoyOnboarderCard4.setTitleTextSize(dpToPixels(6, this));
         ahoyOnboarderCard4.setDescriptionTextSize(dpToPixels(4, this));
-        //ahoyOnboarderCard4.setIconLayoutParams(iconWidth, iconHeight, marginTop, marginLeft, marginRight, marginBottom);
 
         List<AhoyOnboarderCard> pages = new ArrayList<>();
         pages.add(ahoyOnboarderCard1);
@@ -77,12 +74,6 @@ public class NewUserOnBoardingActivity extends AhoyOnboarderActivity {
         pages.add(ahoyOnboarderCard4);
 
         setOnboardPages(pages);
-
-//        List<Integer> colorList = new ArrayList<>();
-//        colorList.add(R.color.secondaryColor);
-//        colorList.add(R.color.primaryColor);
-//        colorList.add(R.color.solid_three);
-//        setColorBackground(colorList);
 
         setColorBackground(R.color.primaryColor);
 
@@ -95,8 +86,6 @@ public class NewUserOnBoardingActivity extends AhoyOnboarderActivity {
         sharedPreferencesEditor.putBoolean(
                 COMPLETED_ONBOARDING_PREF_NAME, true);
         sharedPreferencesEditor.apply();
-
-//        startActivity(new Intent(this, CallManagerActivity.class));
 
         finish();
     }

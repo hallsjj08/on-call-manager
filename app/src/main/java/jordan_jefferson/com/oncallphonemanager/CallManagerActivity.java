@@ -35,11 +35,14 @@ public class CallManagerActivity extends AppCompatActivity {
     private static FloatingActionButton fab;
     private boolean isPermissionGranted;
     private AlertDialog.Builder alb;
+    private SharedPreferences mSharedPreferences;
     private AlertDialog al;
     private Fragment mFragment;
     private Switch bEnabled;
-
+    private PermissionUtils mPermissionUtils;
     private ReceiverFactory receiverFactory;
+
+    public final String PERMISSIONS_REQUESTED_AFTER_ONBOARDING = "Onboarding Permissions";
     public final String DEBUG_TAG = "MY_ACTIVITY_INFO";
     public final String FRAGMENT_TAG = "MY_FRAGMENT_TAG";
     private final String[] myPermissions = {Manifest.permission.READ_PHONE_STATE,
@@ -50,10 +53,12 @@ public class CallManagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_manager);
 
-        SharedPreferences sharedPreferences =
+        mPermissionUtils = new PermissionUtils(getApplicationContext(), this);
+
+        mSharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this);
         // Check if we need to display our OnboardingFragment
-        if (!sharedPreferences.getBoolean(
+        if (!mSharedPreferences.getBoolean(
                 NewUserOnBoardingActivity.COMPLETED_ONBOARDING_PREF_NAME, false)) {
             // The user hasn't seen the OnboardingFragment yet, so show it
             startActivity(new Intent(this, NewUserOnBoardingActivity.class));
@@ -198,11 +203,12 @@ public class CallManagerActivity extends AppCompatActivity {
 
         switch (requestCode) {
             case 1:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && bEnabled.isChecked()) {
                     receiverFactory.registerReceivers();
                     return;
                 } else {
                     bEnabled.setChecked(false);
+                    return;
                 }
         }
 
@@ -238,10 +244,9 @@ public class CallManagerActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
 
-            //Allows the user manage Do Not Disturb access.
+            //Allows the user to manage Do Not Disturb access.
                 case R.id.DnD_Permission:
-                    NotificationSettings.getNotificationSettings(getApplicationContext());
-                    NotificationSettings.getNotificationSettings(getApplicationContext()).requestNotificationAccess();
+                    mPermissionUtils.requestNotificationAccess();
                     return true;
                 default:
                     return super.onOptionsItemSelected(item);
@@ -258,6 +263,19 @@ public class CallManagerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.w(DEBUG_TAG, "Resumed");
+        
+        if(mSharedPreferences.getBoolean(
+                NewUserOnBoardingActivity.COMPLETED_ONBOARDING_PREF_NAME, false) &&
+                !mSharedPreferences.getBoolean(PERMISSIONS_REQUESTED_AFTER_ONBOARDING, false)){
+            mPermissionUtils.requestPermissions();
+            mPermissionUtils.requestNotificationAccess();
+
+            SharedPreferences.Editor sharedPreferencesEditor =
+                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+            sharedPreferencesEditor.putBoolean(
+                    PERMISSIONS_REQUESTED_AFTER_ONBOARDING, true);
+            sharedPreferencesEditor.apply();
+        }
     }
 
     @Override
@@ -276,5 +294,9 @@ public class CallManagerActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.w(DEBUG_TAG, "Destroyed");
+
+        if(receiverFactory.isReceiverRegistered()){
+            receiverFactory.unregisterReceivers();
+        }
     }
 }
