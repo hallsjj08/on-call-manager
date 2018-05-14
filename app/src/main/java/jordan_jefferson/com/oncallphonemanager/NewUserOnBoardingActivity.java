@@ -3,6 +3,7 @@ package jordan_jefferson.com.oncallphonemanager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 
 import com.codemybrainsout.onboarder.AhoyOnboarderActivity;
 import com.codemybrainsout.onboarder.AhoyOnboarderCard;
@@ -32,36 +33,41 @@ public class NewUserOnBoardingActivity extends AhoyOnboarderActivity {
                 "calls after this tutorial. Allowing this permission will allow you to enable the On " +
                 "Call feature of this app.";
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int displayHeight = (int) (displayMetrics.heightPixels * 0.5);
+        int displayWidth = (int) (displayMetrics.widthPixels * 0.5);
+
         AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("Welcome", card1Description, R.mipmap.ic_launcher_round);
         ahoyOnboarderCard1.setBackgroundColor(R.color.black_transparent);
         ahoyOnboarderCard1.setTitleColor(R.color.secondaryColor);
         ahoyOnboarderCard1.setDescriptionColor(R.color.secondaryColor);
-        ahoyOnboarderCard1.setTitleTextSize(dpToPixels(10, this));
-        ahoyOnboarderCard1.setDescriptionTextSize(dpToPixels(6, this));
-        //ahoyOnboarderCard1.setIconLayoutParams(iconWidth, iconHeight, marginTop, marginLeft, marginRight, marginBottom);
+        ahoyOnboarderCard1.setTitleTextSize(dpToPixels(6, this));
+        ahoyOnboarderCard1.setDescriptionTextSize(dpToPixels(4, this));
+        //ahoyOnboarderCard1.setIconLayoutParams((displayWidth), displayHeight, 0 , 0, 0, 0);
 
         AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Example", card2Description, R.drawable.number);
         ahoyOnboarderCard2.setBackgroundColor(R.color.black_transparent);
         ahoyOnboarderCard2.setTitleColor(R.color.secondaryColor);
         ahoyOnboarderCard2.setDescriptionColor(R.color.secondaryColor);
-        ahoyOnboarderCard2.setTitleTextSize(dpToPixels(10, this));
-        ahoyOnboarderCard2.setDescriptionTextSize(dpToPixels(6, this));
-        ahoyOnboarderCard2.setIconLayoutParams(512, 512, 0, 0, 0, 0);
+        ahoyOnboarderCard2.setTitleTextSize(dpToPixels(6, this));
+        ahoyOnboarderCard2.setDescriptionTextSize(dpToPixels(4, this));
+        ahoyOnboarderCard2.setIconLayoutParams(displayWidth, displayHeight, 0, 0, 0, 0);
 
         AhoyOnboarderCard ahoyOnboarderCard3 = new AhoyOnboarderCard("Silent Mode", card3Description, R.drawable.ic_notifications_active_secondary_108dp);
         ahoyOnboarderCard3.setBackgroundColor(R.color.black_transparent);
         ahoyOnboarderCard3.setTitleColor(R.color.secondaryColor);
         ahoyOnboarderCard3.setDescriptionColor(R.color.secondaryColor);
-        ahoyOnboarderCard3.setTitleTextSize(dpToPixels(10, this));
-        ahoyOnboarderCard3.setDescriptionTextSize(dpToPixels(6, this));
+        ahoyOnboarderCard3.setTitleTextSize(dpToPixels(6, this));
+        ahoyOnboarderCard3.setDescriptionTextSize(dpToPixels(4, this));
         //ahoyOnboarderCard3.setIconLayoutParams(iconWidth, iconHeight, marginTop, marginLeft, marginRight, marginBottom);
 
         AhoyOnboarderCard ahoyOnboarderCard4 = new AhoyOnboarderCard("App Permissions", card4Description, R.drawable.ic_phone_in_talk_secondary_108dp);
         ahoyOnboarderCard4.setBackgroundColor(R.color.black_transparent);
         ahoyOnboarderCard4.setTitleColor(R.color.secondaryColor);
         ahoyOnboarderCard4.setDescriptionColor(R.color.secondaryColor);
-        ahoyOnboarderCard4.setTitleTextSize(dpToPixels(10, this));
-        ahoyOnboarderCard4.setDescriptionTextSize(dpToPixels(6, this));
+        ahoyOnboarderCard4.setTitleTextSize(dpToPixels(6, this));
+        ahoyOnboarderCard4.setDescriptionTextSize(dpToPixels(4, this));
         //ahoyOnboarderCard4.setIconLayoutParams(iconWidth, iconHeight, marginTop, marginLeft, marginRight, marginBottom);
 
         List<AhoyOnboarderCard> pages = new ArrayList<>();
@@ -102,6 +108,11 @@ public class NewUserOnBoardingActivity extends AhoyOnboarderActivity {
      */
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    @Override
+    public void onBackPressed(){
 
     }
 }

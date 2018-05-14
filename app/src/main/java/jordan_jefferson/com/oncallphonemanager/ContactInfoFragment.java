@@ -104,6 +104,7 @@ public class ContactInfoFragment extends Fragment {
                 }
 
                 String regexNumber = number.replaceAll("#", "\\\\d");
+                //regexNumber = "1" + regexNumber;
                 Log.w("Phone Number", number);
 
                 if(contact != null){

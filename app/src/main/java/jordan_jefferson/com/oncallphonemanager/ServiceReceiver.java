@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.telephony.PhoneStateListener;
 import android.util.Log;
+import android.widget.Toast;
 
 /*
 A Broadcast Receiver that listens for call state changes i.e. incoming, idle, and answered.
@@ -44,10 +45,13 @@ public class ServiceReceiver extends BroadcastReceiver {
             super.onCallStateChanged(state, incomingNumber);
 
             Log.w("STATE", "" + state);
+            Log.w("INCOMING_NUMBER", incomingNumber);
 
                     try {
 
                         if (state == 1) {
+
+                            //Toast.makeText(mContext, incomingNumber, Toast.LENGTH_LONG).show();
 
                             isMatch = ContactsList.getInstance(mContext).phoneNumberAnalyzer(incomingNumber);
 
