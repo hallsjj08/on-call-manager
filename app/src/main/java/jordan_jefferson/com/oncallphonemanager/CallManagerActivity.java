@@ -1,8 +1,5 @@
 package jordan_jefferson.com.oncallphonemanager;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -12,9 +9,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,10 +28,7 @@ CallManagerActivity is the launcher activity and the only activity in the app.
 public class CallManagerActivity extends AppCompatActivity {
 
     private static FloatingActionButton fab;
-    private boolean isPermissionGranted;
-    private AlertDialog.Builder alb;
     private SharedPreferences mSharedPreferences;
-    private AlertDialog al;
     private Fragment mFragment;
     private Switch bEnabled;
     private PermissionUtils mPermissionUtils;
@@ -45,8 +37,6 @@ public class CallManagerActivity extends AppCompatActivity {
     public final String PERMISSIONS_REQUESTED_AFTER_ONBOARDING = "Onboarding Permissions";
     public final String DEBUG_TAG = "MY_ACTIVITY_INFO";
     public final String FRAGMENT_TAG = "MY_FRAGMENT_TAG";
-    private final String[] myPermissions = {Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.MODIFY_AUDIO_SETTINGS};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +50,6 @@ public class CallManagerActivity extends AppCompatActivity {
         // Check if we need to display our OnboardingFragment
         if (!mSharedPreferences.getBoolean(
                 NewUserOnBoardingActivity.COMPLETED_ONBOARDING_PREF_NAME, false)) {
-            // The user hasn't seen the OnboardingFragment yet, so show it
             startActivity(new Intent(this, NewUserOnBoardingActivity.class));
         }
 
@@ -83,76 +72,32 @@ public class CallManagerActivity extends AppCompatActivity {
         //Creates all objects that involve Broadcast Receivers.
         receiverFactory = new ReceiverFactory(getApplicationContext());
         fab = findViewById(R.id.floatingActionButton);
-        alb = new AlertDialog.Builder(this);
 
         /*
         This switch buttons allows the user to enable and disable the Broadcast Receivers to listen
-        to listen for incoming phone calls. It also checks for needed permissions to enable this
+        for incoming phone calls. It also checks for needed permissions to enable this
         this feature and prompts the user enable them. The switch turns off and the Broadcast
         Receivers aren't registered if the user declines to enable permissions.
          */
-        //TODO: Separate concerns. Make separate classes permission handling and alert dialog prompts.
         bEnabled = findViewById(R.id.bEnableReceiverObserver);
         bEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isOn) {
-                if(isOn){
-                    for (int i = 0; i < myPermissions.length; i++) {
-                        if (ContextCompat.checkSelfPermission(getApplicationContext(), myPermissions[i])
-                                == PackageManager.PERMISSION_GRANTED) {
-                            Log.w(DEBUG_TAG, "Permission Granted");
-                            isPermissionGranted = true;
-                        } else {
-                            isPermissionGranted = false;
-                            break;
-                        }
+                if(isOn) {
+                    if(mPermissionUtils.permissionsGranted() && !ContactsList.getInstance(getApplicationContext()).getContactsList().isEmpty()){
+                        receiverFactory.registerReceivers();
+                    }else if(ContactsList.getInstance(getApplicationContext()).getContactsList().isEmpty()){
+                        Toast.makeText(CallManagerActivity.this, "Please add a contact to get started.",
+                                Toast.LENGTH_SHORT).show();
+                        bEnabled.setChecked(false);
+                    }else if(!mPermissionUtils.permissionsGranted()){
+                        mPermissionUtils.requestPermissions();
                     }
-
-                        if(isPermissionGranted) {
-                            if(ContactsList.getInstance(getApplicationContext()).getContactsList().isEmpty()){
-                                Toast.makeText(CallManagerActivity.this, "Please add a contact to enable this feature.",
-                                        Toast.LENGTH_LONG).show();
-                                bEnabled.setChecked(false);
-                            } else{
-                                receiverFactory.registerReceivers();
-                            }
-                        }else {
-                                Log.w(DEBUG_TAG, "Permission Denied");
-
-                                al = alb.create();
-                                al.show();
-                            }
                 }else{
                     if(receiverFactory.isReceiverRegistered()){
                         receiverFactory.unregisterReceivers();
                     }
                 }
-            }
-        });
-
-        alb.setMessage("The following feature needs \"Read Phone State\" permission enabled. " +
-                "Would you like to edit permissions?");
-        alb.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-
-            /**
-             * This method will be invoked when a button in the dialog is clicked.
-             *
-             * @param dialog the dialog that received the click
-             * @param which  the button that was clicked (ex.
-             *               {@link DialogInterface#BUTTON_POSITIVE}) or the position
-             */
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                    Log.w(DEBUG_TAG, "Permission Denied");
-
-                    ActivityCompat.requestPermissions(CallManagerActivity.this,
-                            myPermissions, 1);
-                    Log.w(DEBUG_TAG, "Requesting Permission");
-            }
-        }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                bEnabled.setChecked(false);
             }
         });
 

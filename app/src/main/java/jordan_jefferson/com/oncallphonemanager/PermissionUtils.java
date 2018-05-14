@@ -29,7 +29,7 @@ public class PermissionUtils {
 
     }
 
-    public boolean checkPermissions(){
+    public boolean permissionsGranted(){
 
         for (int i = 0; i < myPermissions.length; i++) {
             if (ContextCompat.checkSelfPermission(mContext, myPermissions[i])
@@ -65,8 +65,7 @@ public class PermissionUtils {
     }
 
     public void requestNotificationAccess(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                !mNotificationManager.isNotificationPolicyAccessGranted()){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
 
             Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
             mContext.startActivity(intent);
