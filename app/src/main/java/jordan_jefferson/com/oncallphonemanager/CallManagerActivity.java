@@ -128,12 +128,21 @@ public class CallManagerActivity extends AppCompatActivity {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     receiverFactory.registerReceivers();
+                    invalidateOptionsMenu();
                     return;
                 } else {
                     return;
                 }
         }
 
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if(receiverFactory.isReceiverRegistered()){
+            menu.findItem(R.id.bEnableReceiverObserver).setIcon(R.drawable.ic_phone_in_talk_secondary_24dp);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     //TODO: Create a fragment that handles menu options
@@ -157,30 +166,8 @@ public class CallManagerActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         switch (id){
             case R.id.bEnableReceiverObserver:
-
-                if(mPermissionUtils.permissionsGranted() &&
-                        !ContactsList.getInstance(getApplicationContext()).getContactsList().isEmpty()
-                        && !receiverFactory.isReceiverRegistered()){
-                    receiverFactory.registerReceivers();
-                    item.setIcon(R.drawable.ic_phone_in_talk_secondary_24dp);
-                    return true;
-                }else if(ContactsList.getInstance(getApplicationContext()).getContactsList().isEmpty()){
-                    Toast.makeText(CallManagerActivity.this, "Please add a contact to get started.",
-                            Toast.LENGTH_SHORT).show();
-                    return true;
-                }else if(!mPermissionUtils.permissionsGranted()){
-                    mPermissionUtils.requestPermissions();
-                    if(mPermissionUtils.permissionsGranted()){
-                        item.setIcon(R.drawable.ic_phone_in_talk_secondary_24dp);
-                    }
-                    return true;
-                }else{
-                    if(receiverFactory.isReceiverRegistered()){
-                        receiverFactory.unregisterReceivers();
-                        item.setIcon(R.drawable.ic_phone_missed_red_24dp);
-                        return true;
-                    }
-                }
+                receiverEnabler(item);
+                return true;
 
             //Allows the user to manage Do Not Disturb access.
                 case R.id.DnD_Permission:
@@ -188,6 +175,26 @@ public class CallManagerActivity extends AppCompatActivity {
                     return true;
                 default:
                     return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void receiverEnabler(MenuItem item){
+
+        if(mPermissionUtils.permissionsGranted() &&
+                !ContactsList.getInstance(getApplicationContext()).getContactsList().isEmpty()
+                && !receiverFactory.isReceiverRegistered()){
+            receiverFactory.registerReceivers();
+            item.setIcon(R.drawable.ic_phone_in_talk_secondary_24dp);
+        }else if(ContactsList.getInstance(getApplicationContext()).getContactsList().isEmpty()){
+            Toast.makeText(CallManagerActivity.this, "Please add a contact to get started.",
+                    Toast.LENGTH_LONG).show();
+        }else if(!mPermissionUtils.permissionsGranted()){
+            mPermissionUtils.requestPermissions();
+        }else{
+            if(receiverFactory.isReceiverRegistered()){
+                receiverFactory.unregisterReceivers();
+                item.setIcon(R.drawable.ic_phone_missed_red_24dp);
+            }
         }
     }
 
