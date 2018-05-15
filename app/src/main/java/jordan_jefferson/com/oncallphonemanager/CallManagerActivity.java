@@ -30,7 +30,7 @@ public class CallManagerActivity extends AppCompatActivity {
 
     public final String PERMISSIONS_REQUESTED_AFTER_ONBOARDING = "Onboarding Permissions";
     public final String DEBUG_TAG = "MY_ACTIVITY_INFO";
-    public final String FRAGMENT_TAG = "MY_FRAGMENT_TAG";
+    public static String FRAGMENT_TAG = "MY_FRAGMENT_TAG";
     public final String RECEIVER_STATE = "IS_RECEIVER_ENABLED";
 
     public boolean isReceiverRegistered;
@@ -76,7 +76,8 @@ public class CallManagerActivity extends AppCompatActivity {
 
                 setFabVisibility(false);
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, mFragment, FRAGMENT_TAG).addToBackStack("listFragment").commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                        mFragment, FRAGMENT_TAG).addToBackStack("listFragment").commit();
 
             }
         });
@@ -115,9 +116,12 @@ public class CallManagerActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
-        fab.setVisibility(View.VISIBLE);
+        if (getFragmentManager().getBackStackEntryCount() > 0 ){
+            fab.setVisibility(View.VISIBLE);
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     /*
@@ -185,17 +189,25 @@ public class CallManagerActivity extends AppCompatActivity {
         if(mPermissionUtils.permissionsGranted() &&
                 !ContactsList.getInstance(getApplicationContext()).getContactsList().isEmpty()
                 && !receiverFactory.isReceiverRegistered()){
+
             receiverFactory.registerReceivers();
             item.setIcon(R.drawable.ic_phone_in_talk_secondary_24dp);
+
         }else if(ContactsList.getInstance(getApplicationContext()).getContactsList().isEmpty()){
+
             Toast.makeText(CallManagerActivity.this, "Please add a contact to get started.",
                     Toast.LENGTH_LONG).show();
+
         }else if(!mPermissionUtils.permissionsGranted()){
+
             mPermissionUtils.requestPermissions();
+
         }else{
             if(receiverFactory.isReceiverRegistered()){
+
                 receiverFactory.unregisterReceivers();
                 item.setIcon(R.drawable.ic_phone_missed_red_24dp);
+
             }
         }
     }

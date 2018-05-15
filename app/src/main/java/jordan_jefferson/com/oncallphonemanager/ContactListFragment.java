@@ -64,7 +64,7 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
 
         assert fm != null;
         fm.beginTransaction()
-                .replace(R.id.fragmentContainer, fragment)
+                .replace(R.id.fragmentContainer, fragment, CallManagerActivity.FRAGMENT_TAG)
                 .addToBackStack(null)
                 .commit();
 

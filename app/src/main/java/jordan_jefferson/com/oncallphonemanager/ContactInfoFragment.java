@@ -129,7 +129,6 @@ public class ContactInfoFragment extends Fragment {
                 numberFormatted = number.length() == 10;
 
                 String regexNumber = number.replaceAll("#", "\\\\d");
-                //regexNumber = "1" + regexNumber;
                 Log.w("Phone Number", number);
 
                 if(contact != null){
@@ -147,7 +146,7 @@ public class ContactInfoFragment extends Fragment {
                     CallManagerActivity.setFabVisibility(true);
                     bundle = null;
                     assert fm != null;
-                    fm.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
+                    fm.beginTransaction().replace(R.id.fragmentContainer, fragment, CallManagerActivity.FRAGMENT_TAG).commit();
                 }else{
                     Toast.makeText(view.getContext(), "Please enter a valid phone number.", Toast.LENGTH_LONG).show();
                 }
