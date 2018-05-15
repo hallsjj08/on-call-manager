@@ -1,5 +1,6 @@
 package jordan_jefferson.com.oncallphonemanager;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -25,10 +26,10 @@ public class DBManager extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + DBContract.DBEntry.TABLE_NAME;
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "Contacts.db";
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "Contacts.db";
 
-    public DBManager(Context context){
+    DBManager(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -50,6 +51,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     }
 
+    @SuppressLint("Unused") //deleteTable is unused currently. Remove the Suppress Lint when used.
     public void deleteTable(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL(SQL_DELETE_ENTRIES);
     }

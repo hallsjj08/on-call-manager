@@ -20,7 +20,7 @@ public class Contact implements Serializable {
     private String _contactRegexNumber;
 
 
-    public Contact(String contactName, String companyName, String contactDisplayNumber, String contactRegexNumber){
+    Contact(String contactName, String companyName, String contactDisplayNumber, String contactRegexNumber){
         this._contactName = contactName;
         this._companyName = companyName;
         this._contactDisplayNumber = contactDisplayNumber;

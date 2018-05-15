@@ -1,5 +1,6 @@
 package jordan_jefferson.com.oncallphonemanager;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,8 +18,7 @@ public class ServiceReceiver extends BroadcastReceiver {
     private boolean isMatch = false;
     private int previousRingerMode;
     private int previousRingerVolume;
-    private int previousNotifcationSetting;
-    private static Context mContext;
+    private Context mContext;
 
     public ServiceReceiver(Context context) {
         mContext = context;
@@ -87,6 +87,7 @@ public class ServiceReceiver extends BroadcastReceiver {
         return phoneStateListener;
     }
 
+    @SuppressLint("Unused")
     public void setPhoneStateListener(PhoneStateListener phoneStateListener) {
         this.phoneStateListener = phoneStateListener;
     }

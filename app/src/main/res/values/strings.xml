@@ -11,4 +11,17 @@
     <string name="area_code">Area Code</string>
     <string name="title_activity_new_user_on_boarding">NewUserOnBoardingActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="update">Update</string>
+    <string name="company_name_hint">Company Name</string>
+    <string name="contact_name_hint">Contact Name</string>
+    <string name="phone_number_hint">Phone Number*</string>
+    <string name="required">* Required</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Trash Button to Delete Contacts.</string>
+    <string name="first_initial">C</string>
+    <string name="contact_name">Contact Name</string>
+    <string name="company_name">Company</string>
+    <string name="phone_num">###-###-####</string>
+    <string name="on_call_feature">On Call Feature</string>
+    <string name="DnD">Allow Do Not Disturb Access</string>
 </resources>

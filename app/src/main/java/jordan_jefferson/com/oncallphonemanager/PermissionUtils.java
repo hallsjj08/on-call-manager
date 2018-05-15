@@ -1,6 +1,7 @@
 package jordan_jefferson.com.oncallphonemanager;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -21,7 +22,7 @@ public class PermissionUtils {
     private String[] myPermissions = {Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.MODIFY_AUDIO_SETTINGS};
 
-    public PermissionUtils(Context context, Activity activity){
+    PermissionUtils(Context context, Activity activity){
 
         this.mContext = context;
         this.mActivity = activity;
@@ -31,12 +32,12 @@ public class PermissionUtils {
 
     public boolean permissionsGranted(){
 
-        for (int i = 0; i < myPermissions.length; i++) {
-            if (ContextCompat.checkSelfPermission(mContext, myPermissions[i])
+        for (String myPermission : myPermissions) {
+            if (ContextCompat.checkSelfPermission(mContext, myPermission)
                     == PackageManager.PERMISSION_GRANTED) {
-                Log.w(myPermissions[i], "Permission Granted");
+                Log.w(myPermission, "Permission Granted");
             } else {
-                Log.w(myPermissions[i], "Permission Denied");
+                Log.w(myPermission, "Permission Denied");
                 return false;
             }
         }
@@ -49,19 +50,17 @@ public class PermissionUtils {
         Log.w("PERMISSION_UTILS", "Requesting Permission");
     }
 
+    @SuppressLint("Unused")
     public boolean isNotificationAccessGranted(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 mNotificationManager.isNotificationPolicyAccessGranted()){
 
             return true;
 
-        }else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
-            //TODO: add checks for overriding DND settings here if users are operating below Marshmallow.
-
-            return true;
         }
 
-        return false;
+        return true;
+
     }
 
     public void requestNotificationAccess(){
@@ -73,6 +72,7 @@ public class PermissionUtils {
         }
     }
 
+    @SuppressLint("Unused")
     public void setNotificationFilter(int notificationFilter){
 
 
@@ -81,6 +81,7 @@ public class PermissionUtils {
         }
     }
 
+    @SuppressLint("Unused")
     public int getNotificationFilter(){
         int currentInterruptionFilter = 0;
 

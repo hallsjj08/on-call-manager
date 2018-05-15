@@ -6,14 +6,14 @@
     <item
         android:id="@+id/bEnableReceiverObserver"
         android:orderInCategory="100"
-        android:title="On Call Feature"
+        android:title="@string/on_call_feature"
         android:icon="@drawable/ic_phone_missed_red_24dp"
         app:showAsAction="always"
-        />
+        tools:ignore="AlwaysShowAction"/>
 
     <item
         android:id="@+id/DnD_Permission"
         android:orderInCategory="99"
-        android:title="Allow Do Not Disturb Access"
+        android:title="@string/DnD"
         app:showAsAction="never"/>
 </menu>

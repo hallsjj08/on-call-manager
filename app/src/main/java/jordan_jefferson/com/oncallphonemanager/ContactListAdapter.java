@@ -1,15 +1,11 @@
 package jordan_jefferson.com.oncallphonemanager;
 
-import android.content.Context;
-import android.support.v7.widget.LinearLayoutCompat;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,7 +16,6 @@ An adapter class that displays Contacts in the recyclerview.
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ViewHolder> {
 
     private ArrayList<Contact> mContacts;
-    private Context mContext;
     private static RecyclerViewItemClickListener mItemListener;
 
     //This Viewholder class implements OnClickListener and returns the view and position of the item clicked.
@@ -29,7 +24,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         public TextView tvCompanyName;
         public TextView tvDisplayNumber;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
 
             tvContactName = itemView.findViewById(R.id.tvContactName);
@@ -53,26 +48,24 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         }
     }
 
-    ContactListAdapter(Context context, ArrayList<Contact> contacts, RecyclerViewItemClickListener itemListener){
+    ContactListAdapter(ArrayList<Contact> contacts, RecyclerViewItemClickListener itemListener){
         this.mContacts = contacts;
-        this.mContext = context;
-        this.mItemListener = itemListener;
+        mItemListener = itemListener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LinearLayout contactTemplateRow = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.contact_template_row, parent, false);
 
-        ViewHolder view = new ViewHolder(contactTemplateRow);
-
-        return view;
+        return new ViewHolder(contactTemplateRow);
     }
 
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.tvContactName.setText(mContacts.get(position).get_contactName());
         holder.tvCompanyName.setText(mContacts.get(position).get_companyName());

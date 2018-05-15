@@ -1,5 +1,6 @@
 package jordan_jefferson.com.oncallphonemanager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.telephony.PhoneStateListener;
@@ -45,26 +46,32 @@ public class ReceiverFactory {
         isReceiverRegistered = false;
     }
 
+    @SuppressLint("Unused")
     public ServiceReceiver getMyCallReceiver() {
         return myCallReceiver;
     }
 
+    @SuppressLint("Unused")
     public void setMyCallReceiver(ServiceReceiver myCallReceiver) {
         this.myCallReceiver = myCallReceiver;
     }
 
+    @SuppressLint("Unused")
     public TelephonyManager getTelephony() {
         return telephony;
     }
 
+    @SuppressLint("Unused")
     public void setTelephony(TelephonyManager telephony) {
         this.telephony = telephony;
     }
 
+    @SuppressLint("Unused")
     public Context getContext() {
         return mContext;
     }
 
+    @SuppressLint("Unused")
     public void setContext(Context context) {
         mContext = context;
     }

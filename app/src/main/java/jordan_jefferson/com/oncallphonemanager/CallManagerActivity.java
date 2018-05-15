@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -118,7 +117,7 @@ public class CallManagerActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        fab.setVisibility(fab.VISIBLE);
+        fab.setVisibility(View.VISIBLE);
     }
 
     /*
@@ -134,9 +133,6 @@ public class CallManagerActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     receiverFactory.registerReceivers();
                     invalidateOptionsMenu();
-                    return;
-                } else {
-                    return;
                 }
         }
 

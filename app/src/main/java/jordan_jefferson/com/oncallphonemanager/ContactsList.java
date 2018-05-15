@@ -15,15 +15,12 @@ contact list.
 public class ContactsList {
 
     private static ContactsList sContactsList;
-    private Context mAppContext;
     private ArrayList<Contact> mContacts;
     private DBManager myDB;
 
     private ContactsList(Context appContext){
 
-        this.mAppContext = appContext;
-
-        this.myDB = new DBManager(mAppContext);
+        this.myDB = new DBManager(appContext);
         this.mContacts = myDB.retrieveContacts();
 
     }

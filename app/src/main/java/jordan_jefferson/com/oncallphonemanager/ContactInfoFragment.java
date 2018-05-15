@@ -1,8 +1,8 @@
 package jordan_jefferson.com.oncallphonemanager;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -35,7 +35,7 @@ public class ContactInfoFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.activity_contact_info, container, false);
 
@@ -71,7 +71,7 @@ public class ContactInfoFragment extends Fragment {
             etContactName.setText(contact.get_contactName());
             etCompanyName.setText(contact.get_companyName());
             etPhone.setText(contact.get_contactDisplayNumber());
-            bSubmit.setText("Update");
+            bSubmit.setText(R.string.update);
             bDelete.setVisibility(View.VISIBLE);
 
         }else{
@@ -122,11 +122,7 @@ public class ContactInfoFragment extends Fragment {
                 String companyName = etCompanyName.getText().toString();
                 String number = etPhone.getText().toString();
 
-                if(number.length() != 10){
-                    numberFormatted = false;
-                }else{
-                    numberFormatted = true;
-                }
+                numberFormatted = number.length() == 10;
 
                 String regexNumber = number.replaceAll("#", "\\\\d");
                 //regexNumber = "1" + regexNumber;
@@ -145,6 +141,7 @@ public class ContactInfoFragment extends Fragment {
 
                 if(numberFormatted){
                     CallManagerActivity.setFabVisibility(true);
+                    assert fm != null;
                     fm.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
                 }else{
                     Toast.makeText(view.getContext(), "Please enter a valid phone number.", Toast.LENGTH_LONG).show();
@@ -160,6 +157,7 @@ public class ContactInfoFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
                 CallManagerActivity.setFabVisibility(true);
+                assert fm != null;
                 fm.popBackStack();
             }
         });
@@ -174,6 +172,7 @@ public class ContactInfoFragment extends Fragment {
                 Fragment fragment = new ContactListFragment();
 
                 CallManagerActivity.setFabVisibility(true);
+                assert fm != null;
                 fm.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
             }
         });

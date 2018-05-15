@@ -12,16 +12,12 @@ ringtone player ensures that multiple ringtones can't play at the same time.
 public class RingtonePlayer {
 
     private static RingtonePlayer sRingtonePlayer;
-    private Context mContext;
     private Ringtone mRingtone;
-    private Uri mUri;
 
     private RingtonePlayer(Context context){
 
-        this.mContext = context;
-
-        mUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-        mRingtone = RingtoneManager.getRingtone(mContext.getApplicationContext(), mUri);
+        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        mRingtone = RingtoneManager.getRingtone(context.getApplicationContext(), uri);
 
     }
 
