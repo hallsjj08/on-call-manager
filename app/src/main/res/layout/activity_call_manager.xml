@@ -25,20 +25,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <Switch
-        android:id="@+id/bEnableReceiverObserver"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_gravity="bottom"
-        android:background="@color/primaryDarkColor"
-        android:checked="false"
-        android:contentDescription="Hey"
-        android:padding="16dp"
-        android:text="Enable On Call Phone Manager"
-        android:textColor="@color/secondaryColor"
-        app:layout_anchor="@+id/fragmentContainer"
-        app:layout_anchorGravity="top|center"/>
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="match_parent"

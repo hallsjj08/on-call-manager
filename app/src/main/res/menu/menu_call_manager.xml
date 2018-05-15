@@ -4,14 +4,16 @@
       tools:context="jordan_jefferson.com.oncallphonemanager.CallManager">
 
     <item
-        android:id="@+id/phone_read_permissions"
+        android:id="@+id/bEnableReceiverObserver"
         android:orderInCategory="100"
-        android:title="Manage App Permissions"
-        app:showAsAction="never"/>
+        android:title="On Call Feature"
+        android:icon="@drawable/ic_phone_missed_red_24dp"
+        app:showAsAction="always"
+        />
 
     <item
         android:id="@+id/DnD_Permission"
-        android:orderInCategory="100"
+        android:orderInCategory="99"
         android:title="Allow Do Not Disturb Access"
         app:showAsAction="never"/>
 </menu>

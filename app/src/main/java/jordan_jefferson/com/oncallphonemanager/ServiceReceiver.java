@@ -47,7 +47,7 @@ public class ServiceReceiver extends BroadcastReceiver {
 
                         if (state == 1) {
 
-                            //Toast.makeText(mContext, incomingNumber, Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, incomingNumber, Toast.LENGTH_LONG).show();
 
                             isMatch = ContactsList.getInstance(mContext).phoneNumberAnalyzer(incomingNumber);
 

@@ -1,6 +1,7 @@
 package jordan_jefferson.com.oncallphonemanager;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -60,8 +61,21 @@ public class ContactsList {
 
     public boolean phoneNumberAnalyzer(String incomingNumber){
 
+        String phoneNumber = incomingNumber;
+        int size = incomingNumber.length();
+
+        switch (size){
+            case 11:
+                phoneNumber = incomingNumber.substring(1);
+                break;
+            case 12:
+                phoneNumber = incomingNumber.substring(2);
+                break;
+        }
+
         for(int i = 0; i < mContacts.size(); i++){
-            if(incomingNumber.matches(mContacts.get(i).get_contactRegexNumber())){
+            Log.w("REGEX_NUMBER", mContacts.get(i).get_contactRegexNumber());
+            if(phoneNumber.matches(mContacts.get(i).get_contactRegexNumber())){
                 return true;
             }
         }

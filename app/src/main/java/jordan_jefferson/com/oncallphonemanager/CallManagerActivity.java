@@ -10,8 +10,8 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -30,7 +30,6 @@ public class CallManagerActivity extends AppCompatActivity {
     private static FloatingActionButton fab;
     private SharedPreferences mSharedPreferences;
     private Fragment mFragment;
-    private Switch bEnabled;
     private PermissionUtils mPermissionUtils;
     private ReceiverFactory receiverFactory;
 
@@ -53,6 +52,9 @@ public class CallManagerActivity extends AppCompatActivity {
             startActivity(new Intent(this, NewUserOnBoardingActivity.class));
         }
 
+        //Creates all objects that involve Broadcast Receivers.
+        receiverFactory = new ReceiverFactory(getApplicationContext());
+
         //Sets up the actionbar/toolbar for the app.
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -69,38 +71,14 @@ public class CallManagerActivity extends AppCompatActivity {
 
         Log.w(DEBUG_TAG, "Created");
 
-        //Creates all objects that involve Broadcast Receivers.
-        receiverFactory = new ReceiverFactory(getApplicationContext());
-        fab = findViewById(R.id.floatingActionButton);
-
         /*
         This switch buttons allows the user to enable and disable the Broadcast Receivers to listen
         for incoming phone calls. It also checks for needed permissions to enable this
         this feature and prompts the user enable them. The switch turns off and the Broadcast
         Receivers aren't registered if the user declines to enable permissions.
          */
-        bEnabled = findViewById(R.id.bEnableReceiverObserver);
-        bEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isOn) {
-                if(isOn) {
-                    if(mPermissionUtils.permissionsGranted() && !ContactsList.getInstance(getApplicationContext()).getContactsList().isEmpty()){
-                        receiverFactory.registerReceivers();
-                    }else if(ContactsList.getInstance(getApplicationContext()).getContactsList().isEmpty()){
-                        Toast.makeText(CallManagerActivity.this, "Please add a contact to get started.",
-                                Toast.LENGTH_SHORT).show();
-                        bEnabled.setChecked(false);
-                    }else if(!mPermissionUtils.permissionsGranted()){
-                        mPermissionUtils.requestPermissions();
-                    }
-                }else{
-                    if(receiverFactory.isReceiverRegistered()){
-                        receiverFactory.unregisterReceivers();
-                    }
-                }
-            }
-        });
 
+        fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,11 +126,10 @@ public class CallManagerActivity extends AppCompatActivity {
 
         switch (requestCode) {
             case 1:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && bEnabled.isChecked()) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     receiverFactory.registerReceivers();
                     return;
                 } else {
-                    bEnabled.setChecked(false);
                     return;
                 }
         }
@@ -179,15 +156,31 @@ public class CallManagerActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         switch (id){
+            case R.id.bEnableReceiverObserver:
 
-            //Allows the user to manage app permissions.
-                case R.id.phone_read_permissions:
-                    Intent intent = new Intent();
-                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("package", getPackageName(), null);
-                    intent.setData(uri);
-                    startActivity(intent);
+                if(mPermissionUtils.permissionsGranted() &&
+                        !ContactsList.getInstance(getApplicationContext()).getContactsList().isEmpty()
+                        && !receiverFactory.isReceiverRegistered()){
+                    receiverFactory.registerReceivers();
+                    item.setIcon(R.drawable.ic_phone_in_talk_secondary_24dp);
                     return true;
+                }else if(ContactsList.getInstance(getApplicationContext()).getContactsList().isEmpty()){
+                    Toast.makeText(CallManagerActivity.this, "Please add a contact to get started.",
+                            Toast.LENGTH_SHORT).show();
+                    return true;
+                }else if(!mPermissionUtils.permissionsGranted()){
+                    mPermissionUtils.requestPermissions();
+                    if(mPermissionUtils.permissionsGranted()){
+                        item.setIcon(R.drawable.ic_phone_in_talk_secondary_24dp);
+                    }
+                    return true;
+                }else{
+                    if(receiverFactory.isReceiverRegistered()){
+                        receiverFactory.unregisterReceivers();
+                        item.setIcon(R.drawable.ic_phone_missed_red_24dp);
+                        return true;
+                    }
+                }
 
             //Allows the user to manage Do Not Disturb access.
                 case R.id.DnD_Permission:
