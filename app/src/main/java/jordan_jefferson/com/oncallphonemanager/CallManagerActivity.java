@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -31,11 +32,16 @@ public class CallManagerActivity extends AppCompatActivity {
     public final String PERMISSIONS_REQUESTED_AFTER_ONBOARDING = "Onboarding Permissions";
     public final String DEBUG_TAG = "MY_ACTIVITY_INFO";
     public final String FRAGMENT_TAG = "MY_FRAGMENT_TAG";
+    public final String RECEIVER_STATE = "IS_RECEIVER_ENABLED";
+
+    public boolean isReceiverRegistered;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_manager);
+
+        Log.w(DEBUG_TAG, "Created");
 
         //Sets up the actionbar/toolbar for the app.
         final Toolbar toolbar = findViewById(R.id.toolbar);
@@ -63,8 +69,6 @@ public class CallManagerActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, mFragment, FRAGMENT_TAG).commit();
 
-        Log.w(DEBUG_TAG, "Created");
-
         fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,12 +82,26 @@ public class CallManagerActivity extends AppCompatActivity {
             }
         });
 
+        if(savedInstanceState != null){
+            isReceiverRegistered = savedInstanceState.getBoolean(RECEIVER_STATE);
+            if(isReceiverRegistered){
+                receiverFactory.registerReceivers();
+            }
+        }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(RECEIVER_STATE, receiverFactory.isReceiverRegistered());
+
+        super.onSaveInstanceState(outState);
     }
 
     /*
-    This static class sets the visibility of the floating action button. Made static so that this
-    instance can be accessed from other classes.
-     */
+        This static class sets the visibility of the floating action button. Made static so that this
+        instance can be accessed from other classes.
+         */
     public static void setFabVisibility(boolean visible){
         if(visible){
             fab.setVisibility(FloatingActionButton.VISIBLE);
