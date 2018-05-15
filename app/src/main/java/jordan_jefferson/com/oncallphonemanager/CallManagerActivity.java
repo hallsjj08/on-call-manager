@@ -178,6 +178,7 @@ public class CallManagerActivity extends AppCompatActivity {
         }
     }
 
+    //Method to handle enabling/disabling the receivers when the menu item is clicked.
     public void receiverEnabler(MenuItem item){
 
         if(mPermissionUtils.permissionsGranted() &&
