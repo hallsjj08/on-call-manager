@@ -44,7 +44,7 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
     }
 
     /*
-    This method takes in the view and position of the item clicked and passes the contact info to
+    This method takes in the view and position of the item clicked and passes the position to
     ContactInfoFragment where the user can update or delete the contact.
      */
     @Override
@@ -57,7 +57,6 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
 
         Bundle bundle = new Bundle();
         bundle.putInt("position", position);
-        bundle.putSerializable("contact", c);
 
         fragment.setArguments(bundle);
 

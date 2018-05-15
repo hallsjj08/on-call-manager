@@ -24,8 +24,18 @@ update an existing contact, or delete a contact.
 public class ContactInfoFragment extends Fragment {
 
     private int position;
-    private Contact contact = null;
+    private Contact contact;
     private boolean numberFormatted;
+    private Bundle bundle;
+
+    public static Fragment getInstance(){
+        ContactInfoFragment contactInfoFragment = new ContactInfoFragment();
+
+        Bundle b = new Bundle();
+        contactInfoFragment.setArguments(b);
+
+        return contactInfoFragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,16 +59,6 @@ public class ContactInfoFragment extends Fragment {
         final FragmentManager fm = getFragmentManager();
         final Fragment fragment = new ContactListFragment();
 
-        /*
-        Checks whether or not the user wants to edit an existing contact based on their selection
-        from the contact list. The contact information gets passed to this fragment depending on
-        which contact they selected.
-         */
-        Bundle bundle = this.getArguments();
-        if(bundle != null){
-            position = bundle.getInt("position");
-            contact = (Contact) bundle.getSerializable("contact");
-        }
 
         final TextInputLayout inputLayout = view.findViewById(R.id.textInputLayout3);
         final EditText etPhone = view.findViewById(R.id.edPhone);
@@ -66,8 +66,12 @@ public class ContactInfoFragment extends Fragment {
         final EditText etCompanyName = view.findViewById(R.id.edCompanyName);
 
         //Checks if a contact was passed from the previous screen and populates the text boxes accordingly.
-        if(contact != null){
+        bundle = this.getArguments();
+        if(bundle != null){
 
+            position = bundle.getInt("position");
+            assert container != null;
+            contact = ContactsList.getInstance(container.getContext()).getContact(position);
             etContactName.setText(contact.get_contactName());
             etCompanyName.setText(contact.get_companyName());
             etPhone.setText(contact.get_contactDisplayNumber());
@@ -141,6 +145,7 @@ public class ContactInfoFragment extends Fragment {
 
                 if(numberFormatted){
                     CallManagerActivity.setFabVisibility(true);
+                    bundle = null;
                     assert fm != null;
                     fm.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
                 }else{
