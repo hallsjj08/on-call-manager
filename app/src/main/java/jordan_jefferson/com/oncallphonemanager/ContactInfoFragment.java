@@ -27,11 +27,13 @@ public class ContactInfoFragment extends Fragment {
     private Contact contact;
     private boolean numberFormatted;
     private Bundle bundle;
+    private static final String POSITION_KEY = "position";
 
-    public static Fragment getInstance(){
+    public static Fragment getInstance(int position){
         ContactInfoFragment contactInfoFragment = new ContactInfoFragment();
 
         Bundle b = new Bundle();
+        b.putInt(POSITION_KEY, position);
         contactInfoFragment.setArguments(b);
 
         return contactInfoFragment;
@@ -57,7 +59,7 @@ public class ContactInfoFragment extends Fragment {
         bDelete.setVisibility(View.INVISIBLE);
 
         final FragmentManager fm = getFragmentManager();
-        final Fragment fragment = new ContactListFragment();
+        final Fragment fragment = ContactListFragment.getInstance();
 
 
         final TextInputLayout inputLayout = view.findViewById(R.id.textInputLayout3);

@@ -20,6 +20,15 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
 
+    public static ContactListFragment getInstance(){
+        ContactListFragment contactListFragment = new ContactListFragment();
+
+        Bundle bundle = new Bundle();
+        contactListFragment.setArguments(bundle);
+
+        return contactListFragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +62,7 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
         Contact c = ContactsList.getInstance(v.getContext()).getContact(position);
 
         FragmentManager fm = getFragmentManager();
-        Fragment fragment = new ContactInfoFragment();
-
-        Bundle bundle = new Bundle();
-        bundle.putInt("position", position);
-
-        fragment.setArguments(bundle);
+        Fragment fragment = ContactInfoFragment.getInstance(position);
 
         CallManagerActivity.setFabVisibility(false);
 
