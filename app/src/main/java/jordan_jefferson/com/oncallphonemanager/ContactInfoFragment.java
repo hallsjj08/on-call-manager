@@ -6,6 +6,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,6 +89,29 @@ public class ContactInfoFragment extends Fragment {
                 }
             });
         }
+
+        etPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if(etPhone.getText().toString().length() == 10){
+                    inputLayout.setErrorEnabled(false);
+                }else{
+                    inputLayout.setErrorEnabled(true);
+                    inputLayout.setError("Replace unknown digits with \"#\".");
+                }
+            }
+        });
 
         //A button that updates an existing contact or adds a new one to the list.
         bSubmit.setOnClickListener(new View.OnClickListener() {

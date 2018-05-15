@@ -3,22 +3,17 @@ package jordan_jefferson.com.oncallphonemanager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.Toast;
 
 /*
@@ -42,6 +37,12 @@ public class CallManagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_manager);
 
+        //Sets up the actionbar/toolbar for the app.
+        final Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //Creates all objects that involve Broadcast Receivers.
+        receiverFactory = new ReceiverFactory(getApplicationContext());
         mPermissionUtils = new PermissionUtils(getApplicationContext(), this);
 
         mSharedPreferences =
@@ -51,13 +52,6 @@ public class CallManagerActivity extends AppCompatActivity {
                 NewUserOnBoardingActivity.COMPLETED_ONBOARDING_PREF_NAME, false)) {
             startActivity(new Intent(this, NewUserOnBoardingActivity.class));
         }
-
-        //Creates all objects that involve Broadcast Receivers.
-        receiverFactory = new ReceiverFactory(getApplicationContext());
-
-        //Sets up the actionbar/toolbar for the app.
-        final Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         //Handles rotation changes
         if(savedInstanceState == null){
@@ -70,13 +64,6 @@ public class CallManagerActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, mFragment, FRAGMENT_TAG).commit();
 
         Log.w(DEBUG_TAG, "Created");
-
-        /*
-        This switch buttons allows the user to enable and disable the Broadcast Receivers to listen
-        for incoming phone calls. It also checks for needed permissions to enable this
-        this feature and prompts the user enable them. The switch turns off and the Broadcast
-        Receivers aren't registered if the user declines to enable permissions.
-         */
 
         fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
