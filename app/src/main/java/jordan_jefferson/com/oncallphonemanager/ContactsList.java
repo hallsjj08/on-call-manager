@@ -56,6 +56,7 @@ public class ContactsList {
         return mContacts;
     }
 
+    //Accounts for area code by creating a substring of just the domestic number.
     public boolean phoneNumberAnalyzer(String incomingNumber){
 
         String phoneNumber = incomingNumber;
