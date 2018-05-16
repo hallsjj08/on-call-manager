@@ -81,7 +81,8 @@ public class DBManager extends SQLiteOpenHelper {
     public void deleteContact(Contact contact){
 
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(DBContract.DBEntry.TABLE_NAME, DBContract.DBEntry._ID + "=" + contact.get_id(), null);
+        db.delete(DBContract.DBEntry.TABLE_NAME, DBContract.DBEntry.COLUMN_NAME_DISPLAY_PHONE_NUMBER
+                + " = '" + contact.get_contactDisplayNumber() + "'", null);
         db.close();
 
     }

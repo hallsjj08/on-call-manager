@@ -1,5 +1,6 @@
 package jordan_jefferson.com.oncallphonemanager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -8,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -27,6 +29,7 @@ public class CallManagerActivity extends AppCompatActivity {
     private Fragment mFragment;
     private PermissionUtils mPermissionUtils;
     private ReceiverFactory receiverFactory;
+    public FragmentManager mFragmentManager;
 
     public final String PERMISSIONS_REQUESTED_AFTER_ONBOARDING = "Onboarding Permissions";
     public final String DEBUG_TAG = "MY_ACTIVITY_INFO";
@@ -49,6 +52,7 @@ public class CallManagerActivity extends AppCompatActivity {
         //Creates all objects that involve Broadcast Receivers.
         receiverFactory = new ReceiverFactory(getApplicationContext());
         mPermissionUtils = new PermissionUtils(getApplicationContext(), this);
+        mFragmentManager = getSupportFragmentManager();
 
         mSharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this);
@@ -89,6 +93,11 @@ public class CallManagerActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    public static void swapFragments(FragmentManager fm, Fragment fragment){
+        fm.beginTransaction().replace(R.id.fragmentContainer,
+                fragment, FRAGMENT_TAG).commit();
     }
 
     @Override

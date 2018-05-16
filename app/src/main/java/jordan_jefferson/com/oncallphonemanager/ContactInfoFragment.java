@@ -28,6 +28,8 @@ public class ContactInfoFragment extends Fragment {
     private boolean numberFormatted;
     private Bundle bundle;
     private static final String POSITION_KEY = "position";
+    private FragmentManager fm;
+    private Fragment fragment;
 
     public static Fragment getInstance(int position){
         ContactInfoFragment contactInfoFragment = new ContactInfoFragment();
@@ -43,6 +45,7 @@ public class ContactInfoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        fm = getFragmentManager();
     }
 
     @Nullable
@@ -58,8 +61,7 @@ public class ContactInfoFragment extends Fragment {
 
         bDelete.setVisibility(View.INVISIBLE);
 
-        final FragmentManager fm = getFragmentManager();
-        final Fragment fragment = ContactListFragment.getInstance();
+        fragment = ContactListFragment.getInstance(true);
 
 
         final TextInputLayout inputLayout = view.findViewById(R.id.textInputLayout3);
@@ -161,7 +163,6 @@ public class ContactInfoFragment extends Fragment {
         bCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
                 CallManagerActivity.setFabVisibility(true);
                 assert fm != null;
                 fm.popBackStack();
@@ -174,12 +175,10 @@ public class ContactInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ContactsList.getInstance(getContext()).removeContact(contact, position);
-                FragmentManager fm = getFragmentManager();
-                Fragment fragment = new ContactListFragment();
 
                 CallManagerActivity.setFabVisibility(true);
                 assert fm != null;
-                fm.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
+                fm.beginTransaction().replace(R.id.fragmentContainer, fragment, CallManagerActivity.FRAGMENT_TAG).commit();
             }
         });
         return view;
