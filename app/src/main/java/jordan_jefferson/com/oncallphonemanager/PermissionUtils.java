@@ -67,6 +67,7 @@ public class PermissionUtils {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
 
             Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);
 
         }

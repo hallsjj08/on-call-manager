@@ -61,7 +61,7 @@ public class ContactInfoFragment extends Fragment {
 
         bDelete.setVisibility(View.INVISIBLE);
 
-        fragment = ContactListFragment.getInstance(true);
+        fragment = ContactListFragment.getInstance();
 
 
         final TextInputLayout inputLayout = view.findViewById(R.id.textInputLayout3);
