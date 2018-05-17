@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -143,7 +144,8 @@ public class CallManagerActivity extends AppCompatActivity {
 
         switch (requestCode) {
             case 1:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     receiverFactory.registerReceivers();
                     invalidateOptionsMenu();
                 }
