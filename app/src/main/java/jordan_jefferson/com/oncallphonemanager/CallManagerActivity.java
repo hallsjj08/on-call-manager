@@ -1,6 +1,5 @@
 package jordan_jefferson.com.oncallphonemanager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -59,8 +58,12 @@ public class CallManagerActivity extends AppCompatActivity {
                 PreferenceManager.getDefaultSharedPreferences(this);
         // Check if we need to display our OnboardingFragment
         if (!mSharedPreferences.getBoolean(
-                NewUserOnBoardingActivity.COMPLETED_ONBOARDING_PREF_NAME, false)) {
-            startActivity(new Intent(this, NewUserOnBoardingActivity.class));
+                OnBoardingActivity.COMPLETED_ONBOARDING_PREF_NAME, false)) {
+
+            Intent intent = new Intent(this, OnBoardingActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
         }
 
         //Handles rotation changes
@@ -235,7 +238,7 @@ public class CallManagerActivity extends AppCompatActivity {
         Log.w(DEBUG_TAG, "Resumed");
         
         if(mSharedPreferences.getBoolean(
-                NewUserOnBoardingActivity.COMPLETED_ONBOARDING_PREF_NAME, false) &&
+                OnBoardingActivity.COMPLETED_ONBOARDING_PREF_NAME, false) &&
                 !mSharedPreferences.getBoolean(PERMISSIONS_REQUESTED_AFTER_ONBOARDING, false)){
             mPermissionUtils.requestPermissions();
             mPermissionUtils.requestNotificationAccess();

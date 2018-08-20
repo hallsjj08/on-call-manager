@@ -15,4 +15,10 @@
     <color name="primaryTextColor">#ffffff</color>
 
     <color name="secondaryTextColor">#000000</color>
+
+    <color name="boardingScreenThree">#f4b241</color>
+
+    <color name="boardingScreenTwo">#16bc7d</color>
+
+    <color name="boardingScreenOne">#203d8c</color>
 </resources>

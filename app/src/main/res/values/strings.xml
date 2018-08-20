@@ -24,4 +24,5 @@
     <string name="phone_num">###-###-####</string>
     <string name="on_call_feature">On Call Feature</string>
     <string name="DnD">Allow Do Not Disturb Access</string>
+    <string name="title_activity_on_boarding">OnBoardingActivity</string>
 </resources>

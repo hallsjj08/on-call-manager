@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.telephony.PhoneStateListener;
 import android.util.Log;
-import android.widget.Toast;
 
 /*
 A Broadcast Receiver that listens for call state changes i.e. incoming, idle, and answered.
