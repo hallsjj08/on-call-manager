@@ -25,20 +25,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:clickable="true"
-        android:tint="@android:color/white"
-        app:elevation="16dp"
-        app:backgroundTint="@color/secondaryColor"
-        app:layout_anchor="@+id/fragmentContainer"
-        app:layout_anchorGravity="right|bottom"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:focusable="true"/>
-
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"

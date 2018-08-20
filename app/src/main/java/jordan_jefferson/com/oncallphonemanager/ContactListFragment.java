@@ -3,6 +3,7 @@ package jordan_jefferson.com.oncallphonemanager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,8 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
+
+    private static final String FRAGMENT_TAG = "Contact";
 
     public static ContactListFragment getInstance(){
         ContactListFragment contactListFragment = new ContactListFragment();
@@ -49,6 +52,18 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
                 this);
         mRecyclerView.setAdapter(adapter);
 
+        FloatingActionButton fab = view.findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment mFragment = new ContactInfoFragment();
+
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                        mFragment, FRAGMENT_TAG).addToBackStack(null).commit();
+
+            }
+        });
+
         return view;
     }
 
@@ -64,11 +79,11 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
         FragmentManager fm = getFragmentManager();
         Fragment fragment = ContactInfoFragment.getInstance(position);
 
-        CallManagerActivity.setFabVisibility(false);
+//        CallManagerActivity.setFabVisibility(false);
 
         assert fm != null;
         fm.beginTransaction()
-                .replace(R.id.fragmentContainer, fragment, CallManagerActivity.FRAGMENT_TAG)
+                .replace(R.id.fragmentContainer, fragment, FRAGMENT_TAG)
                 .addToBackStack(null)
                 .commit();
 

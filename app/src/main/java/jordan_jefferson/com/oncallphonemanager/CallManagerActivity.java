@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 /*
@@ -24,9 +22,7 @@ CallManagerActivity is the launcher activity and the only activity in the app.
 
 public class CallManagerActivity extends AppCompatActivity {
 
-    private static FloatingActionButton fab;
     private SharedPreferences mSharedPreferences;
-    private Fragment mFragment;
     private PermissionUtils mPermissionUtils;
     private ReceiverFactory receiverFactory;
     public FragmentManager mFragmentManager;
@@ -67,6 +63,7 @@ public class CallManagerActivity extends AppCompatActivity {
         }
 
         //Handles rotation changes
+        Fragment mFragment;
         if(savedInstanceState == null){
             mFragment = new ContactListFragment();
             mFragment.setArguments(getIntent().getExtras());
@@ -75,20 +72,6 @@ public class CallManagerActivity extends AppCompatActivity {
         }
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, mFragment, FRAGMENT_TAG).commit();
-
-        fab = findViewById(R.id.floatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mFragment = new ContactInfoFragment();
-
-                setFabVisibility(false);
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
-                        mFragment, FRAGMENT_TAG).addToBackStack("listFragment").commit();
-
-            }
-        });
 
         if(savedInstanceState != null){
             isReceiverRegistered = savedInstanceState.getBoolean(RECEIVER_STATE);
@@ -99,28 +82,11 @@ public class CallManagerActivity extends AppCompatActivity {
 
     }
 
-    public static void swapFragments(FragmentManager fm, Fragment fragment){
-        fm.beginTransaction().replace(R.id.fragmentContainer,
-                fragment, FRAGMENT_TAG).commit();
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(RECEIVER_STATE, receiverFactory.isReceiverRegistered());
 
         super.onSaveInstanceState(outState);
-    }
-
-    /*
-        This static class sets the visibility of the floating action button. Made static so that this
-        instance can be accessed from other classes.
-         */
-    public static void setFabVisibility(boolean visible){
-        if(visible){
-            fab.setVisibility(FloatingActionButton.VISIBLE);
-        }else{
-            fab.setVisibility(FloatingActionButton.INVISIBLE);
-        }
     }
 
     /**
@@ -130,7 +96,6 @@ public class CallManagerActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() > 0 ){
-            fab.setVisibility(View.VISIBLE);
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();

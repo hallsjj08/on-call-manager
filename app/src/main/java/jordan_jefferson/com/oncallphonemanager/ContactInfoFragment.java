@@ -147,7 +147,6 @@ public class ContactInfoFragment extends Fragment {
                 }
 
                 if(numberFormatted){
-                    CallManagerActivity.setFabVisibility(true);
                     bundle = null;
                     assert fm != null;
                     fm.beginTransaction().replace(R.id.fragmentContainer, fragment, CallManagerActivity.FRAGMENT_TAG).commit();
@@ -163,7 +162,6 @@ public class ContactInfoFragment extends Fragment {
         bCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CallManagerActivity.setFabVisibility(true);
                 assert fm != null;
                 fm.popBackStack();
             }
@@ -176,7 +174,7 @@ public class ContactInfoFragment extends Fragment {
             public void onClick(View v) {
                 ContactsList.getInstance(getContext()).removeContact(contact, position);
 
-                CallManagerActivity.setFabVisibility(true);
+//                CallManagerActivity.setFabVisibility(true);
                 assert fm != null;
                 fm.beginTransaction().replace(R.id.fragmentContainer, fragment, CallManagerActivity.FRAGMENT_TAG).commit();
             }
