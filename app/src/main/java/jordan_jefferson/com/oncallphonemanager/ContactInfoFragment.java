@@ -2,6 +2,7 @@ package jordan_jefferson.com.oncallphonemanager;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -155,6 +157,7 @@ public class ContactInfoFragment extends Fragment {
                     Toast.makeText(view.getContext(), "Please enter a valid phone number.", Toast.LENGTH_LONG).show();
                 }
 
+                hideKeyboard(v);
 
             }
         });
@@ -163,23 +166,30 @@ public class ContactInfoFragment extends Fragment {
         bCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard(v);
                 assert fm != null;
                 fm.popBackStack();
             }
         });
 
         //An image button that only shows if a user is updating a contact, giving them the option to delete.
-        //TODO: Allow the user to swipe left on a contact to show delete button and remove this button.
         bDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewModel.delete(contact);
+                hideKeyboard(v);
 
-//                CallManagerActivity.setFabVisibility(true);
                 assert fm != null;
                 fm.beginTransaction().replace(R.id.fragmentContainer, fragment, CallManagerActivity.FRAGMENT_TAG).commit();
             }
         });
         return view;
+    }
+
+    private void hideKeyboard(View view){
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }
