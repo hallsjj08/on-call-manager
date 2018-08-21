@@ -1,6 +1,5 @@
 package jordan_jefferson.com.oncallphonemanager;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
@@ -19,8 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
-import java.util.List;
 
 /*
 ContactInfoFragment is a UI that lets the user either create a new contact for their contact list,
