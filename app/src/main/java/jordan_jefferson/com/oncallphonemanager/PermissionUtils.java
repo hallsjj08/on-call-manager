@@ -11,7 +11,6 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 public class PermissionUtils {
 
@@ -35,9 +34,7 @@ public class PermissionUtils {
         for (String myPermission : myPermissions) {
             if (ContextCompat.checkSelfPermission(mContext, myPermission)
                     == PackageManager.PERMISSION_GRANTED) {
-                Log.w(myPermission, "Permission Granted");
             } else {
-                Log.w(myPermission, "Permission Denied");
                 return false;
             }
         }
@@ -47,7 +44,6 @@ public class PermissionUtils {
     public void requestPermissions(){
         ActivityCompat.requestPermissions(mActivity,
                 myPermissions, 1);
-        Log.w("PERMISSION_UTILS", "Requesting Permission");
     }
 
     @SuppressLint("Unused")

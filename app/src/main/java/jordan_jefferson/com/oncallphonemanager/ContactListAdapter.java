@@ -9,17 +9,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /*
 An adapter class that displays Contacts in the recyclerview.
  */
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ViewHolder> {
 
-    private ArrayList<Contact> mContacts;
-    private static RecyclerViewItemClickListener mItemListener;
+    private List<Contact> mContacts;
+    private RecyclerViewItemClickListener mItemListener;
 
     //This Viewholder class implements OnClickListener and returns the view and position of the item clicked.
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView tvContactName;
         public TextView tvCompanyName;
         public TextView tvDisplayNumber;
@@ -43,13 +44,12 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         @Override
         public void onClick(View v) {
 
-            mItemListener.recyclerViewItemClicked(v, this.getAdapterPosition());
+            mItemListener.recyclerViewItemClicked(v, mContacts.get(this.getAdapterPosition()));
 
         }
     }
 
-    ContactListAdapter(ArrayList<Contact> contacts, RecyclerViewItemClickListener itemListener){
-        this.mContacts = contacts;
+    ContactListAdapter(RecyclerViewItemClickListener itemListener){
         mItemListener = itemListener;
     }
 
@@ -74,6 +74,11 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     }
 
+    public void setContacts(List<Contact> contacts){
+        mContacts = contacts;
+        notifyDataSetChanged();
+    }
+
     /**
      * Returns the total number of items in the data set held by the adapter.
      *
@@ -81,6 +86,9 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
      */
     @Override
     public int getItemCount() {
-        return mContacts.size();
+        if(mContacts != null){
+            return mContacts.size();
+        }
+        return 0;
     }
 }

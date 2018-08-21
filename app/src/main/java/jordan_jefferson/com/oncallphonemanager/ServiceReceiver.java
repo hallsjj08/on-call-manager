@@ -8,6 +8,8 @@ import android.media.AudioManager;
 import android.telephony.PhoneStateListener;
 import android.util.Log;
 
+import java.util.List;
+
 /*
 A Broadcast Receiver that listens for call state changes i.e. incoming, idle, and answered.
  */
@@ -18,6 +20,7 @@ public class ServiceReceiver extends BroadcastReceiver {
     private int previousRingerMode;
     private int previousRingerVolume;
     private Context mContext;
+    private List<Contact> mContacts;
 
     public ServiceReceiver(Context context) {
         mContext = context;
@@ -39,16 +42,11 @@ public class ServiceReceiver extends BroadcastReceiver {
         public synchronized void onCallStateChanged(int state, String incomingNumber) {
             super.onCallStateChanged(state, incomingNumber);
 
-            Log.w("STATE", "" + state);
-            Log.w("INCOMING_NUMBER", incomingNumber);
-
                     try {
 
                         if (state == 1) {
 
-                            isMatch = ContactsList.getInstance(mContext).phoneNumberAnalyzer(incomingNumber);
-
-                            Log.w("MATCHED", "" + isMatch);
+                            isMatch = phoneNumberAnalyzer(incomingNumber);
 
                             if (isMatch && am.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
 
@@ -88,4 +86,34 @@ public class ServiceReceiver extends BroadcastReceiver {
     public void setPhoneStateListener(PhoneStateListener phoneStateListener) {
         this.phoneStateListener = phoneStateListener;
     }
+
+    public void setContacts(List<Contact> contacts){
+        mContacts = contacts;
+    }
+
+    private boolean phoneNumberAnalyzer(String incomingNumber){
+
+        String phoneNumber = incomingNumber;
+        int size = incomingNumber.length();
+
+        switch (size){
+            case 11:
+                phoneNumber = incomingNumber.substring(1);
+                break;
+            case 12:
+                phoneNumber = incomingNumber.substring(2);
+                break;
+        }
+
+        if(mContacts != null){
+            for(int i = 0; i < mContacts.size(); i++){
+                if(phoneNumber.matches(mContacts.get(i).get_contactRegexNumber())){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 }

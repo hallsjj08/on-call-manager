@@ -6,6 +6,8 @@ import android.content.IntentFilter;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
+import java.util.List;
+
 /*
 A Factory class that creates instances of the Broadcast Receivers and provides methods to register
 and unregister them from the app.
@@ -44,6 +46,10 @@ public class ReceiverFactory {
         mContext.unregisterReceiver(myCallReceiver);
 
         isReceiverRegistered = false;
+    }
+
+    public void setContacts(List<Contact> contacts){
+        myCallReceiver.setContacts(contacts);
     }
 
     @SuppressLint("Unused")

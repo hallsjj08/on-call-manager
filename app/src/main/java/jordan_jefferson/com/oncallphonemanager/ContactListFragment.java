@@ -1,5 +1,7 @@
 package jordan_jefferson.com.oncallphonemanager;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,14 +14,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 /*
 A Fragment that displays the a list of contacts. This class sets up the RecyclerView, the Adapter,
 and the interface to handle onItemClickEvents
  */
 public class ContactListFragment extends Fragment implements RecyclerViewItemClickListener{
 
-    RecyclerView mRecyclerView;
-    RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+
+    private ContactViewModel viewModel;
+    private ContactListAdapter adapter;
 
     private static final String FRAGMENT_TAG = "Contact";
 
@@ -48,9 +55,19 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
         mLayoutManager = new LinearLayoutManager(view.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        RecyclerView.Adapter adapter = new ContactListAdapter(ContactsList.getInstance(view.getContext()).getContactsList(),
-                this);
+        adapter = new ContactListAdapter(this);
         mRecyclerView.setAdapter(adapter);
+
+        viewModel = ViewModelProviders.of(this).get(ContactViewModel.class);
+        viewModel.getContacts().observe(this, new Observer<List<Contact>>() {
+
+            @Override
+            public void onChanged(@Nullable List<Contact> contacts) {
+                if(contacts != null){
+                    adapter.setContacts(contacts);
+                }
+            }
+        });
 
         FloatingActionButton fab = view.findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +75,7 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
             public void onClick(View view) {
                 Fragment mFragment = new ContactInfoFragment();
 
+                assert getActivity() != null;
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
                         mFragment, FRAGMENT_TAG).addToBackStack(null).commit();
 
@@ -72,14 +90,11 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
     ContactInfoFragment where the user can update or delete the contact.
      */
     @Override
-    public void recyclerViewItemClicked(View v, int position){
-
-        Contact c = ContactsList.getInstance(v.getContext()).getContact(position);
+    public void recyclerViewItemClicked(View v, Contact contact){
 
         FragmentManager fm = getFragmentManager();
-        Fragment fragment = ContactInfoFragment.getInstance(position);
+        Fragment fragment = ContactInfoFragment.getInstance(contact);
 
-//        CallManagerActivity.setFabVisibility(false);
 
         assert fm != null;
         fm.beginTransaction()

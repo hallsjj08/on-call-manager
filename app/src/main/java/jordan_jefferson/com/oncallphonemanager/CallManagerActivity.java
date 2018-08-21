@@ -1,5 +1,7 @@
 package jordan_jefferson.com.oncallphonemanager;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -7,14 +9,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+
+import java.util.List;
 
 /*
 CallManagerActivity is the launcher activity and the only activity in the app.
@@ -33,22 +36,14 @@ public class CallManagerActivity extends AppCompatActivity {
     public final String RECEIVER_STATE = "IS_RECEIVER_ENABLED";
 
     public boolean isReceiverRegistered;
+    private List<Contact> contacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_manager);
-
-        Log.w(DEBUG_TAG, "Created");
-
-        //Sets up the actionbar/toolbar for the app.
-        final Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //Creates all objects that involve Broadcast Receivers.
-        receiverFactory = new ReceiverFactory(getApplicationContext());
-        mPermissionUtils = new PermissionUtils(getApplicationContext(), this);
-        mFragmentManager = getSupportFragmentManager();
 
         mSharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this);
@@ -61,6 +56,21 @@ public class CallManagerActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+
+        //Creates all objects that involve Broadcast Receivers.
+        receiverFactory = new ReceiverFactory(getApplicationContext());
+        mPermissionUtils = new PermissionUtils(getApplicationContext(), this);
+        mFragmentManager = getSupportFragmentManager();
+
+        ContactViewModel viewModel = ViewModelProviders.of(this).get(ContactViewModel.class);
+        viewModel.getContacts().observe(this, new Observer<List<Contact>>() {
+            @Override
+            public void onChanged(@Nullable List<Contact> contacts) {
+                if(contacts != null){
+                    receiverFactory.setContacts(contacts);
+                }
+            }
+        });
 
         //Handles rotation changes
         Fragment mFragment;
@@ -165,17 +175,10 @@ public class CallManagerActivity extends AppCompatActivity {
     //Method to handle enabling/disabling the receivers when the menu item is clicked.
     public void receiverEnabler(MenuItem item){
 
-        if(mPermissionUtils.permissionsGranted() &&
-                !ContactsList.getInstance(getApplicationContext()).getContactsList().isEmpty()
-                && !receiverFactory.isReceiverRegistered()){
+        if(mPermissionUtils.permissionsGranted() && !receiverFactory.isReceiverRegistered()){
 
             receiverFactory.registerReceivers();
             item.setIcon(R.drawable.ic_phone_in_talk_secondary_24dp);
-
-        }else if(ContactsList.getInstance(getApplicationContext()).getContactsList().isEmpty()){
-
-            Toast.makeText(CallManagerActivity.this, "Please add a contact to get started.",
-                    Toast.LENGTH_LONG).show();
 
         }else if(!mPermissionUtils.permissionsGranted()){
 
@@ -194,14 +197,12 @@ public class CallManagerActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        Log.w(DEBUG_TAG, "Started");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.w(DEBUG_TAG, "Resumed");
-        
+
         if(mSharedPreferences.getBoolean(
                 OnBoardingActivity.COMPLETED_ONBOARDING_PREF_NAME, false) &&
                 !mSharedPreferences.getBoolean(PERMISSIONS_REQUESTED_AFTER_ONBOARDING, false)){
@@ -219,19 +220,16 @@ public class CallManagerActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.w(DEBUG_TAG, "Paused");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.w(DEBUG_TAG, "Stopped");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.w(DEBUG_TAG, "Destroyed");
 
         if(receiverFactory.isReceiverRegistered()){
             receiverFactory.unregisterReceivers();

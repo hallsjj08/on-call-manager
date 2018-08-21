@@ -1,5 +1,7 @@
 package jordan_jefferson.com.oncallphonemanager;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,25 +18,27 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.util.List;
+
 /*
 ContactInfoFragment is a UI that lets the user either create a new contact for their contact list,
 update an existing contact, or delete a contact.
  */
 public class ContactInfoFragment extends Fragment {
 
-    private int position;
     private Contact contact;
     private boolean numberFormatted;
-    private Bundle bundle;
-    private static final String POSITION_KEY = "position";
+    private static final String CONTACT_KEY = "position";
     private FragmentManager fm;
     private Fragment fragment;
 
-    public static Fragment getInstance(int position){
+    private ContactViewModel viewModel;
+
+    public static Fragment getInstance(Contact contact){
         ContactInfoFragment contactInfoFragment = new ContactInfoFragment();
 
         Bundle b = new Bundle();
-        b.putInt(POSITION_KEY, position);
+        b.putSerializable(CONTACT_KEY, contact);
         contactInfoFragment.setArguments(b);
 
         return contactInfoFragment;
@@ -46,6 +49,12 @@ public class ContactInfoFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         fm = getFragmentManager();
+        viewModel = ViewModelProviders.of(this).get(ContactViewModel.class);
+
+        if(getArguments() != null){
+            contact = (Contact) getArguments().getSerializable(CONTACT_KEY);
+        }
+
     }
 
     @Nullable
@@ -54,10 +63,11 @@ public class ContactInfoFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.activity_contact_info, container, false);
 
+
+
         Button bSubmit = view.findViewById(R.id.bSubmit);
         Button bCancel = view.findViewById(R.id.bCancel);
         ImageButton bDelete = view.findViewById(R.id.bDelete);
-        ContactsList.getInstance(view.getContext());
 
         bDelete.setVisibility(View.INVISIBLE);
 
@@ -69,19 +79,12 @@ public class ContactInfoFragment extends Fragment {
         final EditText etContactName = view.findViewById(R.id.edContactName);
         final EditText etCompanyName = view.findViewById(R.id.edCompanyName);
 
-        //Checks if a contact was passed from the previous screen and populates the text boxes accordingly.
-        bundle = this.getArguments();
-        if(bundle != null){
-
-            position = bundle.getInt("position");
-            assert container != null;
-            contact = ContactsList.getInstance(container.getContext()).getContact(position);
+        if(contact != null){
             etContactName.setText(contact.get_contactName());
             etCompanyName.setText(contact.get_companyName());
             etPhone.setText(contact.get_contactDisplayNumber());
             bSubmit.setText(R.string.update);
             bDelete.setVisibility(View.VISIBLE);
-
         }else{
             etPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 /**
@@ -114,9 +117,11 @@ public class ContactInfoFragment extends Fragment {
 
                 if(etPhone.getText().toString().length() == 10){
                     inputLayout.setErrorEnabled(false);
+                    numberFormatted = true;
                 }else{
                     inputLayout.setErrorEnabled(true);
                     inputLayout.setError("Replace unknown digits with \"#\".");
+                    numberFormatted = false;
                 }
             }
         });
@@ -130,24 +135,20 @@ public class ContactInfoFragment extends Fragment {
                 String companyName = etCompanyName.getText().toString();
                 String number = etPhone.getText().toString();
 
-                numberFormatted = number.length() == 10;
-
                 String regexNumber = number.replaceAll("#", "\\\\d");
-                Log.w("Phone Number", number);
 
                 if(contact != null){
                     contact.set_contactName(contactName);
                     contact.set_companyName(companyName);
                     contact.set_contactDisplayNumber(number);
                     contact.set_contactRegexNumber(regexNumber);
-                    ContactsList.getInstance(view.getContext()).updateContact(contact, position);
+                    viewModel.insert(contact);
                 }else if(contact == null && numberFormatted){
                     contact = new Contact(contactName, companyName, number, regexNumber);
-                    ContactsList.getInstance(view.getContext()).addContact(contact);
+                    viewModel.insert(contact);
                 }
 
                 if(numberFormatted){
-                    bundle = null;
                     assert fm != null;
                     fm.beginTransaction().replace(R.id.fragmentContainer, fragment, CallManagerActivity.FRAGMENT_TAG).commit();
                 }else{
@@ -172,7 +173,7 @@ public class ContactInfoFragment extends Fragment {
         bDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ContactsList.getInstance(getContext()).removeContact(contact, position);
+                viewModel.delete(contact);
 
 //                CallManagerActivity.setFabVisibility(true);
                 assert fm != null;

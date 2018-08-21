@@ -8,9 +8,18 @@ Parameters:
     _contactDisplayNumber: User defined phone number stored in a local database.
     _contactRegexNumber: A number used to compare with incoming phone calls stored in a local database.
  */
-public class Contact {
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+import java.io.Serializable;
+
+@Entity(tableName = "contacts")
+public class Contact implements Serializable{
+
+    @PrimaryKey(autoGenerate = true)
     private int _id;
+
     private String _contactName;
     private String _companyName;
     private String _contactDisplayNumber;
