@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /*
@@ -73,12 +74,14 @@ public class ContactInfoFragment extends Fragment {
         fragment = ContactListFragment.getInstance();
 
 
+        TextView title = view.findViewById(R.id.coantact_card_title);
         final TextInputLayout inputLayout = view.findViewById(R.id.textInputLayout3);
         final EditText etPhone = view.findViewById(R.id.edPhone);
         final EditText etContactName = view.findViewById(R.id.edContactName);
         final EditText etCompanyName = view.findViewById(R.id.edCompanyName);
 
         if(contact != null){
+            title.setText(R.string.edit_contact);
             etContactName.setText(contact.get_contactName());
             etCompanyName.setText(contact.get_companyName());
             etPhone.setText(contact.get_contactDisplayNumber());

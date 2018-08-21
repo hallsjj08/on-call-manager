@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -30,13 +31,11 @@ public class CallManagerActivity extends AppCompatActivity {
     private ReceiverFactory receiverFactory;
     public FragmentManager mFragmentManager;
 
-    public final String PERMISSIONS_REQUESTED_AFTER_ONBOARDING = "Onboarding Permissions";
     public final String DEBUG_TAG = "MY_ACTIVITY_INFO";
     public static String FRAGMENT_TAG = "MY_FRAGMENT_TAG";
     public final String RECEIVER_STATE = "IS_RECEIVER_ENABLED";
 
     public boolean isReceiverRegistered;
-    private List<Contact> contacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,8 +132,10 @@ public class CallManagerActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if(receiverFactory.isReceiverRegistered()){
+        if(receiverFactory.isReceiverRegistered() && mPermissionUtils.permissionsGranted() && mPermissionUtils.isNotificationAccessGranted()){
             menu.findItem(R.id.bEnableReceiverObserver).setIcon(R.drawable.ic_phone_in_talk_secondary_24dp);
+        }else{
+            menu.findItem(R.id.bEnableReceiverObserver).setIcon(R.drawable.ic_phone_missed_red_24dp);
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -175,14 +176,22 @@ public class CallManagerActivity extends AppCompatActivity {
     //Method to handle enabling/disabling the receivers when the menu item is clicked.
     public void receiverEnabler(MenuItem item){
 
-        if(mPermissionUtils.permissionsGranted() && !receiverFactory.isReceiverRegistered()){
+        if(mPermissionUtils.isNotificationAccessGranted() && mPermissionUtils.permissionsGranted()
+                && !receiverFactory.isReceiverRegistered()){
 
             receiverFactory.registerReceivers();
             item.setIcon(R.drawable.ic_phone_in_talk_secondary_24dp);
 
-        }else if(!mPermissionUtils.permissionsGranted()){
+        }else if(!mPermissionUtils.permissionsGranted() || !mPermissionUtils.isNotificationAccessGranted()){
 
-            mPermissionUtils.requestPermissions();
+            if(!mPermissionUtils.permissionsGranted()){
+                mPermissionUtils.requestPermissions();
+            }
+
+            if(!mPermissionUtils.isNotificationAccessGranted()){
+                mPermissionUtils.requestNotificationAccess();
+            }
+
 
         }else{
             if(receiverFactory.isReceiverRegistered()){
@@ -203,18 +212,15 @@ public class CallManagerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if(mSharedPreferences.getBoolean(
-                OnBoardingActivity.COMPLETED_ONBOARDING_PREF_NAME, false) &&
-                !mSharedPreferences.getBoolean(PERMISSIONS_REQUESTED_AFTER_ONBOARDING, false)){
-            mPermissionUtils.requestPermissions();
-            mPermissionUtils.requestNotificationAccess();
+        Log.d(DEBUG_TAG, "Resumed");
 
-            SharedPreferences.Editor sharedPreferencesEditor =
-                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
-            sharedPreferencesEditor.putBoolean(
-                    PERMISSIONS_REQUESTED_AFTER_ONBOARDING, true);
-            sharedPreferencesEditor.apply();
+        if(!mPermissionUtils.isNotificationAccessGranted() || !mPermissionUtils.permissionsGranted()){
+            if(receiverFactory.isReceiverRegistered()){
+                receiverFactory.unregisterReceivers();
+            }
+            invalidateOptionsMenu();
         }
+
     }
 
     @Override
