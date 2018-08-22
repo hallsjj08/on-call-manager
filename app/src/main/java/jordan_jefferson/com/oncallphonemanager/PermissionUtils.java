@@ -53,6 +53,8 @@ public class PermissionUtils {
 
             return true;
 
+        }else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
         }
 
         return false;
