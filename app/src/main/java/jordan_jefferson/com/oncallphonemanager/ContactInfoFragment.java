@@ -6,12 +6,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -34,7 +33,7 @@ public class ContactInfoFragment extends Fragment implements ViewTreeObserver.On
     private View view;
     private int cx;
     private int cy;
-    private boolean numberFormatted;
+    private boolean numberFormatted = false;
     private static final String CONTACT_KEY = "position";
     private static final String VIEW_CENTER_X = "centerX";
     private static final String VIEW_CENTER_Y = "centerY";
@@ -43,9 +42,19 @@ public class ContactInfoFragment extends Fragment implements ViewTreeObserver.On
     private ContactViewModel viewModel;
     private static OnViewClosedListener onViewClosedListener;
 
+    /*
+    Empty public constructor for Fragment
+     */
     public ContactInfoFragment(){ }
 
-    public static Fragment getInstance(int cx, int cy, Contact contact, OnViewClosedListener listener){
+    /*
+    A method to create a new instance of ContactInfoInfoFragment
+    @param cx, x position of view that launched newInstance to use in circleReveal/Hide
+    @param cy, y position of view that launched newInstance to use in circleReveal/Hide
+    @param contact, the contact selected from the users contact list
+    @param listener, the listener that is listening for the fragment to be removed.
+     */
+    public static Fragment newInstance(int cx, int cy, @Nullable Contact contact, OnViewClosedListener listener){
         ContactInfoFragment contactInfoFragment = new ContactInfoFragment();
         onViewClosedListener = listener;
 
@@ -67,7 +76,7 @@ public class ContactInfoFragment extends Fragment implements ViewTreeObserver.On
         if(getArguments() != null){
             this.cx = getArguments().getInt(VIEW_CENTER_X);
             this.cy = getArguments().getInt(VIEW_CENTER_Y);
-            contact = (Contact) getArguments().getSerializable(CONTACT_KEY);
+            this.contact = (Contact) getArguments().getSerializable(CONTACT_KEY);
         }
 
     }
@@ -85,8 +94,6 @@ public class ContactInfoFragment extends Fragment implements ViewTreeObserver.On
         ImageButton bCancel = view.findViewById(R.id.bCancel);
         Button bDelete = view.findViewById(R.id.bDelete);
 
-        bDelete.setVisibility(View.INVISIBLE);
-
 
         TextView title = view.findViewById(R.id.coantact_card_title);
         final TextInputLayout inputLayout = view.findViewById(R.id.textInputLayout3);
@@ -101,6 +108,7 @@ public class ContactInfoFragment extends Fragment implements ViewTreeObserver.On
             etPhone.setText(contact.get_contactDisplayNumber());
             bSubmit.setText(R.string.update);
             bDelete.setVisibility(View.VISIBLE);
+            numberFormatted = true;
         }else{
             etPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 /**
@@ -150,7 +158,6 @@ public class ContactInfoFragment extends Fragment implements ViewTreeObserver.On
                 String contactName = etContactName.getText().toString();
                 String companyName = etCompanyName.getText().toString();
                 String number = etPhone.getText().toString();
-
                 String regexNumber = number.replaceAll("#", "\\\\d");
 
                 if(contact != null){
@@ -158,20 +165,19 @@ public class ContactInfoFragment extends Fragment implements ViewTreeObserver.On
                     contact.set_companyName(companyName);
                     contact.set_contactDisplayNumber(number);
                     contact.set_contactRegexNumber(regexNumber);
-                    viewModel.insert(contact);
-                }else if(contact == null && numberFormatted){
+                }else {
                     contact = new Contact(contactName, companyName, number, regexNumber);
-                    viewModel.insert(contact);
                 }
 
                 if(numberFormatted){
                     circleHide(view);
+                    viewModel.insert(contact);
                 }else{
-                    Toast.makeText(view.getContext(), "Please enter a valid phone number.", Toast.LENGTH_LONG).show();
+                    Snackbar.make(v, "Please enter a valid phone number.", Snackbar.LENGTH_LONG)
+                    .show();
                 }
 
                 hideKeyboard(v);
-
             }
         });
 
@@ -184,7 +190,7 @@ public class ContactInfoFragment extends Fragment implements ViewTreeObserver.On
             }
         });
 
-        //An image button that only shows if a user is updating a contact, giving them the option to delete.
+        //A button that only shows if a user is updating a contact, giving them the option to delete.
         bDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,12 +202,14 @@ public class ContactInfoFragment extends Fragment implements ViewTreeObserver.On
         return view;
     }
 
+    //Removes this instance of the fragment from the stack
     private void removeFragment(){
         if(getActivity() != null){
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         }
     }
 
+    //Hides the keyboard if shown.
     private void hideKeyboard(View view){
         if (view != null && getContext() != null) {
             InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -221,6 +229,9 @@ public class ContactInfoFragment extends Fragment implements ViewTreeObserver.On
         view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
     }
 
+    /*
+    Provides a circular reveal animation of the provided view
+     */
     private void circleReveal(View view){
         int startRadius = 0;
         int endRadius = (int) Math.hypot(view.getWidth(), view.getHeight());
@@ -230,6 +241,9 @@ public class ContactInfoFragment extends Fragment implements ViewTreeObserver.On
         anim.start();
     }
 
+    /*
+    Provides a circular hide animation of the provided view
+     */
     private void circleHide(final View view){
         int endRadius = 0;
         int startRadius = (int) Math.hypot(view.getWidth(), view.getHeight());

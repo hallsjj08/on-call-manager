@@ -32,7 +32,7 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
 
     private static final String FRAGMENT_TAG = "CONTACT LIST";
 
-    public static ContactListFragment getInstance(){
+    public static ContactListFragment newInstance(){
         ContactListFragment contactListFragment = new ContactListFragment();
 
         Bundle bundle = new Bundle();
@@ -110,9 +110,9 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
     }
 
     /*
-        This method takes in the view and position of the item clicked and passes the position to
-        ContactInfoFragment where the user can update or delete the contact.
-         */
+    This method takes in the view and position of the item clicked and passes the position to
+    ContactInfoFragment where the user can update or delete the contact.
+    */
     @Override
     public void recyclerViewItemClicked(View v, Contact contact){
         addContactInfoFragment((int) v.getX() + v.getWidth()/2, (int) v.getY() + v.getHeight()/2, contact);
@@ -127,7 +127,7 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
      */
     private void addContactInfoFragment(int cx, int cy, @Nullable Contact contact){
 
-        Fragment fragment = ContactInfoFragment.getInstance(cx, cy, contact, this);
+        Fragment fragment = ContactInfoFragment.newInstance(cx, cy, contact, this);
 
         if(getActivity() != null){
             getActivity().getSupportFragmentManager().beginTransaction()
@@ -137,6 +137,9 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
         }
     }
 
+    /*
+    A listener that applies an animation to the floating action button and reveals it if it is gone.
+     */
     @Override
     public void viewClosed() {
         if(fab.getVisibility() == View.GONE){
