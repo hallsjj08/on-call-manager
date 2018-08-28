@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryLightColor">
-
+    android:clickable="true"
+    android:focusable="true"
+    android:background="@android:drawable/screen_background_dark_transparent">
 
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -88,9 +91,7 @@
         android:id="@+id/textInputLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_margin="16dp"
         android:hint="@string/phone_number_hint"
         android:textColorHint="@color/primaryTextColor"
         app:layout_constraintEnd_toEndOf="parent"
@@ -101,72 +102,73 @@
             android:id="@+id/edPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:hint=""
             android:inputType="phone"
-            android:textColor="@color/primaryTextColor"
             android:maxLength="10"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/bSubmit"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/secondaryColor"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:background="@color/secondaryColor"
+        android:textColor="@android:color/white"
         android:text="@string/submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
+
+    <Button
+        android:id="@+id/bDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/delete"
+        android:text="remove"
+        android:textColor="#F00"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bSubmit"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/required"
+        android:textColor="@color/primaryTextColor"
         android:textSize="12sp"
-        android:textColor="@color/primaryTextColor"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
-        tools:text="* Required"/>
-
-    <Button
-        android:id="@+id/bCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:textColor="@color/primaryTextColor"
-        android:background="@android:color/transparent"
-        android:text="@string/cancel"
-        app:layout_constraintEnd_toStartOf="@+id/bSubmit"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="@+id/bSubmit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bSubmit"
+        tools:text="* Required" />
 
     <ImageButton
-        android:id="@+id/bDelete"
+        android:id="@+id/bCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:background="@android:color/transparent"
-        android:tint="#F00"
-        app:layout_constraintEnd_toStartOf="@+id/bCancel"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_delete"
-        android:contentDescription="@string/delete"/>
+        android:tint="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
 </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
