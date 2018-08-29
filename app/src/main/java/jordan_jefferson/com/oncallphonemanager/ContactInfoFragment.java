@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /*
 ContactInfoFragment is a UI that lets the user either create a new contact for their contact list,
@@ -158,6 +157,7 @@ public class ContactInfoFragment extends Fragment implements ViewTreeObserver.On
                 String contactName = etContactName.getText().toString();
                 String companyName = etCompanyName.getText().toString();
                 String number = etPhone.getText().toString();
+                number = number.trim();
                 String regexNumber = number.replaceAll("#", "\\\\d");
 
                 if(contact != null){

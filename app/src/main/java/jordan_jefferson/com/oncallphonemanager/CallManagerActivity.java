@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.List;
 
@@ -181,6 +183,10 @@ public class CallManagerActivity extends AppCompatActivity {
 
             receiverFactory.registerReceivers();
             item.setIcon(R.drawable.ic_phone_in_talk_secondary_24dp);
+            Snackbar snack = Snackbar.make(getCurrentFocus(), "Call Manager On", Snackbar.LENGTH_SHORT);
+            snack.getView().findViewById(android.support.design.R.id.snackbar_text).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            snack.show();
+
 
         }else if(!mPermissionUtils.permissionsGranted() || !mPermissionUtils.isNotificationAccessGranted()){
 
@@ -189,7 +195,7 @@ public class CallManagerActivity extends AppCompatActivity {
             }
 
             if(!mPermissionUtils.isNotificationAccessGranted()){
-                mPermissionUtils.requestNotificationAccess();
+                mPermissionUtils.alertNotificationAccessNeeded(this);
             }
 
 
@@ -198,14 +204,12 @@ public class CallManagerActivity extends AppCompatActivity {
 
                 receiverFactory.unregisterReceivers();
                 item.setIcon(R.drawable.ic_phone_missed_red_24dp);
+                Snackbar snack = Snackbar.make(getCurrentFocus(), "Call Manager Off", Snackbar.LENGTH_SHORT);
+                snack.getView().findViewById(android.support.design.R.id.snackbar_text).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                snack.show();
 
             }
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     @Override
@@ -219,26 +223,6 @@ public class CallManagerActivity extends AppCompatActivity {
                 receiverFactory.unregisterReceivers();
             }
             invalidateOptionsMenu();
-        }
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if(receiverFactory.isReceiverRegistered()){
-            receiverFactory.unregisterReceivers();
         }
     }
 }

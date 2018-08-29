@@ -3,8 +3,10 @@ package jordan_jefferson.com.oncallphonemanager;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -69,6 +71,32 @@ public class PermissionUtils {
             mContext.startActivity(intent);
 
         }
+    }
+
+    public void alertNotificationAccessNeeded(Context context){
+        AlertDialog.Builder alb = new AlertDialog.Builder(context);
+
+        alb.setIcon(android.R.drawable.ic_dialog_alert);
+        alb.setTitle("Notification Access");
+        alb.setMessage("This feature requires Do no Disturb access to be granted. " +
+                "Would you like to modify Do not Disturb settings for this app?");
+
+        alb.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                requestNotificationAccess();
+            }
+        });
+
+        alb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        alb.create();
+        alb.show();
     }
 
     @SuppressLint("Unused")

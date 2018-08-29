@@ -9,12 +9,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.ActionProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
@@ -29,6 +27,8 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
     private ContactListAdapter adapter;
     private FloatingActionButton fab;
     private ContactViewModel viewModel;
+    private View view;
+    private ViewStub viewStub;
 
     private static final String FRAGMENT_TAG = "CONTACT LIST";
 
@@ -49,7 +49,8 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.contact_list_fragment, container, false);
+
+        view = inflater.inflate(R.layout.contact_list_fragment, container, false);
 
         RecyclerView mRecyclerView = view.findViewById(R.id.recyclerView);
 
@@ -102,11 +103,25 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
             @Override
             public void onChanged(@Nullable List<Contact> contacts) {
                 if(contacts != null){
+                    if(contacts.isEmpty()){
+                        inflateStub(View.VISIBLE);
+                    }else if(viewStub != null){
+                        inflateStub(View.GONE);
+                    }
                     adapter.setContacts(contacts);
                 }
             }
         });
 
+    }
+
+    private void inflateStub(int setVisible){
+        if(viewStub == null){
+            viewStub = view.findViewById(R.id.add_contact_stub);
+            viewStub.inflate();
+        }
+
+        viewStub.setVisibility(setVisible);
     }
 
     /*
