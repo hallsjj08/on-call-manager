@@ -1,11 +1,8 @@
 package jordan_jefferson.com.oncallphonemanager;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,14 +11,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
-import android.view.KeyCharacterMap;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -149,14 +142,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         Display display = windowManager.getDefaultDisplay();
         Point size = new Point();
 
-        if (Build.VERSION.SDK_INT >= 17) {
-            display.getRealSize(size);
-        } else if (Build.VERSION.SDK_INT >= 14) {
-            try {
-                size.x = (Integer) Display.class.getMethod("getRawWidth").invoke(display);
-                size.y = (Integer) Display.class.getMethod("getRawHeight").invoke(display);
-            } catch (IllegalAccessException e) {} catch (InvocationTargetException e) {} catch (NoSuchMethodException e) {}
-        }
+        display.getRealSize(size);
 
         return size;
     }
