@@ -19,16 +19,14 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     //This Viewholder class implements OnClickListener and returns the view and position of the item clicked.
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public TextView tvInitial;
         public TextView tvContactName;
-        public TextView tvCompanyName;
-        public TextView tvDisplayNumber;
 
         ViewHolder(View itemView) {
             super(itemView);
 
+            tvInitial = itemView.findViewById(R.id.circle_text);
             tvContactName = itemView.findViewById(R.id.tvContactName);
-            tvCompanyName = itemView.findViewById(R.id.tvCompanyName);
-            tvDisplayNumber = itemView.findViewById(R.id.tvDisplayNumber);
 
             itemView.setOnClickListener(this);
 
@@ -65,11 +63,16 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.tvContactName.setText(mContacts.get(position).get_contactName());
-        holder.tvCompanyName.setText(mContacts.get(position).get_companyName());
-        holder.tvDisplayNumber.setText(mContacts.get(position).get_contactDisplayNumber());
-
-
+        if(!mContacts.get(position).get_contactName().isEmpty()){
+            holder.tvInitial.setText(mContacts.get(position).get_contactName().charAt(0) + "");
+            holder.tvContactName.setText(mContacts.get(position).get_contactName());
+        }else if(!mContacts.get(position).get_companyName().isEmpty()){
+            holder.tvInitial.setText(mContacts.get(position).get_companyName().charAt(0));
+            holder.tvContactName.setText(mContacts.get(position).get_companyName());
+        }else{
+            holder.tvInitial.setText("#");
+            holder.tvContactName.setText(mContacts.get(position).get_contactDisplayNumber());
+        }
     }
 
     public void setContacts(List<Contact> contacts){
