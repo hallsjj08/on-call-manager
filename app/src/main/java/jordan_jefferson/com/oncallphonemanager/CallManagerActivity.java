@@ -14,11 +14,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 
 import java.util.List;
 
@@ -28,10 +30,10 @@ CallManagerActivity is the launcher activity and the only activity in the app.
 
 public class CallManagerActivity extends AppCompatActivity {
 
-    private SharedPreferences mSharedPreferences;
     private PermissionUtils mPermissionUtils;
     private ReceiverFactory receiverFactory;
     public FragmentManager mFragmentManager;
+    private SwitchCompat callManagerSwitch;
 
     public final String DEBUG_TAG = "MY_ACTIVITY_INFO";
     public static String FRAGMENT_TAG = "MY_FRAGMENT_TAG";
@@ -46,8 +48,7 @@ public class CallManagerActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mSharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         // Check if we need to display our OnboardingFragment
         if (!mSharedPreferences.getBoolean(
                 OnBoardingActivity.COMPLETED_ONBOARDING_PREF_NAME, false)) {
@@ -80,16 +81,13 @@ public class CallManagerActivity extends AppCompatActivity {
             mFragment.setArguments(getIntent().getExtras());
         }else{
             mFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
-        }
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, mFragment, FRAGMENT_TAG).commit();
-
-        if(savedInstanceState != null){
             isReceiverRegistered = savedInstanceState.getBoolean(RECEIVER_STATE);
             if(isReceiverRegistered){
                 receiverFactory.registerReceivers();
             }
         }
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, mFragment, FRAGMENT_TAG).commit();
 
     }
 
@@ -135,9 +133,9 @@ public class CallManagerActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if(receiverFactory.isReceiverRegistered() && mPermissionUtils.permissionsGranted() && mPermissionUtils.isNotificationAccessGranted()){
-            menu.findItem(R.id.bEnableReceiverObserver).setIcon(R.drawable.ic_phone_in_talk_secondary_24dp);
+            callManagerSwitch.setChecked(true);
         }else{
-            menu.findItem(R.id.bEnableReceiverObserver).setIcon(R.drawable.ic_phone_missed_red_24dp);
+            callManagerSwitch.setChecked(false);
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -147,6 +145,40 @@ public class CallManagerActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_call_manager, menu);
+
+        callManagerSwitch = menu.findItem(R.id.myswitch).getActionView().findViewById(R.id.switchForActionBar);
+
+        callManagerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(mPermissionUtils.isNotificationAccessGranted() && mPermissionUtils.permissionsGranted()
+                        && !receiverFactory.isReceiverRegistered()){
+                    receiverFactory.registerReceivers();
+                    Snackbar snack = Snackbar.make(getCurrentFocus(), "Call Manager On", Snackbar.LENGTH_SHORT);
+                    snack.getView().findViewById(android.support.design.R.id.snackbar_text).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                    snack.show();
+                }else if(!mPermissionUtils.permissionsGranted() || !mPermissionUtils.isNotificationAccessGranted()){
+
+                    if(!mPermissionUtils.permissionsGranted()){
+                        mPermissionUtils.requestPermissions();
+                    }
+
+                    if(!mPermissionUtils.isNotificationAccessGranted()){
+                        mPermissionUtils.alertNotificationAccessNeeded(CallManagerActivity.this);
+                    }
+                }else{
+                    if(receiverFactory.isReceiverRegistered()){
+
+                        receiverFactory.unregisterReceivers();
+                        Snackbar snack = Snackbar.make(getCurrentFocus(), "Call Manager Off", Snackbar.LENGTH_SHORT);
+                        snack.getView().findViewById(android.support.design.R.id.snackbar_text).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                        snack.show();
+
+                    }
+                }
+            }
+        });
+
         return true;
     }
 
@@ -162,53 +194,8 @@ public class CallManagerActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         switch (id){
-            case R.id.bEnableReceiverObserver:
-                receiverEnabler(item);
-                return true;
-
-            //Allows the user to manage Do Not Disturb access.
-                case R.id.DnD_Permission:
-                    mPermissionUtils.requestNotificationAccess();
-                    return true;
                 default:
                     return super.onOptionsItemSelected(item);
-        }
-    }
-
-    //Method to handle enabling/disabling the receivers when the menu item is clicked.
-    public void receiverEnabler(MenuItem item){
-
-        if(mPermissionUtils.isNotificationAccessGranted() && mPermissionUtils.permissionsGranted()
-                && !receiverFactory.isReceiverRegistered()){
-
-            receiverFactory.registerReceivers();
-            item.setIcon(R.drawable.ic_phone_in_talk_secondary_24dp);
-            Snackbar snack = Snackbar.make(getCurrentFocus(), "Call Manager On", Snackbar.LENGTH_SHORT);
-            snack.getView().findViewById(android.support.design.R.id.snackbar_text).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            snack.show();
-
-
-        }else if(!mPermissionUtils.permissionsGranted() || !mPermissionUtils.isNotificationAccessGranted()){
-
-            if(!mPermissionUtils.permissionsGranted()){
-                mPermissionUtils.requestPermissions();
-            }
-
-            if(!mPermissionUtils.isNotificationAccessGranted()){
-                mPermissionUtils.alertNotificationAccessNeeded(this);
-            }
-
-
-        }else{
-            if(receiverFactory.isReceiverRegistered()){
-
-                receiverFactory.unregisterReceivers();
-                item.setIcon(R.drawable.ic_phone_missed_red_24dp);
-                Snackbar snack = Snackbar.make(getCurrentFocus(), "Call Manager Off", Snackbar.LENGTH_SHORT);
-                snack.getView().findViewById(android.support.design.R.id.snackbar_text).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                snack.show();
-
-            }
         }
     }
 
