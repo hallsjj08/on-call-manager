@@ -5,10 +5,11 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-@Database(entities = {Contact.class}, version = 1, exportSchema = false)
+@Database(entities = {Contact.class, OnCallItem.class}, version = 1, exportSchema = false)
 public abstract class ContactDatabase extends RoomDatabase {
 
     public abstract ContactDao contactDao();
+    public abstract OnCallItemDao onCallItemDao();
 
     private static ContactDatabase INSTANCE;
 
