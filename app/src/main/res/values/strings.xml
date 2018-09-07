@@ -16,7 +16,6 @@
     <string name="contact_name_hint">Contact Name</string>
     <string name="phone_number_hint">Phone Number*</string>
     <string name="required">* Required</string>
-    <string name="cancel">Cancel</string>
     <string name="delete">Trash Button to Delete Contacts.</string>
     <string name="first_initial">C</string>
     <string name="contact_name">Contact Name</string>
@@ -26,13 +25,13 @@
     <string name="DnD">Allow Do Not Disturb Access</string>
     <string name="title_activity_on_boarding">OnBoardingActivity</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="edit_contact">Edit Contact</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
+
+    <string name="edit"><u>Edit</u></string>
+    <string name="cancel"><u>Cancel</u></string>
+    <string name="save"><u>Save</u></string>
 </resources>

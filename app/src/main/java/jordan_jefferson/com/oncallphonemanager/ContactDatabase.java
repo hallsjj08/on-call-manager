@@ -1,11 +1,14 @@
 package jordan_jefferson.com.oncallphonemanager;
 
+import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
+import android.support.annotation.NonNull;
 
-@Database(entities = {Contact.class, OnCallItem.class}, version = 1, exportSchema = false)
+@Database(entities = {Contact.class, OnCallItem.class}, version = 2, exportSchema = false)
 public abstract class ContactDatabase extends RoomDatabase {
 
     public abstract ContactDao contactDao();
@@ -16,9 +19,26 @@ public abstract class ContactDatabase extends RoomDatabase {
     public static ContactDatabase getDatabase(final Context context){
         if(INSTANCE == null){
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                    ContactDatabase.class, "contacts").build();
+                    ContactDatabase.class, "contacts").addMigrations(MIGRATION_1_2).build();
         }
 
         return INSTANCE;
     }
+
+    final static Migration MIGRATION_1_2 = new Migration(1, 2) {
+                @Override
+                public void migrate(@NonNull final SupportSQLiteDatabase database) {
+                    database.execSQL("CREATE TABLE IF NOT EXISTS 'onCallItems' (" +
+                            "'_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                            "'day' TEXT, " +
+                            "'active' INTEGER NOT NULL, " +
+                            "'allDay' INTEGER NOT NULL, " +
+                            "'startTimeHour' INTEGER NOT NULL, " +
+                            "'startTimeMinute' INTEGER NOT NULL, " +
+                            "'endTimeHour' INTEGER NOT NULL, " +
+                            "'endTimeMinute' INTEGER NOT NULL, " +
+                            "'label' TEXT, " +
+                            "'groupId' INTEGER NOT NULL)");
+                }
+            };
 }
