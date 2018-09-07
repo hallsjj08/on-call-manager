@@ -23,42 +23,22 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="Add On Call Time"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textStyle="bold"
-                android:textSize="24sp"/>
+                style="@style/cardViewTitleStyle"
+                android:text="Add On Call Time" />
 
-            <TextView
+            <Button
                 android:id="@+id/cancel_add_item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/titleBarTextViewButtonStyle"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:textSize="16sp"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="@string/cancel"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/secondaryColor" />
+                android:text="@string/cancel" />
 
-            <TextView
+            <Button
+                style="@style/titleBarTextViewButtonStyle"
                 android:id="@+id/add_on_call_item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp"
-                android:textSize="16sp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="@android:color/transparent"
-                android:text="@string/save"
-                android:textColor="@color/secondaryColor" />
+                android:text="@string/save" />
 
         </RelativeLayout>
 

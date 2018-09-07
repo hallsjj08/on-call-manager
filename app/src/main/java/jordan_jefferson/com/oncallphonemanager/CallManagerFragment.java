@@ -15,7 +15,7 @@ import android.widget.ImageButton;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CallManagerFragment extends Fragment {
+public class CallManagerFragment extends Fragment implements View.OnClickListener {
 
 
     public CallManagerFragment() {
@@ -35,21 +35,28 @@ public class CallManagerFragment extends Fragment {
 
         ImageButton addItemButton = view.findViewById(R.id.add_on_call_item);
 
-        addItemButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                getActivity().getSupportFragmentManager().beginTransaction()
-//                        .addToBackStack(null)
-//                        .add(R.id.fragmentContainer, AddOnCallItemFragment.newInstance())
-//                        .commit();
-
-                Intent intent = new Intent(getActivity(), AddOnCallItemActivity.class);
-                Bundle bundle = ActivityOptions.makeCustomAnimation(getContext(), R.anim.slide_up, R.anim.no_change).toBundle();
-                startActivity(intent, bundle);
-            }
-        });
+        addItemButton.setOnClickListener(this);
 
         return view;
     }
 
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.add_on_call_item:
+                launchAddOnCallItemActivity();
+        }
+    }
+
+    private void launchAddOnCallItemActivity(){
+        Intent intent = new Intent(getActivity(), AddOnCallItemActivity.class);
+        Bundle bundle = ActivityOptions.makeCustomAnimation(getContext(), R.anim.slide_up,
+                R.anim.no_change).toBundle();
+        startActivity(intent, bundle);
+    }
 }

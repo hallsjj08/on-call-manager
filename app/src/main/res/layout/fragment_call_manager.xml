@@ -20,26 +20,15 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="On Call Manager"
-                android:textStyle="bold"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                style="@style/cardViewTitleStyle"
+                android:text="On Call Manager" />
 
-            <TextView
+            <Button
+                style="@style/titleBarTextViewButtonStyle"
                 android:id="@+id/edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="@string/edit"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/secondaryColor" />
+                android:text="@string/edit" />
 
             <ImageButton
                 android:id="@+id/add_on_call_item"

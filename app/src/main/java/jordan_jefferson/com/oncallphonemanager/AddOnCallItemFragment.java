@@ -8,13 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddOnCallItemFragment extends Fragment {
+public class AddOnCallItemFragment extends Fragment implements View.OnClickListener {
 
 
     public AddOnCallItemFragment() {
@@ -39,16 +40,37 @@ public class AddOnCallItemFragment extends Fragment {
         RepeatDaysAdapter adapter = new RepeatDaysAdapter();
         recyclerView.setAdapter(adapter);
 
-        TextView tvCancel = view.findViewById(R.id.cancel_add_item);
+        Button bCancel = view.findViewById(R.id.cancel_add_item);
+        Button bSave = view.findViewById(R.id.add_on_call_item);
 
-        tvCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
+        bCancel.setOnClickListener(this);
+        bSave.setOnClickListener(this);
 
         return view;
     }
 
+    public void cancel(){
+        getActivity().finish();
+    }
+
+    public void save(){
+
+    }
+
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.cancel_add_item:
+                cancel();
+                break;
+            case R.id.add_on_call_item:
+                save();
+                break;
+        }
+    }
 }
