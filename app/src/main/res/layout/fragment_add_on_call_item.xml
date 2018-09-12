@@ -47,7 +47,7 @@
     <View
         android:id="@+id/divider3"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="1dp"
         android:layout_marginTop="4dp"
         android:background="@color/primaryColor"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonLabel"
         style="@style/addCallItemFragButtonStyle"
         android:text="On Call"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,12 +66,12 @@
         android:id="@+id/textView2"
         style="@style/buttonLabelTextStyle"
         android:text="Label"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toTopOf="@+id/button" />
+        app:layout_constraintBottom_toBottomOf="@+id/buttonLabel"
+        app:layout_constraintStart_toStartOf="@+id/buttonLabel"
+        app:layout_constraintTop_toTopOf="@+id/buttonLabel" />
 
     <android.support.v7.widget.SwitchCompat
-        android:id="@+id/switchCompat"
+        android:id="@+id/allDaySwitch"
         style="@style/addCallItemFragButtonStyle"
         android:drawableEnd="@null"
         android:gravity="center_vertical|start"
@@ -79,48 +79,48 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonLabel" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonStartTime"
         style="@style/addCallItemFragButtonStyle"
         android:text="12:00 AM"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switchCompat" />
+        app:layout_constraintTop_toBottomOf="@+id/allDaySwitch" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/buttonEndTime"
         style="@style/addCallItemFragButtonStyle"
         android:text="11:59 PM"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonStartTime" />
 
     <View
         android:id="@+id/divider2"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="1dp"
         android:background="@color/primaryColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonEndTime" />
 
     <TextView
         style="@style/buttonLabelTextStyle"
         android:id="@+id/textView3"
         android:text="Start Time"
-        app:layout_constraintBottom_toBottomOf="@+id/button2"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonStartTime"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button2" />
+        app:layout_constraintTop_toTopOf="@+id/buttonStartTime" />
 
     <TextView
         style="@style/buttonLabelTextStyle"
         android:id="@+id/textView4"
         android:text="End Time"
-        app:layout_constraintBottom_toBottomOf="@+id/button3"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonEndTime"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button3" />
+        app:layout_constraintTop_toTopOf="@+id/buttonEndTime" />
 
     <TextView
         style="@style/buttonLabelTextStyle"
@@ -132,7 +132,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonEndTime" />
 
     <View
         android:id="@+id/divider"

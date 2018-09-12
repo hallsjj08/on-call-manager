@@ -2,14 +2,20 @@ package jordan_jefferson.com.oncallphonemanager;
 
 
 import android.app.ActivityOptions;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+
+import java.util.List;
 
 
 /**
@@ -37,14 +43,20 @@ public class CallManagerFragment extends Fragment implements View.OnClickListene
 
         addItemButton.setOnClickListener(this);
 
+        OnCallItemViewModel viewModel = ViewModelProviders.of(this).get(OnCallItemViewModel.class);
+
+        viewModel.getAllOnCallItems().observe(this, new Observer<List<OnCallItem>>() {
+            @Override
+            public void onChanged(@Nullable List<OnCallItem> onCallItems) {
+                if(onCallItems != null && !onCallItems.isEmpty()){
+                    Log.d(getClass().getSimpleName(), onCallItems.size() + "");
+                }
+            }
+        });
+
         return view;
     }
 
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     */
     @Override
     public void onClick(View v) {
         switch (v.getId()){

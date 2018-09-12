@@ -12,7 +12,16 @@ import android.widget.ListView;
 
 public class RepeatDaysAdapter extends RecyclerView.Adapter<RepeatDaysAdapter.ViewHolder>{
 
-    String days[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",};
+    public interface DayCheckListener{
+        void onCheckedChangedListener(String day, boolean isChecked);
+    }
+
+    private String days[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",};
+    private DayCheckListener dayCheckCallback;
+
+    public RepeatDaysAdapter(DayCheckListener dayCheckListener){
+        this.dayCheckCallback = dayCheckListener;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -42,15 +51,12 @@ public class RepeatDaysAdapter extends RecyclerView.Adapter<RepeatDaysAdapter.Vi
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Log.d(getClass().getSimpleName(), holder.cbDay.getText().toString() +
                         ": Checked = " + isChecked);
+
+                dayCheckCallback.onCheckedChangedListener(holder.cbDay.getText().toString(), isChecked);
             }
         });
     }
 
-    /**
-     * Returns the total number of items in the data set held by the adapter.
-     *
-     * @return The total number of items in this adapter.
-     */
     @Override
     public int getItemCount() {
         return days.length;
