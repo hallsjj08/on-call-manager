@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.data;
 
 /*
 Parameters:
@@ -26,7 +26,7 @@ public class Contact implements Serializable{
     private String _contactRegexNumber;
 
 
-    Contact(String contactName, String companyName, String contactDisplayNumber, String contactRegexNumber){
+    public Contact(String contactName, String companyName, String contactDisplayNumber, String contactRegexNumber){
         this._contactName = contactName;
         this._companyName = companyName;
         this._contactDisplayNumber = contactDisplayNumber;

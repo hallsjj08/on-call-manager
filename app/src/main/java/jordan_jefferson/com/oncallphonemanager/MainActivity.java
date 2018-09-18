@@ -7,11 +7,12 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.squareup.leakcanary.LeakCanary;
+import jordan_jefferson.com.oncallphonemanager.call_manager_ui.CallManagerFragment;
+import jordan_jefferson.com.oncallphonemanager.contact_ui.ContactListFragment;
+import jordan_jefferson.com.oncallphonemanager.onboarding_ui.OnBoardingActivity;
 
 public class MainActivity extends BaseActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -138,9 +139,4 @@ public class MainActivity extends BaseActivity
         super.onSaveInstanceState(outState);
         outState.putInt(CURRENT_SELECTION_KEY, bottomNavigationView.getSelectedItemId());
     }
-
-//    @Override
-//    protected void onLeaveThisActivity() {
-//        overridePendingTransition(0, 0);
-//    }
 }

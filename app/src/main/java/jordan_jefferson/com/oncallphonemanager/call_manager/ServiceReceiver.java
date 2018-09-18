@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.call_manager;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -9,6 +9,9 @@ import android.telephony.PhoneStateListener;
 import android.util.Log;
 
 import java.util.List;
+
+import jordan_jefferson.com.oncallphonemanager.call_manager.RingtonePlayer;
+import jordan_jefferson.com.oncallphonemanager.data.Contact;
 
 /*
 A Broadcast Receiver that listens for call state changes i.e. incoming, idle, and answered.

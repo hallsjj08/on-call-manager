@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.contact_ui;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -18,11 +18,14 @@ import android.view.animation.AnimationUtils;
 
 import java.util.List;
 
+import jordan_jefferson.com.oncallphonemanager.R;
+import jordan_jefferson.com.oncallphonemanager.data.Contact;
+
 /*
 A Fragment that displays the a list of contacts. This class sets up the RecyclerView, the Adapter,
 and the interface to handle onItemClickEvents
  */
-public class ContactListFragment extends Fragment implements RecyclerViewItemClickListener, OnViewClosedListener{
+public class ContactListFragment extends Fragment implements RecyclerViewItemClickListener, OnViewClosedListener {
 
     private ContactListAdapter adapter;
     private FloatingActionButton fab;

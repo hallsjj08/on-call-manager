@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".AddOnCallItemFragment">
+    tools:context=".call_manager_ui.AddOnCallItemFragment">
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardView2"

@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.utils;
 
 import android.Manifest;
 import android.annotation.SuppressLint;

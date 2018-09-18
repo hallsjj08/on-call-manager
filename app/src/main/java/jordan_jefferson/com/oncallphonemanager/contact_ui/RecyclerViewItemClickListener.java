@@ -1,6 +1,8 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.contact_ui;
 
 import android.view.View;
+
+import jordan_jefferson.com.oncallphonemanager.data.Contact;
 
 /*
 An interface to provide an onClickItem method for the RecyclerView.

@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.call_manager_ui;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -8,14 +8,13 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Flowable;
-import io.reactivex.Single;
 import io.reactivex.functions.Function;
+import jordan_jefferson.com.oncallphonemanager.data.OnCallItem;
+import jordan_jefferson.com.oncallphonemanager.data.OnCallItemRepository;
 
 public class OnCallItemViewModel extends AndroidViewModel {
 

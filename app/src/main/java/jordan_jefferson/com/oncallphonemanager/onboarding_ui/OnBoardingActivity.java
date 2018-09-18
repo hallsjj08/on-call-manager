@@ -1,10 +1,9 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.onboarding_ui;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
@@ -16,7 +15,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-import java.lang.reflect.InvocationTargetException;
+import jordan_jefferson.com.oncallphonemanager.MainActivity;
+import jordan_jefferson.com.oncallphonemanager.R;
 
 public class OnBoardingActivity extends AppCompatActivity {
 

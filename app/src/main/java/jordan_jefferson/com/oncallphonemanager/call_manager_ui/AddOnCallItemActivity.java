@@ -1,7 +1,10 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.call_manager_ui;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+
+import jordan_jefferson.com.oncallphonemanager.BaseActivity;
+import jordan_jefferson.com.oncallphonemanager.R;
 
 public class AddOnCallItemActivity extends BaseActivity {
 

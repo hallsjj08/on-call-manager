@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.call_manager_ui;
 
 
 import android.app.ActivityOptions;
@@ -23,6 +23,7 @@ import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import jordan_jefferson.com.oncallphonemanager.R;
 
 
 /**

@@ -1,6 +1,8 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.call_manager_ui;
 
 import java.util.List;
+
+import jordan_jefferson.com.oncallphonemanager.data.OnCallItem;
 
 public class OnCallGroupItem {
 

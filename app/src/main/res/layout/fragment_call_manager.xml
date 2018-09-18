@@ -6,7 +6,7 @@
     android:background="@android:color/white"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".CallManagerFragment">
+    tools:context=".call_manager_ui.CallManagerFragment">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"

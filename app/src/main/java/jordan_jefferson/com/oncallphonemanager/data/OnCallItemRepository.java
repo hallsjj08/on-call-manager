@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.data;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;

@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.call_manager;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
 import java.util.List;
+
+import jordan_jefferson.com.oncallphonemanager.data.Contact;
 
 /*
 A Factory class that creates instances of the Broadcast Receivers and provides methods to register

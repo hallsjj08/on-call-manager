@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".OnBoardingActivity"
+            android:name=".onboarding_ui.OnBoardingActivity"
             android:label="@string/title_activity_on_boarding"
             android:theme="@style/AppTheme">
         </activity>
@@ -29,7 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddOnCallItemActivity"></activity>
+        <activity android:name=".call_manager_ui.AddOnCallItemActivity"></activity>
     </application>
 
 </manifest>

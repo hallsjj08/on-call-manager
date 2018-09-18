@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.contact_ui;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+
+import jordan_jefferson.com.oncallphonemanager.R;
+import jordan_jefferson.com.oncallphonemanager.data.Contact;
 
 /*
 An adapter class that displays Contacts in the recyclerview.

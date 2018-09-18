@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.call_manager_ui;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ListView;
+
+import jordan_jefferson.com.oncallphonemanager.R;
 
 public class RepeatDaysAdapter extends RecyclerView.Adapter<RepeatDaysAdapter.ViewHolder>{
 

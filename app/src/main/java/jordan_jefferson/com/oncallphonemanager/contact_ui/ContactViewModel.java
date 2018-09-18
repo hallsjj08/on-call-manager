@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.contact_ui;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -6,6 +6,9 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import java.util.List;
+
+import jordan_jefferson.com.oncallphonemanager.data.Contact;
+import jordan_jefferson.com.oncallphonemanager.data.ContactRepository;
 
 public class ContactViewModel extends AndroidViewModel {
     

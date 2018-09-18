@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager;
+package jordan_jefferson.com.oncallphonemanager.call_manager_ui;
 
 
 import android.app.TimePickerDialog;
@@ -24,6 +24,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashSet;
 import java.util.List;
+
+import jordan_jefferson.com.oncallphonemanager.data.OnCallItem;
+import jordan_jefferson.com.oncallphonemanager.R;
 
 
 /**
