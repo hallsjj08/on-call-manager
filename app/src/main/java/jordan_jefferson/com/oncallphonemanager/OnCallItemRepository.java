@@ -6,11 +6,13 @@ import android.os.AsyncTask;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 public class OnCallItemRepository {
 
     private OnCallItemDao onCallItemDao;
-    private LiveData<List<OnCallItem>> allOnCallItems;
-    private LiveData<List<OnCallItem>> allActiveOnCallItems;
+    private Flowable<List<OnCallItem>> allOnCallItems;
+    private Flowable<List<OnCallItem>> allActiveOnCallItems;
     private LiveData<Integer> maxGroupId;
 
     public OnCallItemRepository(Application application) {
@@ -21,11 +23,11 @@ public class OnCallItemRepository {
         maxGroupId = onCallItemDao.getMaxGroupId();
     }
 
-    public LiveData<List<OnCallItem>> getAllOnCallItems() {
+    public Flowable<List<OnCallItem>> getAllOnCallItems() {
         return allOnCallItems;
     }
 
-    public LiveData<List<OnCallItem>> getAllActiveOnCallItems() {
+    public Flowable<List<OnCallItem>> getAllActiveOnCallItems() {
         return allActiveOnCallItems;
     }
 
@@ -49,6 +51,27 @@ public class OnCallItemRepository {
         protected Void doInBackground(OnCallItem... onCallItems) {
 
             asyncDao.insertOnCallItems(onCallItems);
+
+            return null;
+        }
+    }
+
+    public void deletGroupItemsAsync(int groupId){
+        new DeleteGroupAsync(onCallItemDao).execute(groupId);
+    }
+
+    private static class DeleteGroupAsync extends AsyncTask<Integer, Void, Void>{
+
+        private OnCallItemDao asyncDao;
+
+        DeleteGroupAsync(OnCallItemDao dao){
+            this.asyncDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Integer... integers) {
+
+            asyncDao.deleteGroupedItems(integers[0]);
 
             return null;
         }

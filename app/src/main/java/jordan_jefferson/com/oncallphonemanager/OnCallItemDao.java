@@ -9,17 +9,22 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 @Dao
 public interface OnCallItemDao {
 
     @Query("SELECT * FROM onCallItems ORDER BY day ASC")
-    LiveData<List<OnCallItem>> getOnCallItems();
+    Flowable<List<OnCallItem>> getOnCallItems();
 
     @Query("SELECT * FROM onCallItems WHERE active = 1")
-    LiveData<List<OnCallItem>> getAllActiveItems();
+    Flowable<List<OnCallItem>> getAllActiveItems();
 
     @Query("SELECT MAX(groupId) FROM onCallItems")
     LiveData<Integer> getMaxGroupId();
+
+    @Query("DELETE FROM onCallItems WHERE groupId = :groupId")
+    void deleteGroupedItems(int groupId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertOnCallItems(OnCallItem... onCallItems);

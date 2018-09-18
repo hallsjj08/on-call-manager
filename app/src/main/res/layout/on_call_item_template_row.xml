@@ -8,6 +8,14 @@
     android:background="#EEEEEE"
     android:layout_marginBottom="0.5dp">
 
+    <ImageButton
+        android:id="@+id/deleteItem"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        app:srcCompat="@android:drawable/presence_busy" />
+
     <TextView
         android:id="@+id/tvDays"
         android:layout_width="wrap_content"

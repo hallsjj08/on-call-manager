@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.TimePicker;
 
 import java.util.ArrayList;
@@ -40,6 +40,7 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
     private int startMinute;
     private int endHour;
     private int endMinute;
+    private int groupId;
 
     private String label;
 
@@ -51,6 +52,13 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
 
     public static Fragment newInstance(){
         return new AddOnCallItemFragment();
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        groupId = getArguments().getInt("GroupId");
     }
 
     @Override
@@ -125,11 +133,11 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
         if(!repeatDays.isEmpty()){
             for (String repeatDay : repeatDays) {
                 onCallItems.add(new OnCallItem(repeatDay, true, true, startHour, startMinute,
-                        endHour, endMinute, label, 1));
+                        endHour, endMinute, label, groupId));
             }
         }else{
             onCallItems.add(new OnCallItem(null, true, true, startHour, startMinute,
-                    endHour, endMinute, label, 1));
+                    endHour, endMinute, label, groupId));
         }
 
         viewModel.insertOnCallItems(onCallItems);
