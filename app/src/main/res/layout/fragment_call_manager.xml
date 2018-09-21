@@ -30,13 +30,21 @@
                 android:layout_centerVertical="true"
                 android:text="@string/edit" />
 
+            <Button
+                style="@style/titleBarTextViewButtonStyle"
+                android:id="@+id/done"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="@string/done"
+                android:visibility="gone"/>
+
             <ImageButton
                 android:id="@+id/add_on_call_item"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp"
+                android:paddingEnd="16dp"
                 android:src="@android:drawable/ic_input_add"
                 android:background="@android:color/transparent"
                 android:tint="@color/secondaryColor"/>

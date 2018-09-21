@@ -1,18 +1,35 @@
 package jordan_jefferson.com.oncallphonemanager.call_manager_ui;
 
+import android.util.Log;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import jordan_jefferson.com.oncallphonemanager.data.OnCallItem;
 
-public class OnCallGroupItem {
+public class OnCallGroupItem implements Serializable {
 
     private int groupId;
+    private boolean isActive;
     private String timeDescription;
     private String label;
     private List<OnCallItem> onCallItems;
 
-    public OnCallGroupItem(int groupId){
-        this.groupId = groupId;
+    OnCallGroupItem(){
+        onCallItems = new ArrayList<>();
+    }
+
+    public void setPresenterData(){
+        if(!onCallItems.isEmpty()){
+            OnCallItem item = onCallItems.get(0);
+            Log.d("Item Id", item.get_id() + "");
+            Log.d("GroupItemDataSet: " + item.getGroupId(), "Is Item Active: " + item.isActive());
+            groupId = item.getGroupId();
+            isActive = item.isActive();
+            timeDescription = item.getStartTimeHour() + " - " + item.getEndTimeHour();
+            label = item.getLabel();
+        }
     }
 
     public int getGroupId() {
@@ -21,6 +38,19 @@ public class OnCallGroupItem {
 
     public void setGroupId(int groupId) {
         this.groupId = groupId;
+    }
+
+    public boolean isActive() {
+        Log.d("Group Id " + groupId, isActive + "");
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+
+        for(OnCallItem item : onCallItems){
+            item.setActive(active);
+        }
     }
 
     public String getTimeDescription() {
@@ -45,14 +75,9 @@ public class OnCallGroupItem {
 
     public void setOnCallItems(List<OnCallItem> onCallItems) {
         this.onCallItems = onCallItems;
+    }
 
-        label = onCallItems.get(0).getLabel() + ": ";
-
-        timeDescription = onCallItems.get(0).getStartTimeHour() + ":" + onCallItems.get(0).getStartTimeMinute()
-                + " - " + onCallItems.get(0).getEndTimeHour() + ":" + onCallItems.get(0).getEndTimeMinute();
-
-        for(OnCallItem item : onCallItems){
-            label = label + ", " + item.getDay();
-        }
+    public void addOnCallItem(OnCallItem onCallItem){
+        onCallItems.add(onCallItem);
     }
 }

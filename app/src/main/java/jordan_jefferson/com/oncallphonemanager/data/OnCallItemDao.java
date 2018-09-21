@@ -14,7 +14,7 @@ import io.reactivex.Flowable;
 @Dao
 public interface OnCallItemDao {
 
-    @Query("SELECT * FROM onCallItems ORDER BY day ASC")
+    @Query("SELECT * FROM onCallItems ORDER BY groupId DESC")
     Flowable<List<OnCallItem>> getOnCallItems();
 
     @Query("SELECT * FROM onCallItems WHERE active = 1")
@@ -25,6 +25,9 @@ public interface OnCallItemDao {
 
     @Query("DELETE FROM onCallItems WHERE groupId = :groupId")
     void deleteGroupedItems(int groupId);
+
+    @Query("DELETE FROM onCallItems")
+    void clearAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertOnCallItems(OnCallItem... onCallItems);

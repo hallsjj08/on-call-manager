@@ -19,6 +19,7 @@ import android.view.animation.AnimationUtils;
 import java.util.List;
 
 import jordan_jefferson.com.oncallphonemanager.R;
+import jordan_jefferson.com.oncallphonemanager.RecyclerViewItemClickListener;
 import jordan_jefferson.com.oncallphonemanager.data.Contact;
 
 /*
@@ -132,8 +133,10 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
     ContactInfoFragment where the user can update or delete the contact.
     */
     @Override
-    public void recyclerViewItemClicked(View v, Contact contact){
-        addContactInfoFragment((int) v.getX() + v.getWidth()/2, (int) v.getY() + v.getHeight()/2, contact);
+    public void recyclerViewItemClicked(View v, Object object){
+        if(object instanceof Contact){
+            addContactInfoFragment((int) v.getX() + v.getWidth()/2, (int) v.getY() + v.getHeight()/2, (Contact) object);
+        }
     }
 
     /*

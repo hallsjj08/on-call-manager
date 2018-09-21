@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import jordan_jefferson.com.oncallphonemanager.R;
+import jordan_jefferson.com.oncallphonemanager.RecyclerViewItemClickListener;
 import jordan_jefferson.com.oncallphonemanager.data.Contact;
 
 /*

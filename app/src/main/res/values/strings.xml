@@ -34,4 +34,5 @@
     <string name="edit"><u>Edit</u></string>
     <string name="cancel"><u>Cancel</u></string>
     <string name="save"><u>Save</u></string>
+    <string name="done"><u>Done</u></string>
 </resources>

@@ -3,6 +3,7 @@ package jordan_jefferson.com.oncallphonemanager.data;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class OnCallItemRepository {
     }
 
     public void insertOnCallItemsAsync(List<OnCallItem> onCallItems){
+        Log.d("OnCallRepository", "Insert Data Called");
         new InsertItemsAsync(onCallItemDao).execute(onCallItems.toArray(new OnCallItem[onCallItems.size()]));
     }
 
@@ -93,6 +95,27 @@ public class OnCallItemRepository {
         protected Void doInBackground(OnCallItem... onCallItems) {
 
             asyncDao.deleteOnCallItems(onCallItems);
+
+            return null;
+        }
+    }
+
+    public void clearAllItmes(){
+        new ClearAllItemsAsync(onCallItemDao).execute();
+    }
+
+    private static class ClearAllItemsAsync extends AsyncTask<Void, Void, Void>{
+
+        OnCallItemDao asyncDao;
+
+        ClearAllItemsAsync(OnCallItemDao dao){
+            this.asyncDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            asyncDao.clearAll();
 
             return null;
         }

@@ -62,6 +62,8 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         groupId = getArguments().getInt("GroupId");
+        label = "Group " + groupId;
+        bLabel.setText(label);
     }
 
     @Override
@@ -171,61 +173,54 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
         int currentMinute = calendar.get(Calendar.MINUTE);
 
         TimePickerDialog timePicker = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog,
-                new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                (view, hourOfDay, minute) -> {
 
-                switch (timeButton.getId()){
-                    case R.id.buttonStartTime:
-                        startHour = hourOfDay;
-                        startMinute = minute;
-                        break;
-                    case R.id.buttonEndTime:
-                        endHour = hourOfDay;
-                        endMinute = minute;
-                        break;
+                    switch (timeButton.getId()){
+                        case R.id.buttonStartTime:
+                            startHour = hourOfDay;
+                            startMinute = minute;
+                            break;
+                        case R.id.buttonEndTime:
+                            endHour = hourOfDay;
+                            endMinute = minute;
+                            break;
+                    }
 
-                }
+                    String displayTime;
+                    String displayMinute;
 
-                String displayTime;
-                String displayMinute;
+                    if(minute < 10) {
+                        displayMinute = "0" + minute;
+                    }else{
+                        displayMinute = minute + "";
+                    }
 
-                if(minute < 10) {
-                    displayMinute = "0" + minute;
-                }else{
-                    displayMinute = minute + "";
-                }
+                    if(hourOfDay > 12){
+                        displayTime = (hourOfDay - 12) + ":" + displayMinute + " PM";
+                    }else{
+                        displayTime = hourOfDay + ":" + displayMinute + " AM";
+                    }
 
-                if(hourOfDay > 12){
-                    displayTime = (hourOfDay - 12) + ":" + displayMinute + " PM";
-                }else{
-                    displayTime = hourOfDay + ":" + displayMinute + " AM";
-                }
-
-                timeButton.setText(displayTime);
-            }
-        }, currentHour, currentMinute, false);
+                    timeButton.setText(displayTime);
+                }, currentHour, currentMinute, false);
         timePicker.setTitle(title);
         timePicker.show();
     }
 
     private void allDaySwitchListener(SwitchCompat allDaySwitch, final Button startTime, final Button endTime){
-        allDaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    startTime.setText(allDayStartTime);
-                    startTime.setEnabled(false);
-                    endTime.setText(allDayEndTime);
-                    endTime.setEnabled(false);
-                    startHour = 0;
-                    startMinute = 0;
-                    endHour = 23;
-                    endMinute = 59;
-                }else{
-                    startTime.setEnabled(true);
-                    endTime.setEnabled(true);
-                }
+        allDaySwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                startTime.setText(allDayStartTime);
+                startTime.setEnabled(false);
+                endTime.setText(allDayEndTime);
+                endTime.setEnabled(false);
+                startHour = 0;
+                startMinute = 0;
+                endHour = 23;
+                endMinute = 59;
+            }else{
+                startTime.setEnabled(true);
+                endTime.setEnabled(true);
             }
         });
     }
@@ -237,8 +232,6 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
         }else{
             repeatDays.remove(day);
         }
-
-        Log.d(getClass().getSimpleName(), repeatDays.toString());
     }
 
     @Override

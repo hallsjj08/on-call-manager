@@ -5,35 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="72dp"
     android:orientation="horizontal"
-    android:background="#EEEEEE"
     android:layout_marginBottom="0.5dp">
 
     <ImageButton
         android:id="@+id/deleteItem"
         android:layout_width="36dp"
         android:layout_height="36dp"
+        android:layout_marginStart="-16dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
+        android:visibility="gone"
         app:srcCompat="@android:drawable/presence_busy" />
 
-    <TextView
-        android:id="@+id/tvDays"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="16dp"
-        android:text="12:00AM - 11:59PM"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:layout_centerVertical="true">
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/tvDays"
-        android:text="Weekend Calls: Sat, Sun" />
+        <TextView
+            android:id="@+id/tvDays"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="12:00AM - 11:59PM"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/tvDays"
+            android:text="Weekend Calls: Sat, Sun" />
+
+    </LinearLayout>
 
     <android.support.v7.widget.SwitchCompat
         android:layout_width="wrap_content"
@@ -47,11 +55,11 @@
         android:id="@+id/edit_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_toStartOf="@id/day_active_switch"
-        app:srcCompat="@android:drawable/arrow_up_float"
-        android:tint="@android:color/darker_gray"
-        android:rotation="90"
-        android:visibility="gone"/>
+        android:layout_marginEnd="32dp"
+        android:tint="@android:color/black"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
 </RelativeLayout>
