@@ -17,7 +17,7 @@ public class RepeatDaysAdapter extends RecyclerView.Adapter<RepeatDaysAdapter.Vi
         void onCheckedChangedListener(String day, boolean isChecked);
     }
 
-    private String days[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",};
+    private String days[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
     private DayCheckListener dayCheckCallback;
 
     public RepeatDaysAdapter(DayCheckListener dayCheckListener){

@@ -34,16 +34,20 @@ import jordan_jefferson.com.oncallphonemanager.R;
  */
 public class AddOnCallItemFragment extends Fragment implements View.OnClickListener,
         RepeatDaysAdapter.DayCheckListener, EditTextDialog.EditTextListener {
-
-    private LinkedHashSet<String> repeatDays = new LinkedHashSet<>();
+    
+    private List<String> repeatDays = new ArrayList<>(7);
     private final String allDayStartTime = "12:00 AM";
     private final String allDayEndTime = "11:59 PM";
 
-    private int startHour;
-    private int startMinute;
-    private int endHour;
-    private int endMinute;
+    private String displayStartTime;
+    private String displayEndTime;
+
+    private int startHour = 0;
+    private int startMinute = 0;
+    private int endHour = 23;
+    private int endMinute = 59;
     private int groupId;
+    private boolean allDay = false;
 
     private String label;
 
@@ -62,8 +66,6 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         groupId = getArguments().getInt("GroupId");
-        label = "Group " + groupId;
-        bLabel.setText(label);
     }
 
     @Override
@@ -103,6 +105,10 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
         allDaySwitchListener(allDaySwitch, startTime, endTime);
         startTime.setOnClickListener(this);
         endTime.setOnClickListener(this);
+
+        label = bLabel.getText().toString();
+        displayStartTime = startTime.getText().toString();
+        displayEndTime = endTime.getText().toString();
     }
 
     @Override
@@ -137,12 +143,14 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
 
         if(!repeatDays.isEmpty()){
             for (String repeatDay : repeatDays) {
-                onCallItems.add(new OnCallItem(repeatDay, true, true, startHour, startMinute,
-                        endHour, endMinute, label, groupId));
+                onCallItems.add(new OnCallItem(repeatDay, true, allDay, startHour, startMinute,
+                        endHour, endMinute, label, displayStartTime,
+                        displayEndTime, groupId));
             }
         }else{
-            onCallItems.add(new OnCallItem(null, true, true, startHour, startMinute,
-                    endHour, endMinute, label, groupId));
+            onCallItems.add(new OnCallItem(null, true, allDay, startHour, startMinute,
+                    endHour, endMinute, label, displayStartTime,
+                    displayEndTime, groupId));
         }
 
         viewModel.insertOnCallItems(onCallItems);
@@ -179,29 +187,14 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
                         case R.id.buttonStartTime:
                             startHour = hourOfDay;
                             startMinute = minute;
+                            displayStartTime = setDisplayTime(timeButton, hourOfDay, minute);
                             break;
                         case R.id.buttonEndTime:
                             endHour = hourOfDay;
                             endMinute = minute;
+                            displayEndTime = setDisplayTime(timeButton, hourOfDay, minute);
                             break;
                     }
-
-                    String displayTime;
-                    String displayMinute;
-
-                    if(minute < 10) {
-                        displayMinute = "0" + minute;
-                    }else{
-                        displayMinute = minute + "";
-                    }
-
-                    if(hourOfDay > 12){
-                        displayTime = (hourOfDay - 12) + ":" + displayMinute + " PM";
-                    }else{
-                        displayTime = hourOfDay + ":" + displayMinute + " AM";
-                    }
-
-                    timeButton.setText(displayTime);
                 }, currentHour, currentMinute, false);
         timePicker.setTitle(title);
         timePicker.show();
@@ -211,9 +204,13 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
         allDaySwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked){
                 startTime.setText(allDayStartTime);
+                displayStartTime = allDayStartTime;
                 startTime.setEnabled(false);
+
                 endTime.setText(allDayEndTime);
+                displayEndTime = allDayEndTime;
                 endTime.setEnabled(false);
+
                 startHour = 0;
                 startMinute = 0;
                 endHour = 23;
@@ -222,7 +219,30 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
                 startTime.setEnabled(true);
                 endTime.setEnabled(true);
             }
+
+            allDay = isChecked;
         });
+    }
+
+    private String setDisplayTime(Button timeButton, int hour, int minute){
+
+        String displayTime;
+        String displayMinute;
+
+        if(minute < 10) {
+            displayMinute = "0" + minute;
+        }else{
+            displayMinute = minute + "";
+        }
+
+        if(hour > 12){
+            displayTime = (hour - 12) + ":" + displayMinute + " PM";
+        }else{
+            displayTime = hour + ":" + displayMinute + " AM";
+        }
+
+        timeButton.setText(displayTime);
+        return displayTime;
     }
 
     @Override

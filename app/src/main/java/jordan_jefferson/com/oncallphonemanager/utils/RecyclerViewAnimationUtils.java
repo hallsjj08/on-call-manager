@@ -136,7 +136,7 @@ public class RecyclerViewAnimationUtils {
     }
 
     private void initToAnimate(View view){
-        ObjectAnimator slideAnimator = ObjectAnimator.ofFloat(view, "translationX", 16f);
+        ObjectAnimator slideAnimator = ObjectAnimator.ofFloat(view, "translationX", 42f);
         slideAnimator.setDuration(500);
         AnimatorSet set  = new AnimatorSet();
         set.play(slideAnimator);

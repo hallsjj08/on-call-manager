@@ -12,24 +12,20 @@ public class OnCallGroupItem implements Serializable {
 
     private int groupId;
     private boolean isActive;
-    private String timeDescription;
+    private boolean allDay;
+    private String startTime;
+    private String endTime;
     private String label;
     private List<OnCallItem> onCallItems;
 
     OnCallGroupItem(){
-        onCallItems = new ArrayList<>();
-    }
-
-    public void setPresenterData(){
-        if(!onCallItems.isEmpty()){
-            OnCallItem item = onCallItems.get(0);
-            Log.d("Item Id", item.get_id() + "");
-            Log.d("GroupItemDataSet: " + item.getGroupId(), "Is Item Active: " + item.isActive());
-            groupId = item.getGroupId();
-            isActive = item.isActive();
-            timeDescription = item.getStartTimeHour() + " - " + item.getEndTimeHour();
-            label = item.getLabel();
-        }
+        groupId = -1;
+        isActive = false;
+        allDay = false;
+        startTime = "Starts: ";
+        endTime = "Ends: ";
+        label = "";
+        onCallItems = new ArrayList<>(7);
     }
 
     public int getGroupId() {
@@ -53,12 +49,20 @@ public class OnCallGroupItem implements Serializable {
         }
     }
 
-    public String getTimeDescription() {
-        return timeDescription;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setTimeDescription(String timeDescription) {
-        this.timeDescription = timeDescription;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public String getLabel() {
@@ -73,8 +77,26 @@ public class OnCallGroupItem implements Serializable {
         return onCallItems;
     }
 
+    private void initData(){
+        if(!onCallItems.isEmpty()){
+            OnCallItem item = onCallItems.get(0);
+            groupId = item.getGroupId();
+            isActive = item.isActive();
+            allDay = item.isAllDay();
+            startTime = startTime + item.getDisplayStartTime();
+            endTime = endTime + item.getDisplayEndTime();
+            label = item.getLabel() + ": ";
+
+            for(OnCallItem labelItem : onCallItems){
+                label = label + " " + labelItem.getDay();
+            }
+
+        }
+    }
+
     public void setOnCallItems(List<OnCallItem> onCallItems) {
         this.onCallItems = onCallItems;
+        initData();
     }
 
     public void addOnCallItem(OnCallItem onCallItem){

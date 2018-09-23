@@ -69,7 +69,6 @@ public class CallManagerFragment extends Fragment implements View.OnClickListene
         doneEditingButton.setOnClickListener(this);
 
         viewModel = ViewModelProviders.of(this).get(OnCallItemViewModel.class);
-        viewModel.clearAllItems();
 
         viewModel.getAllOnCallItems().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -85,6 +84,17 @@ public class CallManagerFragment extends Fragment implements View.OnClickListene
 
                         if(!groupedItems.isEmpty()) {
                             groupId = groupedItems.get(0).getGroupId() + 1;
+                            if(!adapter.isClickable() && editItemButton.getVisibility() != View.VISIBLE){
+                                viewFadeInOut(null, editItemButton);
+                            }
+                        }else{
+                            groupId = 1;
+                            if(editItemButton.getVisibility() == View.VISIBLE){
+                                viewFadeInOut(editItemButton, null);
+                            }else {
+                                viewFadeInOut(doneEditingButton, null);
+                                adapter.setClickable(false);
+                            }
                         }
                         adapter.setGroupedItems(groupedItems);
                     }
@@ -138,18 +148,21 @@ public class CallManagerFragment extends Fragment implements View.OnClickListene
     }
 
     private void viewFadeInOut(final View viewToFadeOut, final View viewToFadeIn) {
-        Animation fadeOut = new AlphaAnimation(1, 0);
-        fadeOut.setDuration(250);
-        Animation fadeIn = new AlphaAnimation(0, 1);
-        fadeIn.setDuration(250);
-        fadeIn.setStartOffset(250);
 
-        viewToFadeOut.setVisibility(View.GONE);
-        viewToFadeOut.startAnimation(fadeOut);
+        if(viewToFadeOut != null){
+            Animation fadeOut = new AlphaAnimation(1, 0);
+            fadeOut.setDuration(250);
+            viewToFadeOut.setVisibility(View.GONE);
+            viewToFadeOut.startAnimation(fadeOut);
+        }
 
-        viewToFadeIn.setVisibility(View.VISIBLE);
-        viewToFadeIn.startAnimation(fadeIn);
-
+        if(viewToFadeIn != null){
+            Animation fadeIn = new AlphaAnimation(0, 1);
+            fadeIn.setDuration(250);
+            fadeIn.setStartOffset(250);
+            viewToFadeIn.setVisibility(View.VISIBLE);
+            viewToFadeIn.startAnimation(fadeIn);
+        }
     }
 
     @Override

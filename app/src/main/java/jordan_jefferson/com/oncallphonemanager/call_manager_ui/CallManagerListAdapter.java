@@ -36,7 +36,8 @@ public class CallManagerListAdapter extends RecyclerView.Adapter<CallManagerList
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageButton deleteOnCallGroup;
-        TextView tvDay;
+        TextView tvStartTime;
+        TextView tvEndTime;
         TextView tvDescription;
         SwitchCompat dayActiveSwitch;
         ImageView editArrow;
@@ -45,13 +46,14 @@ public class CallManagerListAdapter extends RecyclerView.Adapter<CallManagerList
             super(itemView);
 
             deleteOnCallGroup = itemView.findViewById(R.id.deleteItem);
-            tvDay = itemView.findViewById(R.id.tvDays);
+            tvStartTime = itemView.findViewById(R.id.tvStartTime);
+            tvEndTime = itemView.findViewById(R.id.tvEndTime);
             tvDescription = itemView.findViewById(R.id.description);
             dayActiveSwitch = itemView.findViewById(R.id.day_active_switch);
             editArrow = itemView.findViewById(R.id.edit_arrow);
 
             animationUtils.addInvisibleToVisibleViews(deleteOnCallGroup, editArrow);
-            animationUtils.addVisibleViews(tvDay, tvDescription);
+            animationUtils.addVisibleViews(tvStartTime, tvEndTime, tvDescription);
             animationUtils.addVisibleToInvisibleViews(dayActiveSwitch);
 
             itemView.setOnClickListener(this);
@@ -76,7 +78,8 @@ public class CallManagerListAdapter extends RecyclerView.Adapter<CallManagerList
 
     @Override
     public void onBindViewHolder(@NonNull CallManagerListAdapter.ViewHolder holder, int position) {
-        holder.tvDay.setText(groupItems.get(position).getTimeDescription());
+        holder.tvStartTime.setText(groupItems.get(position).getStartTime());
+        holder.tvEndTime.setText(groupItems.get(position).getEndTime());
         holder.tvDescription.setText(groupItems.get(position).getLabel());
 
         holder.dayActiveSwitch.setOnCheckedChangeListener(null);
@@ -114,6 +117,8 @@ public class CallManagerListAdapter extends RecyclerView.Adapter<CallManagerList
         });
     }
 
+    public boolean isClickable(){return clickable;}
+
     public void setClickable(boolean clickable){
         this.clickable = clickable;
 
@@ -126,8 +131,9 @@ public class CallManagerListAdapter extends RecyclerView.Adapter<CallManagerList
 
     private void checkClickable(boolean clickable, ViewHolder holder){
         if(clickable){
-            holder.tvDay.setTranslationX(16);
-            holder.tvDescription.setTranslationX(16);
+            holder.tvStartTime.setTranslationX(42);
+            holder.tvEndTime.setTranslationX(42);
+            holder.tvDescription.setTranslationX(42);
             holder.deleteOnCallGroup.setTranslationX(16);
             holder.editArrow.setTranslationX(16);
             holder.deleteOnCallGroup.setVisibility(View.VISIBLE);

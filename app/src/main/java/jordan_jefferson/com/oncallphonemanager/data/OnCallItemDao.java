@@ -14,14 +14,20 @@ import io.reactivex.Flowable;
 @Dao
 public interface OnCallItemDao {
 
-    @Query("SELECT * FROM onCallItems ORDER BY groupId DESC")
+    @Query("SELECT * FROM onCallItems ORDER BY groupId DESC, case day " +
+            "when null then 0 " +
+            "when 'Sunday' then 1 " +
+            "when 'Monday' then 2 " +
+            "when 'Tuesday' then 3 " +
+            "when 'Wednesday' then 4 " +
+            "when 'Thursday' then 5 " +
+            "when 'Friday' then 6 " +
+            "when 'Saturday' then 7 " +
+            "end")
     Flowable<List<OnCallItem>> getOnCallItems();
 
     @Query("SELECT * FROM onCallItems WHERE active = 1")
     Flowable<List<OnCallItem>> getAllActiveItems();
-
-    @Query("SELECT MAX(groupId) FROM onCallItems")
-    LiveData<Integer> getMaxGroupId();
 
     @Query("DELETE FROM onCallItems WHERE groupId = :groupId")
     void deleteGroupedItems(int groupId);

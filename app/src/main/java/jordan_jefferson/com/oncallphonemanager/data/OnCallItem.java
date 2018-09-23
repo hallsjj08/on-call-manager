@@ -3,6 +3,12 @@ package jordan_jefferson.com.oncallphonemanager.data;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
+
 @Entity (tableName = "onCallItems")
 public class OnCallItem {
 
@@ -16,10 +22,12 @@ public class OnCallItem {
     private int endTimeHour;
     private int endTimeMinute;
     private String label;
-    private int groupId;
+    private String displayStartTime;
+    private String displayEndTime;
+    public int groupId;
 
     public OnCallItem(String day, boolean active, boolean allDay, int startTimeHour, int startTimeMinute,
-                      int endTimeHour, int endTimeMinute, String label, int groupId) {
+                      int endTimeHour, int endTimeMinute, String label, String displayStartTime, String displayEndTime, int groupId) {
         this.day = day;
         this.active = active;
 
@@ -31,6 +39,8 @@ public class OnCallItem {
         this.endTimeMinute = endTimeMinute;
 
         this.label = label;
+        this.displayStartTime = displayStartTime;
+        this.displayEndTime = displayEndTime;
         this.groupId = groupId;
     }
 
@@ -104,6 +114,22 @@ public class OnCallItem {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public String getDisplayStartTime() {
+        return displayStartTime;
+    }
+
+    public void setDisplayStartTime(String displayStartTime) {
+        this.displayStartTime = displayStartTime;
+    }
+
+    public String getDisplayEndTime() {
+        return displayEndTime;
+    }
+
+    public void setDisplayEndTime(String displayEndTime) {
+        this.displayEndTime = displayEndTime;
     }
 
     public int getEndTimeMinute() {

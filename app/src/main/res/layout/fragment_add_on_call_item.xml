@@ -57,7 +57,11 @@
     <Button
         android:id="@+id/buttonLabel"
         style="@style/addCallItemFragButtonStyle"
-        android:text="On Call"
+        android:paddingStart="72dp"
+        android:text="Hardly Working"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:singleLine="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider3" />

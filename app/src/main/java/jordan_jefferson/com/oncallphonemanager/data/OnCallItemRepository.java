@@ -21,7 +21,6 @@ public class OnCallItemRepository {
         onCallItemDao = db.onCallItemDao();
         allOnCallItems = onCallItemDao.getOnCallItems();
         allActiveOnCallItems = onCallItemDao.getAllActiveItems();
-        maxGroupId = onCallItemDao.getMaxGroupId();
     }
 
     public Flowable<List<OnCallItem>> getAllOnCallItems() {
@@ -30,10 +29,6 @@ public class OnCallItemRepository {
 
     public Flowable<List<OnCallItem>> getAllActiveOnCallItems() {
         return allActiveOnCallItems;
-    }
-
-    public LiveData<Integer> getMaxGroupId() {
-        return maxGroupId;
     }
 
     public void insertOnCallItemsAsync(List<OnCallItem> onCallItems){

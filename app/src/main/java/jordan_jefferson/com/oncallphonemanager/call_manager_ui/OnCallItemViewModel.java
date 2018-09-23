@@ -35,30 +35,47 @@ public class OnCallItemViewModel extends AndroidViewModel {
         onCallItemRepository = new OnCallItemRepository(application);
         allOnCallItems = onCallItemRepository.getAllOnCallItems();
         allActiveOnCallItems = onCallItemRepository.getAllActiveOnCallItems();
-        maxGroupId = onCallItemRepository.getMaxGroupId();
 
     }
 
     public Flowable<List<OnCallGroupItem>> getAllOnCallItems() {
         return allOnCallItems.map(onCallItems -> {
 
+            LinkedHashMap<Integer, List<OnCallItem>> newonCallGroupItems = new LinkedHashMap<>();
+            List<OnCallItem> subList = new ArrayList<>();
             List<OnCallGroupItem> onCallGroupItems = new ArrayList<>();
-            OnCallGroupItem groupItem;
+            OnCallGroupItem groupItem = new OnCallGroupItem();
+
             int tempId = -1;
-            int groupItemIndex = -1;
+            int index = 1;
+
+            if(!onCallItems.isEmpty()){
+                tempId = onCallItems.get(0).getGroupId();
+                onCallGroupItems.add(groupItem);
+            }
 
             for(OnCallItem onCallItem : onCallItems){
-
-                if(onCallItem.getGroupId() != tempId){
+                if(onCallItem.getGroupId() == tempId){
+                    subList.add(onCallItem);
+                }else {
+                    newonCallGroupItems.put(index, subList);
                     tempId = onCallItem.getGroupId();
-                    groupItem = new OnCallGroupItem();
-                    onCallGroupItems.add(groupItem);
-                    groupItemIndex += 1;
-                    onCallGroupItems.get(groupItemIndex).addOnCallItem(onCallItem);
-                    onCallGroupItems.get(groupItemIndex).setPresenterData();
-                }else{
-                    onCallGroupItems.get(groupItemIndex).addOnCallItem(onCallItem);
+                    subList = new ArrayList<>();
+                    subList.add(onCallItem);
+                    index += 1;
+                    onCallGroupItems.add(new OnCallGroupItem());
                 }
+
+                if(onCallItem.equals(onCallItems.get(onCallItems.size() - 1))){
+                    newonCallGroupItems.put(index, subList);
+                }
+            }
+
+            index = 0;
+
+            for(Map.Entry<Integer, List<OnCallItem>> entry : newonCallGroupItems.entrySet()){
+                onCallGroupItems.get(index).setOnCallItems(entry.getValue());
+                index += 1;
             }
 
             return onCallGroupItems;
@@ -67,10 +84,6 @@ public class OnCallItemViewModel extends AndroidViewModel {
 
     public Flowable<List<OnCallItem>> getAllActiveOnCallItems() {
         return allActiveOnCallItems;
-    }
-
-    public LiveData<Integer> getMaxGroupId() {
-        return maxGroupId;
     }
 
     public void insertOnCallItems(List<OnCallItem> onCallItems){
