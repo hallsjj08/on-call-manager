@@ -3,6 +3,7 @@ package jordan_jefferson.com.oncallphonemanager.call_manager_ui;
 
 import android.app.TimePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,18 +37,19 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
         RepeatDaysAdapter.DayCheckListener, EditTextDialog.EditTextListener {
     
     private List<String> repeatDays = new ArrayList<>(7);
+    private OnCallGroupItem selectedGroupItem;
     private final String allDayStartTime = "12:00 AM";
     private final String allDayEndTime = "11:59 PM";
 
     private String displayStartTime;
     private String displayEndTime;
 
-    private int startHour = 0;
-    private int startMinute = 0;
-    private int endHour = 23;
-    private int endMinute = 59;
+    private int startHour;
+    private int startMinute;
+    private int endHour;
+    private int endMinute;
     private int groupId;
-    private boolean allDay = false;
+    private boolean allDay;
 
     private String label;
 
@@ -55,17 +57,42 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
 
     public AddOnCallItemFragment() {
         // Required empty public constructor
+        startHour = 0;
+        startMinute = 0;
+        endHour = 23;
+        endMinute = 59;
+        groupId = 1;
+        allDay = false;
+        displayStartTime = allDayStartTime;
+        displayEndTime = allDayEndTime;
     }
 
     public static Fragment newInstance(){
         return new AddOnCallItemFragment();
     }
 
+    /**
+     * Called when a fragment is first attached to its context.
+     * {@link #onCreate(Bundle)} will be called after this.
+     *
+     * @param context
+     */
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        Bundle bundle = getArguments();
+
+        if(bundle != null){
+            groupId = bundle.getInt("GroupId");
+            selectedGroupItem = (OnCallGroupItem) bundle.getSerializable("GroupItem");
+        }
+
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        groupId = getArguments().getInt("GroupId");
     }
 
     @Override
@@ -88,7 +115,15 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
         recyclerView.setLayoutManager(layoutManager);
 
         RepeatDaysAdapter adapter = new RepeatDaysAdapter(this);
+
+        if(selectedGroupItem != null){
+            repeatDays = selectedGroupItem.getRepeatedDays();
+            adapter.setRepeatedDays(repeatDays);
+        }
+
         recyclerView.setAdapter(adapter);
+
+
     }
 
     private void initButtons(@NonNull View view){
@@ -106,9 +141,22 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
         startTime.setOnClickListener(this);
         endTime.setOnClickListener(this);
 
-        label = bLabel.getText().toString();
-        displayStartTime = startTime.getText().toString();
-        displayEndTime = endTime.getText().toString();
+        if(selectedGroupItem != null){
+            OnCallItem item = selectedGroupItem.getOnCallItems().get(0);
+            label = item.getLabel();
+            displayStartTime = item.getDisplayStartTime();
+            displayEndTime = item.getDisplayEndTime();
+            allDay = item.isAllDay();
+            startHour = item.getStartTimeHour();
+            startMinute = item.getStartTimeMinute();
+            endHour = item.getEndTimeHour();
+            endMinute = item.getEndTimeMinute();
+        }
+
+        bLabel.setText(label);
+        allDaySwitch.setChecked(allDay);
+        startTime.setText(displayStartTime);
+        endTime.setText(displayEndTime);
     }
 
     @Override
@@ -140,6 +188,10 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
 
         OnCallItemViewModel viewModel = ViewModelProviders.of(this).get(OnCallItemViewModel.class);
         List<OnCallItem> onCallItems = new ArrayList<>();
+
+        if(selectedGroupItem != null){
+            viewModel.deletOnCallGroupItems(selectedGroupItem.getGroupId());
+        }
 
         if(!repeatDays.isEmpty()){
             for (String repeatDay : repeatDays) {

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
+import java.util.List;
+
 import jordan_jefferson.com.oncallphonemanager.R;
 
 public class RepeatDaysAdapter extends RecyclerView.Adapter<RepeatDaysAdapter.ViewHolder>{
@@ -18,9 +20,10 @@ public class RepeatDaysAdapter extends RecyclerView.Adapter<RepeatDaysAdapter.Vi
     }
 
     private String days[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    private List<String> repeatedDays;
     private DayCheckListener dayCheckCallback;
 
-    public RepeatDaysAdapter(DayCheckListener dayCheckListener){
+    RepeatDaysAdapter(DayCheckListener dayCheckListener){
         this.dayCheckCallback = dayCheckListener;
     }
 
@@ -28,7 +31,7 @@ public class RepeatDaysAdapter extends RecyclerView.Adapter<RepeatDaysAdapter.Vi
 
         public CheckBox cbDay;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             cbDay = itemView.findViewById(R.id.dayCheckBox);
         }
@@ -47,6 +50,12 @@ public class RepeatDaysAdapter extends RecyclerView.Adapter<RepeatDaysAdapter.Vi
     public void onBindViewHolder(@NonNull final RepeatDaysAdapter.ViewHolder holder, int position) {
         holder.cbDay.setText(days[position]);
 
+        holder.cbDay.setOnCheckedChangeListener(null);
+
+        if(repeatedDays != null && !repeatedDays.isEmpty()){
+            checkRepeatedDays(holder.cbDay);
+        }
+
         holder.cbDay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -61,5 +70,19 @@ public class RepeatDaysAdapter extends RecyclerView.Adapter<RepeatDaysAdapter.Vi
     @Override
     public int getItemCount() {
         return days.length;
+    }
+
+    public void setRepeatedDays(List<String> repeatedDays){
+        this.repeatedDays = repeatedDays;
+        notifyDataSetChanged();
+    }
+
+    private void checkRepeatedDays(CompoundButton dayCheckBox){
+        for(String day : repeatedDays){
+            if(dayCheckBox.getText().toString().equals(day)){
+                dayCheckBox.setChecked(true);
+                break;
+            }
+        }
     }
 }

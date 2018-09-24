@@ -17,6 +17,7 @@ public class OnCallGroupItem implements Serializable {
     private String endTime;
     private String label;
     private List<OnCallItem> onCallItems;
+    private List<String> repeatedDays;
 
     OnCallGroupItem(){
         groupId = -1;
@@ -26,6 +27,7 @@ public class OnCallGroupItem implements Serializable {
         endTime = "Ends: ";
         label = "";
         onCallItems = new ArrayList<>(7);
+        repeatedDays = new ArrayList<>();
     }
 
     public int getGroupId() {
@@ -47,6 +49,14 @@ public class OnCallGroupItem implements Serializable {
         for(OnCallItem item : onCallItems){
             item.setActive(active);
         }
+    }
+
+    public boolean isAllDay() {
+        return allDay;
+    }
+
+    public void setAllDay(boolean allDay) {
+        this.allDay = allDay;
     }
 
     public String getStartTime() {
@@ -89,6 +99,7 @@ public class OnCallGroupItem implements Serializable {
 
             for(OnCallItem labelItem : onCallItems){
                 label = label + " " + labelItem.getDay();
+                repeatedDays.add(labelItem.getDay());
             }
 
         }
@@ -99,7 +110,7 @@ public class OnCallGroupItem implements Serializable {
         initData();
     }
 
-    public void addOnCallItem(OnCallItem onCallItem){
-        onCallItems.add(onCallItem);
+    public List<String> getRepeatedDays(){
+        return repeatedDays;
     }
 }

@@ -142,6 +142,7 @@ public class CallManagerFragment extends Fragment implements View.OnClickListene
     private void launchAddOnCallItemActivity(@Nullable OnCallGroupItem onCallGroupItem){
         Intent intent = new Intent(getActivity(), AddOnCallItemActivity.class);
         intent.putExtra("GroupId", groupId);
+        intent.putExtra("GroupItem", onCallGroupItem);
         Bundle bundle = ActivityOptions.makeCustomAnimation(getContext(), R.anim.slide_up,
                 R.anim.no_change).toBundle();
         startActivity(intent, bundle);

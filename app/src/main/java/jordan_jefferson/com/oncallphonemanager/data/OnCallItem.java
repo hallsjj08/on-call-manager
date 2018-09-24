@@ -3,6 +3,7 @@ package jordan_jefferson.com.oncallphonemanager.data;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -10,7 +11,7 @@ import java.util.Comparator;
 import java.util.Date;
 
 @Entity (tableName = "onCallItems")
-public class OnCallItem {
+public class OnCallItem implements Serializable {
 
     @PrimaryKey (autoGenerate = true)
     private int _id;
@@ -24,7 +25,7 @@ public class OnCallItem {
     private String label;
     private String displayStartTime;
     private String displayEndTime;
-    public int groupId;
+    private int groupId;
 
     public OnCallItem(String day, boolean active, boolean allDay, int startTimeHour, int startTimeMinute,
                       int endTimeHour, int endTimeMinute, String label, String displayStartTime, String displayEndTime, int groupId) {
