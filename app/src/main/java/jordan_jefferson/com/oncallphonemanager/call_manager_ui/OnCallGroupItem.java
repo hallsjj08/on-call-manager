@@ -95,13 +95,17 @@ public class OnCallGroupItem implements Serializable {
             allDay = item.isAllDay();
             startTime = startTime + item.getDisplayStartTime();
             endTime = endTime + item.getDisplayEndTime();
-            label = item.getLabel() + ": ";
 
-            for(OnCallItem labelItem : onCallItems){
-                label = label + " " + labelItem.getDay();
-                repeatedDays.add(labelItem.getDay());
+            if(item.getLabel() != null){
+                label = item.getLabel();
             }
 
+            for(OnCallItem labelItem : onCallItems){
+                if(labelItem.getDay() != null){
+                    label = label + " " + labelItem.getDay();
+                    repeatedDays.add(labelItem.getDay());
+                }
+            }
         }
     }
 

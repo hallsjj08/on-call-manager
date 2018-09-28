@@ -101,6 +101,7 @@ public class CallManagerFragment extends Fragment implements View.OnClickListene
 
                     @Override
                     public void onError(Throwable t) {
+                        t.printStackTrace();
                         Log.e(TAG, t.getMessage());
                     }
 
@@ -169,6 +170,8 @@ public class CallManagerFragment extends Fragment implements View.OnClickListene
     @Override
     public void onDestroy() {
         super.onDestroy();
-        subscription.cancel();
+        if(subscription != null){
+            subscription.cancel();
+        }
     }
 }

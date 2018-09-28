@@ -27,7 +27,7 @@ public interface OnCallItemDao {
     Flowable<List<OnCallItem>> getOnCallItems();
 
     @Query("SELECT * FROM onCallItems WHERE active = 1")
-    Flowable<List<OnCallItem>> getAllActiveItems();
+    List<OnCallItem> getAllActiveItems();
 
     @Query("DELETE FROM onCallItems WHERE groupId = :groupId")
     void deleteGroupedItems(int groupId);

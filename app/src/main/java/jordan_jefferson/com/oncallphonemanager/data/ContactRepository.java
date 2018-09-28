@@ -2,6 +2,7 @@ package jordan_jefferson.com.oncallphonemanager.data;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import java.util.List;
@@ -10,14 +11,18 @@ public class ContactRepository {
 
     private ContactDao contactDao;
     private LiveData<List<Contact>> allContacts;
+    private List<Contact> contactsBlocking;
 
-    public ContactRepository(Application application){
-        ContactDatabase db = ContactDatabase.getDatabase(application);
+    public ContactRepository(Context context){
+        ContactDatabase db = ContactDatabase.getDatabase(context);
         contactDao = db.contactDao();
         allContacts = contactDao.getContacts();
+        contactsBlocking = contactDao.getContactsBlocking();
     }
 
     public LiveData<List<Contact>> getAllContacts() {return allContacts;}
+
+    public List<Contact> getContactsBlocking() {return contactsBlocking;}
 
     public void insert(Contact contact) {new insertAsyncTask(contactDao).execute(contact);}
 

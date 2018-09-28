@@ -15,6 +15,9 @@ public interface ContactDao {
     @Query("SELECT * FROM contacts ORDER BY _contactName ASC")
     LiveData<List<Contact>> getContacts();
 
+    @Query("SELECT * FROM contacts ORDER BY _contactName ASC")
+    List<Contact> getContactsBlocking();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertContact(Contact contact);
 

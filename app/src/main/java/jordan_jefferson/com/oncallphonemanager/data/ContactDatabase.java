@@ -22,6 +22,7 @@ public abstract class ContactDatabase extends RoomDatabase {
                     ContactDatabase.class, "contacts")
                     .addMigrations(MIGRATION_1_2)
                     .addMigrations(MIGRATION_2_3)
+                    .allowMainThreadQueries()
                     .build();
         }
 

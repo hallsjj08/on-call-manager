@@ -10,6 +10,9 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.MenuItem;
 
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import jordan_jefferson.com.oncallphonemanager.call_manager.CallManagerService;
 import jordan_jefferson.com.oncallphonemanager.call_manager_ui.CallManagerFragment;
 import jordan_jefferson.com.oncallphonemanager.contact_ui.ContactListFragment;
 import jordan_jefferson.com.oncallphonemanager.onboarding_ui.OnBoardingActivity;
@@ -51,6 +54,11 @@ public class MainActivity extends BaseActivity
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
+        }else{
+            OneTimeWorkRequest callManagerWorker =
+                    new OneTimeWorkRequest.Builder(CallManagerService.class).build();
+
+            WorkManager.getInstance().enqueue(callManagerWorker);
         }
 
         bottomNavigationView = findViewById(R.id.navigation);

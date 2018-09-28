@@ -2,6 +2,7 @@ package jordan_jefferson.com.oncallphonemanager.data;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -13,11 +14,10 @@ public class OnCallItemRepository {
 
     private OnCallItemDao onCallItemDao;
     private Flowable<List<OnCallItem>> allOnCallItems;
-    private Flowable<List<OnCallItem>> allActiveOnCallItems;
-    private LiveData<Integer> maxGroupId;
+    private List<OnCallItem> allActiveOnCallItems;
 
-    public OnCallItemRepository(Application application) {
-        ContactDatabase db = ContactDatabase.getDatabase(application);
+    public OnCallItemRepository(Context context) {
+        ContactDatabase db = ContactDatabase.getDatabase(context);
         onCallItemDao = db.onCallItemDao();
         allOnCallItems = onCallItemDao.getOnCallItems();
         allActiveOnCallItems = onCallItemDao.getAllActiveItems();
@@ -27,7 +27,7 @@ public class OnCallItemRepository {
         return allOnCallItems;
     }
 
-    public Flowable<List<OnCallItem>> getAllActiveOnCallItems() {
+    public List<OnCallItem> getAllActiveOnCallItems() {
         return allActiveOnCallItems;
     }
 

@@ -26,15 +26,12 @@ public class OnCallItemViewModel extends AndroidViewModel {
     private static final String TAG = "RX_VIEW_MODEL";
     private OnCallItemRepository onCallItemRepository;
     private Flowable<List<OnCallItem>> allOnCallItems;
-    private Flowable<List<OnCallItem>> allActiveOnCallItems;
-    private LiveData<Integer> maxGroupId;
 
     public OnCallItemViewModel(@NonNull Application application) {
         super(application);
-
-        onCallItemRepository = new OnCallItemRepository(application);
+        
+        onCallItemRepository = new OnCallItemRepository(application.getApplicationContext());
         allOnCallItems = onCallItemRepository.getAllOnCallItems();
-        allActiveOnCallItems = onCallItemRepository.getAllActiveOnCallItems();
 
     }
 
@@ -80,10 +77,6 @@ public class OnCallItemViewModel extends AndroidViewModel {
 
             return onCallGroupItems;
         });
-    }
-
-    public Flowable<List<OnCallItem>> getAllActiveOnCallItems() {
-        return allActiveOnCallItems;
     }
 
     public void insertOnCallItems(List<OnCallItem> onCallItems){
