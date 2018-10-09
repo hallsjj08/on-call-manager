@@ -12,7 +12,7 @@ import android.view.MenuItem;
 
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-import jordan_jefferson.com.oncallphonemanager.call_manager.CallManagerService;
+import jordan_jefferson.com.oncallphonemanager.call_manager.CallManagerWorker;
 import jordan_jefferson.com.oncallphonemanager.call_manager_ui.CallManagerFragment;
 import jordan_jefferson.com.oncallphonemanager.contact_ui.ContactListFragment;
 import jordan_jefferson.com.oncallphonemanager.onboarding_ui.OnBoardingActivity;
@@ -56,8 +56,9 @@ public class MainActivity extends BaseActivity
             finish();
         }else{
             OneTimeWorkRequest callManagerWorker =
-                    new OneTimeWorkRequest.Builder(CallManagerService.class).build();
+                    new OneTimeWorkRequest.Builder(CallManagerWorker.class).build();
 
+            WorkManager.getInstance().cancelAllWork();
             WorkManager.getInstance().enqueue(callManagerWorker);
         }
 

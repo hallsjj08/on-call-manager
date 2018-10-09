@@ -31,9 +31,9 @@ public class OnCallItemRepository {
         return allActiveOnCallItems;
     }
 
-    public void insertOnCallItemsAsync(List<OnCallItem> onCallItems){
+    public void insertOnCallItemsAsync(OnCallItem[] onCallItems){
         Log.d("OnCallRepository", "Insert Data Called");
-        new InsertItemsAsync(onCallItemDao).execute(onCallItems.toArray(new OnCallItem[onCallItems.size()]));
+        new InsertItemsAsync(onCallItemDao).execute(onCallItems);
     }
 
     private static class InsertItemsAsync extends AsyncTask<OnCallItem, Void, Void>{

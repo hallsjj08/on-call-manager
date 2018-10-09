@@ -80,7 +80,7 @@ public class OnCallItemViewModel extends AndroidViewModel {
     }
 
     public void insertOnCallItems(List<OnCallItem> onCallItems){
-        onCallItemRepository.insertOnCallItemsAsync(onCallItems);
+        onCallItemRepository.insertOnCallItemsAsync(onCallItems.toArray(new OnCallItem[0]));
     }
 
     public void deletOnCallGroupItems(int groupId){

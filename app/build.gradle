@@ -84,6 +84,8 @@ dependencies {
 
     // optional - Test helpers
     androidTestImplementation "android.arch.work:work-testing:$work_version"
+
+    implementation 'net.danlew:android.joda:2.9.9.4'
 }
 repositories {
     mavenCentral()
