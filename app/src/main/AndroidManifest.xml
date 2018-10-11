@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="jordan_jefferson.com.oncallphonemanager">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -15,11 +16,12 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".onboarding_ui.OnBoardingActivity"
             android:label="@string/title_activity_on_boarding"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".MainActivity"
@@ -31,7 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".call_manager_ui.AddOnCallItemActivity"></activity>
+        <activity android:name=".call_manager_ui.AddOnCallItemActivity"/>
 
         <receiver android:name=".call_manager.IncomingCallReceiver"
             android:enabled="false">
@@ -40,6 +42,7 @@
             </intent-filter>
         </receiver>
 
+        <service android:name=".call_manager.IncomingCallService" />
     </application>
 
 </manifest>
