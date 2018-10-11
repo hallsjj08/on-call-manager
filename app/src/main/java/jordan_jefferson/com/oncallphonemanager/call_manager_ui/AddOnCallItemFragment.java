@@ -43,26 +43,17 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
 
     private String displayStartTime;
     private String displayEndTime;
-
-    private int startHour;
-    private int startMinute;
-    private int endHour;
-    private int endMinute;
     private int groupId;
     private boolean allDay;
-
     private String label;
 
     private Button bLabel;
 
     public AddOnCallItemFragment() {
         // Required empty public constructor
-        startHour = 0;
-        startMinute = 0;
-        endHour = 23;
-        endMinute = 59;
         groupId = 1;
         allDay = false;
+        label = "Work Hard. Play Hard";
         displayStartTime = allDayStartTime;
         displayEndTime = allDayEndTime;
     }
@@ -147,10 +138,6 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
             displayStartTime = item.getDisplayStartTime();
             displayEndTime = item.getDisplayEndTime();
             allDay = item.isAllDay();
-            startHour = item.getStartTimeHour();
-            startMinute = item.getStartTimeMinute();
-            endHour = item.getEndTimeHour();
-            endMinute = item.getEndTimeMinute();
         }
 
         bLabel.setText(label);
@@ -195,13 +182,11 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
 
         if(!repeatDays.isEmpty()){
             for (String repeatDay : repeatDays) {
-                onCallItems.add(new OnCallItem(repeatDay, true, allDay, startHour, startMinute,
-                        endHour, endMinute, label, displayStartTime,
+                onCallItems.add(new OnCallItem(repeatDay, true, allDay, label, displayStartTime,
                         displayEndTime, groupId));
             }
         }else{
-            onCallItems.add(new OnCallItem(null, true, allDay, startHour, startMinute,
-                    endHour, endMinute, label, displayStartTime,
+            onCallItems.add(new OnCallItem(null, true, allDay, label, displayStartTime,
                     displayEndTime, groupId));
         }
 
@@ -237,13 +222,9 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
 
                     switch (timeButton.getId()){
                         case R.id.buttonStartTime:
-                            startHour = hourOfDay;
-                            startMinute = minute;
                             displayStartTime = setDisplayTime(timeButton, hourOfDay, minute);
                             break;
                         case R.id.buttonEndTime:
-                            endHour = hourOfDay;
-                            endMinute = minute;
                             displayEndTime = setDisplayTime(timeButton, hourOfDay, minute);
                             break;
                     }
@@ -263,10 +244,6 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
                 displayEndTime = allDayEndTime;
                 endTime.setEnabled(false);
 
-                startHour = 0;
-                startMinute = 0;
-                endHour = 23;
-                endMinute = 59;
             }else{
                 startTime.setEnabled(true);
                 endTime.setEnabled(true);
@@ -287,7 +264,9 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
             displayMinute = minute + "";
         }
 
-        if(hour > 12){
+        if(hour == 0){
+            displayTime = 12 + ":" + displayMinute + " AM";
+        } else if(hour > 12){
             displayTime = (hour - 12) + ":" + displayMinute + " PM";
         }else{
             displayTime = hour + ":" + displayMinute + " AM";
