@@ -4,10 +4,10 @@
     package="jordan_jefferson.com.oncallphonemanager">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <application
         android:allowBackup="true"
@@ -21,8 +21,7 @@
         <activity
             android:name=".onboarding_ui.OnBoardingActivity"
             android:label="@string/title_activity_on_boarding"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -33,9 +32,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".call_manager_ui.AddOnCallItemActivity"/>
+        <activity android:name=".call_manager_ui.AddOnCallItemActivity" />
 
-        <receiver android:name=".call_manager.IncomingCallReceiver"
+        <receiver
+            android:name=".call_manager.IncomingCallReceiver"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
@@ -43,6 +43,8 @@
         </receiver>
 
         <service android:name=".call_manager.IncomingCallService" />
+
+        <activity android:name=".contact_ui.ContactInfoActivity"></activity>
     </application>
 
 </manifest>
