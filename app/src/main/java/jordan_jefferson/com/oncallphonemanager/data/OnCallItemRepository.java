@@ -14,13 +14,11 @@ public class OnCallItemRepository {
 
     private OnCallItemDao onCallItemDao;
     private Flowable<List<OnCallItem>> allOnCallItems;
-    private List<OnCallItem> allActiveOnCallItems;
 
     public OnCallItemRepository(Context context) {
         ContactDatabase db = ContactDatabase.getDatabase(context);
         onCallItemDao = db.onCallItemDao();
         allOnCallItems = onCallItemDao.getOnCallItems();
-        allActiveOnCallItems = onCallItemDao.getAllActiveItems();
     }
 
     public Flowable<List<OnCallItem>> getAllOnCallItems() {
@@ -28,7 +26,7 @@ public class OnCallItemRepository {
     }
 
     public List<OnCallItem> getAllActiveOnCallItems() {
-        return allActiveOnCallItems;
+        return onCallItemDao.getAllActiveItems();
     }
 
     public void insertOnCallItemsAsync(OnCallItem[] onCallItems){
