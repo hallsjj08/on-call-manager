@@ -11,10 +11,8 @@ import android.os.Build
 import android.os.IBinder
 import android.telephony.TelephonyManager
 import android.util.Log
-import jordan_jefferson.com.oncallphonemanager.data.Contact
 import jordan_jefferson.com.oncallphonemanager.data.ContactRepository
 import jordan_jefferson.com.oncallphonemanager.utils.PermissionUtils
-import kotlinx.coroutines.experimental.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.timerTask
@@ -28,7 +26,7 @@ class IncomingCallService : Service() {
     private var previousRingerVolume: Int = 0
 
     private lateinit var contactRepository: ContactRepository
-    private lateinit var contacts: List<Contact>
+    private lateinit var regexNumbers: List<String>
 
     private var lastState = TelephonyManager.CALL_STATE_IDLE
 
@@ -47,10 +45,10 @@ class IncomingCallService : Service() {
         am = this.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
         contactRepository = ContactRepository(this)
-        contacts = contactRepository.contactsBlocking
+        regexNumbers = contactRepository.regexNumbersBlocking
 
         timer.schedule(timerTask { stopSelf() },
-                TimeUnit.MILLISECONDS.convert(3L, TimeUnit.MINUTES))
+                TimeUnit.MILLISECONDS.convert(2L, TimeUnit.MINUTES))
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -78,7 +76,7 @@ class IncomingCallService : Service() {
             }
 
 
-            onCallStateChanged(state, number, contacts, this)
+            onCallStateChanged(state, number, regexNumbers, this)
         }
 
         return START_NOT_STICKY
@@ -97,7 +95,7 @@ class IncomingCallService : Service() {
         super.onDestroy()
     }
 
-    private fun onCallStateChanged(state: Int, incomingNumber: String, contacts: List<Contact>, context: Context) {
+    private fun onCallStateChanged(state: Int, incomingNumber: String, regexNumbers: List<String>, context: Context) {
 
         if (lastState == state) {
             return
@@ -105,23 +103,18 @@ class IncomingCallService : Service() {
 
         resetTimer()
 
-        val backgroundProcessRinging = GlobalScope.async(Dispatchers.Default, start = CoroutineStart.LAZY, block = {
-            val isMatch = phoneNumberAnalyzer(incomingNumber, contacts)
-            checkAndEnableRinger(isMatch, context)
-        })
-
         try {
 
             when (state) {
                 TelephonyManager.CALL_STATE_RINGING -> if (!incomingNumber.isEmpty()) {
                     Log.d(TAG, "Ringing")
-                    backgroundProcessRinging.start()
+                    val isMatch = phoneNumberAnalyzer(incomingNumber, regexNumbers)
+                    checkAndEnableRinger(isMatch, context)
                     lastState = TelephonyManager.CALL_STATE_RINGING
                 }
 
                 TelephonyManager.CALL_STATE_OFFHOOK -> {
                     Log.d(TAG, "Off Hook")
-                    backgroundProcessRinging.cancel()
                     disableRinger()
                     timer.cancel()
                     lastState = TelephonyManager.CALL_STATE_OFFHOOK
@@ -129,7 +122,6 @@ class IncomingCallService : Service() {
 
                 TelephonyManager.CALL_STATE_IDLE -> {
                     Log.d(TAG, "Idle")
-                    backgroundProcessRinging.cancel()
                     disableRinger()
                     lastState = TelephonyManager.CALL_STATE_IDLE
                 }
@@ -141,7 +133,7 @@ class IncomingCallService : Service() {
 
     }
 
-    private fun phoneNumberAnalyzer(incomingNumber: String, contacts: List<Contact>?): Boolean {
+    private fun phoneNumberAnalyzer(incomingNumber: String, regexNumbers: List<String>?): Boolean {
 
         var phoneNumber = incomingNumber
         val size = incomingNumber.length
@@ -151,9 +143,9 @@ class IncomingCallService : Service() {
             12 -> phoneNumber = incomingNumber.substring(2)
         }
 
-        if (contacts != null) {
-            for (i in contacts.indices) {
-                if (phoneNumber.matches(contacts[i]._contactRegexNumber.toRegex())) {
+        if (regexNumbers != null) {
+            for (i in regexNumbers.indices) {
+                if (phoneNumber.matches(regexNumbers[i].toRegex())) {
                     Log.d(TAG, "Matched Number")
                     return true
                 }

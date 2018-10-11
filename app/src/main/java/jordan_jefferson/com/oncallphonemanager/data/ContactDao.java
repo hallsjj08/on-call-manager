@@ -18,6 +18,9 @@ public interface ContactDao {
     @Query("SELECT * FROM contacts ORDER BY _contactName ASC")
     List<Contact> getContactsBlocking();
 
+    @Query("SELECT _contactRegexNumber FROM contacts")
+    List<String> getRegexNumbersBlocking();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertContact(Contact contact);
 

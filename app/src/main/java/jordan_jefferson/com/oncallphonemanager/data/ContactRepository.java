@@ -11,20 +11,18 @@ public class ContactRepository {
 
     private ContactDao contactDao;
     private LiveData<List<Contact>> allContacts;
-    private List<Contact> contactsBlocking;
 
     public ContactRepository(Context context){
         ContactDatabase db = ContactDatabase.getDatabase(context);
         contactDao = db.contactDao();
         allContacts = contactDao.getContacts();
-        contactsBlocking = contactDao.getContactsBlocking();
     }
 
     public LiveData<List<Contact>> getAllContacts() {return allContacts;}
 
-    public List<Contact> getContactsBlocking() {return contactsBlocking;}
-
     public void insert(Contact contact) {new insertAsyncTask(contactDao).execute(contact);}
+
+    public List<String> getRegexNumbersBlocking() {return contactDao.getRegexNumbersBlocking();}
 
     private static class insertAsyncTask extends AsyncTask<Contact, Void, Void>{
         
