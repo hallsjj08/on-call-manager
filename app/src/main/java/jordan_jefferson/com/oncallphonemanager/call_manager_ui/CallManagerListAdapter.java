@@ -3,11 +3,9 @@ package jordan_jefferson.com.oncallphonemanager.call_manager_ui;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -71,7 +69,7 @@ public class CallManagerListAdapter extends RecyclerView.Adapter<CallManagerList
     @Override
     public CallManagerListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View onCallTemplateRow = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.on_call_item_template_row, parent, false);
+                R.layout.template_row_on_call_item, parent, false);
 
         return new ViewHolder(onCallTemplateRow);
     }

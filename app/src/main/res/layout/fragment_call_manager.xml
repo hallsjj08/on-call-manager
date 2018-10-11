@@ -58,6 +58,6 @@
         android:layout_height="match_parent"
         android:id="@+id/days_manager_recyclerview"
         android:orientation="vertical"
-        tools:listitem="@layout/on_call_item_template_row"/>
+        tools:listitem="@layout/template_row_on_call_item"/>
 
 </LinearLayout>

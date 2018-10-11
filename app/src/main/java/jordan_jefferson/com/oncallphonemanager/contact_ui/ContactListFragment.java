@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import jordan_jefferson.com.oncallphonemanager.R;
@@ -48,7 +47,7 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view1 = inflater.inflate(R.layout.contact_list_fragment, container, false);
+        View view1 = inflater.inflate(R.layout.fragmen_contact_listt, container, false);
 
         RecyclerView mRecyclerView = view1.findViewById(R.id.recyclerView);
 

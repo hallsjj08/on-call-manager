@@ -58,7 +58,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View contactTemplateRow = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.contact_template_row, parent, false);
+                .inflate(R.layout.template_row_contact, parent, false);
 
         return new ViewHolder(contactTemplateRow);
     }
