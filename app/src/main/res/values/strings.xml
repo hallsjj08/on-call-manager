@@ -35,4 +35,7 @@
     <string name="cancel"><u>Cancel</u></string>
     <string name="save"><u>Save</u></string>
     <string name="done"><u>Done</u></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

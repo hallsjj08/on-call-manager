@@ -8,13 +8,13 @@ class ContactInfoActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_contact_info)
+        setContentView(R.layout.activity_fragment_container)
 
         val contactInfoFragment = ContactInfoFragment.newInstance()
         contactInfoFragment.arguments = intent.extras
 
         supportFragmentManager.beginTransaction().disallowAddToBackStack()
-                .add(R.id.contact_info_container, contactInfoFragment, null)
+                .add(R.id.activityFragmentContainer, contactInfoFragment, null)
                 .commit()
 
     }
