@@ -1,23 +1,15 @@
-package jordan_jefferson.com.oncallphonemanager.call_manager_ui;
+package jordan_jefferson.com.oncallphonemanager.callmanager;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Function;
 import jordan_jefferson.com.oncallphonemanager.data.OnCallItem;
 import jordan_jefferson.com.oncallphonemanager.data.OnCallItemRepository;
 

@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager.call_manager_ui;
+package jordan_jefferson.com.oncallphonemanager.callmanager;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

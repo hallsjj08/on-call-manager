@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager.call_manager
+package jordan_jefferson.com.oncallphonemanager.callmanagerservices
 
 import android.app.NotificationManager
 import android.app.Service

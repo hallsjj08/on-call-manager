@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager.onboarding_ui;
+package jordan_jefferson.com.oncallphonemanager.onboarding;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

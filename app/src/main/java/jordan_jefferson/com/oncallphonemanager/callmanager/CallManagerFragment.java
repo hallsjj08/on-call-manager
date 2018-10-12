@@ -1,8 +1,7 @@
-package jordan_jefferson.com.oncallphonemanager.call_manager_ui;
+package jordan_jefferson.com.oncallphonemanager.callmanager;
 
 
 import android.app.ActivityOptions;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,7 +27,6 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import jordan_jefferson.com.oncallphonemanager.R;
-import jordan_jefferson.com.oncallphonemanager.RecyclerViewItemClickListener;
 
 
 /**

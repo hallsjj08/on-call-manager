@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager.contact_ui;
+package jordan_jefferson.com.oncallphonemanager.contacts;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;

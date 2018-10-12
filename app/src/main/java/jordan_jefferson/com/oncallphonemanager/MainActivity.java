@@ -12,10 +12,10 @@ import android.view.MenuItem;
 
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-import jordan_jefferson.com.oncallphonemanager.call_manager.CallManagerWorker;
-import jordan_jefferson.com.oncallphonemanager.call_manager_ui.CallManagerFragment;
-import jordan_jefferson.com.oncallphonemanager.contact_ui.ContactListFragment;
-import jordan_jefferson.com.oncallphonemanager.onboarding_ui.OnBoardingActivity;
+import jordan_jefferson.com.oncallphonemanager.callmanagerservices.CallManagerWorker;
+import jordan_jefferson.com.oncallphonemanager.callmanager.CallManagerFragment;
+import jordan_jefferson.com.oncallphonemanager.contacts.ContactListFragment;
+import jordan_jefferson.com.oncallphonemanager.onboarding.OnBoardingActivity;
 
 public class MainActivity extends BaseActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {

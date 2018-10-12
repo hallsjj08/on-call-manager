@@ -4,5 +4,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/add_call_item_container"
-    tools:context=".call_manager_ui.AddOnCallItemActivity">
+    tools:context=".callmanager.AddOnCallItemActivity">
 </FrameLayout>

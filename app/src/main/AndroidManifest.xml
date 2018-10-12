@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".onboarding_ui.OnBoardingActivity"
+            android:name=".onboarding.OnBoardingActivity"
             android:label="@string/title_activity_on_boarding"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
@@ -32,19 +32,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".call_manager_ui.AddOnCallItemActivity" />
+        <activity android:name=".callmanager.AddOnCallItemActivity" />
 
         <receiver
-            android:name=".call_manager.IncomingCallReceiver"
+            android:name=".callmanagerservices.IncomingCallReceiver"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".call_manager.IncomingCallService" />
+        <service android:name=".callmanagerservices.IncomingCallService" />
 
-        <activity android:name=".contact_ui.ContactInfoActivity"></activity>
+        <activity android:name=".contacts.ContactInfoActivity"></activity>
     </application>
 
 </manifest>

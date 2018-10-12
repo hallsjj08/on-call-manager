@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager.contact_ui;
+package jordan_jefferson.com.oncallphonemanager.contacts;
 
 public interface OnViewClosedListener {
     void viewClosed();

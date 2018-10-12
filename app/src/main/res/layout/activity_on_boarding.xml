@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".onboarding_ui.OnBoardingActivity">
+    tools:context=".onboarding.OnBoardingActivity">
 
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"

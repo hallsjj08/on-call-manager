@@ -1,4 +1,4 @@
-package jordan_jefferson.com.oncallphonemanager.contact_ui
+package jordan_jefferson.com.oncallphonemanager.contacts
 
 import android.os.Bundle
 import jordan_jefferson.com.oncallphonemanager.BaseActivity
