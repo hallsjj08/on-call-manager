@@ -136,14 +136,13 @@ class IncomingCallService : Service() {
     private fun phoneNumberAnalyzer(incomingNumber: String, regexNumbers: List<String>?): Boolean {
 
         var phoneNumber = incomingNumber
-        val size = incomingNumber.length
 
-        when (size) {
+        when (incomingNumber.length) {
             11 -> phoneNumber = incomingNumber.substring(1)
             12 -> phoneNumber = incomingNumber.substring(2)
         }
 
-        if (regexNumbers != null) {
+        if (regexNumbers != null && !regexNumbers.isEmpty()) {
             for (i in regexNumbers.indices) {
                 if (phoneNumber.matches(regexNumbers[i].toRegex())) {
                     Log.d(TAG, "Matched Number")

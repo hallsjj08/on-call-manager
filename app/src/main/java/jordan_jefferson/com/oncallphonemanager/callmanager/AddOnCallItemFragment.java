@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import jordan_jefferson.com.oncallphonemanager.MainActivity;
 import jordan_jefferson.com.oncallphonemanager.data.OnCallItem;
 import jordan_jefferson.com.oncallphonemanager.R;
 
@@ -187,7 +188,7 @@ public class AddOnCallItemFragment extends Fragment implements View.OnClickListe
         }
 
         viewModel.insertOnCallItems(onCallItems);
-
+        MainActivity.queueCallManagerWorker(5L);
         getActivity().finish();
 
     }

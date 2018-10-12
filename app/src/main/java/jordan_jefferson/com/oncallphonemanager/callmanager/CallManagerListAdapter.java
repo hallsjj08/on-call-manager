@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import jordan_jefferson.com.oncallphonemanager.MainActivity;
 import jordan_jefferson.com.oncallphonemanager.R;
 import jordan_jefferson.com.oncallphonemanager.RecyclerViewItemClickListener;
 import jordan_jefferson.com.oncallphonemanager.utils.RecyclerViewAnimationUtils;
@@ -87,6 +88,8 @@ public class CallManagerListAdapter extends RecyclerView.Adapter<CallManagerList
         holder.dayActiveSwitch.setOnCheckedChangeListener((view, isChecked) -> {
             groupItems.get(position).setActive(isChecked);
             viewModel.insertOnCallItems(groupItems.get(position).getOnCallItems());
+
+            MainActivity.queueCallManagerWorker(5L);
         });
 
         deleteOnCallGroupItems(holder.deleteOnCallGroup, position);
@@ -99,7 +102,7 @@ public class CallManagerListAdapter extends RecyclerView.Adapter<CallManagerList
         return 0;
     }
 
-    public void setGroupedItems(List<OnCallGroupItem> groupedItems){
+    void setGroupedItems(List<OnCallGroupItem> groupedItems){
         this.groupItems = groupedItems;
         notifyDataSetChanged();
     }
@@ -111,13 +114,13 @@ public class CallManagerListAdapter extends RecyclerView.Adapter<CallManagerList
             //this line below gives you the animation and also updates the
             //list items after the deleted item
             notifyItemRangeChanged(position, getItemCount());
-
+            MainActivity.queueCallManagerWorker(5L);
         });
     }
 
-    public boolean isClickable(){return clickable;}
+    boolean isClickable(){return clickable;}
 
-    public void setClickable(boolean clickable){
+    void setClickable(boolean clickable){
         this.clickable = clickable;
 
         if(clickable){

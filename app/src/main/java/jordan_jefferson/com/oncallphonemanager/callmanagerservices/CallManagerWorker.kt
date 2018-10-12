@@ -33,21 +33,22 @@ class CallManagerWorker(val context: Context, params: WorkerParameters) :
      */
     override fun doWork(): Result {
 
-        if(onCallItems == null || onCallItems.isEmpty()) return Result.SUCCESS
-
         JodaTimeAndroid.init(context)
-
-        Log.d(TAG, "Items Size: ${onCallItems.size}")
-
-        val isActive = checkActiveOnCallItems(onCallItems)
-
         val flag: Int
-        if (isActive) {
-            flag = PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-        } else{
+
+        if(onCallItems != null && !onCallItems.isEmpty()){
+            val isActive = checkActiveOnCallItems(onCallItems)
+            if (isActive) {
+                flag = PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+            } else{
+                flag = PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                prepareNearestActiveItem(onCallItems)
+            }
+        }else{
             flag = PackageManager.COMPONENT_ENABLED_STATE_DISABLED
-            prepareNearestActiveItem(onCallItems)
         }
+
+
 
         val componentName = ComponentName(context, IncomingCallReceiver::class.java)
         context.packageManager.setComponentEnabledSetting(componentName, flag, PackageManager.DONT_KILL_APP)

@@ -10,6 +10,8 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.MenuItem;
 
+import java.util.concurrent.TimeUnit;
+
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import jordan_jefferson.com.oncallphonemanager.callmanagerservices.CallManagerWorker;
@@ -54,12 +56,6 @@ public class MainActivity extends BaseActivity
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
-        }else{
-            OneTimeWorkRequest callManagerWorker =
-                    new OneTimeWorkRequest.Builder(CallManagerWorker.class).build();
-
-            WorkManager.getInstance().cancelAllWork();
-            WorkManager.getInstance().enqueue(callManagerWorker);
         }
 
         bottomNavigationView = findViewById(R.id.navigation);
@@ -147,5 +143,16 @@ public class MainActivity extends BaseActivity
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(CURRENT_SELECTION_KEY, bottomNavigationView.getSelectedItemId());
+    }
+
+    public static void queueCallManagerWorker(long delayDurationSeconds){
+        WorkManager.getInstance().cancelAllWork();
+
+        OneTimeWorkRequest callManagerWorker =
+                new OneTimeWorkRequest.Builder(CallManagerWorker.class)
+                        .setInitialDelay(delayDurationSeconds, TimeUnit.SECONDS)
+                        .build();
+
+        WorkManager.getInstance().enqueue(callManagerWorker);
     }
 }
