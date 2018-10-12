@@ -4,10 +4,12 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.database.ContentObserver
 import android.media.AudioManager
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
 import android.telephony.TelephonyManager
 import android.util.Log
@@ -27,6 +29,7 @@ class IncomingCallService : Service() {
 
     private lateinit var contactRepository: ContactRepository
     private lateinit var regexNumbers: List<String>
+    private lateinit var settingsContentObserver: SettingsContentObserver
 
     private var lastState = TelephonyManager.CALL_STATE_IDLE
 
@@ -48,7 +51,7 @@ class IncomingCallService : Service() {
         regexNumbers = contactRepository.regexNumbersBlocking
 
         timer.schedule(timerTask { stopSelf() },
-                TimeUnit.MILLISECONDS.convert(2L, TimeUnit.MINUTES))
+                TimeUnit.MILLISECONDS.convert(3L, TimeUnit.MINUTES))
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -171,7 +174,13 @@ class IncomingCallService : Service() {
                 PermissionUtils.setNotificationFilter(context, NotificationManager.INTERRUPTION_FILTER_ALL)
             }
 
-            if (!ringtone!!.isPlaying) ringtone?.play()
+            if (!ringtone!!.isPlaying) {
+                ringtone?.play()
+                settingsContentObserver = SettingsContentObserver(am, this, Handler())
+                this.contentResolver.registerContentObserver(
+                        android.provider.Settings.System.CONTENT_URI,
+                        true, settingsContentObserver)
+            }
 
             Log.d(TAG, "Enabling Ringer")
         }
@@ -182,6 +191,7 @@ class IncomingCallService : Service() {
             ringtone?.stop()
             am.setStreamVolume(AudioManager.STREAM_RING, previousRingerVolume, 0)
             am.ringerMode = previousRingerMode
+            this.contentResolver.unregisterContentObserver(settingsContentObserver)
         }
     }
 
@@ -190,5 +200,24 @@ class IncomingCallService : Service() {
         timer.purge()
         timer = Timer()
         timer.schedule(timerTask { stopSelf() }, TimeUnit.MILLISECONDS.convert(3L, TimeUnit.MINUTES))
+    }
+
+    private class SettingsContentObserver(val am: AudioManager, val incomingCallService: IncomingCallService,
+                                          handler: Handler) : ContentObserver(handler) {
+
+        var startVolume = am.getStreamVolume(AudioManager.STREAM_RING)
+
+        override fun onChange(selfChange: Boolean) {
+            super.onChange(selfChange)
+
+            val changedVolume = am.getStreamVolume(AudioManager.STREAM_RING)
+            val delta = startVolume - changedVolume
+
+            if(delta > 0){
+                incomingCallService.disableRinger()
+            }else{
+                startVolume = changedVolume
+            }
+        }
     }
 }
