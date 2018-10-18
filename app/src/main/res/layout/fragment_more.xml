@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFF"
+    tools:context=".more.MoreFragment">
+
+    <include layout="@layout/nav_header_main"/>
+
+    <Button
+        android:id="@+id/about"
+        style="@style/moreButtonStyle"
+        android:drawableStart="@drawable/ic_info_black_24dp"
+        android:text="About" />
+
+    <Button
+        android:id="@+id/share"
+        style="@style/moreButtonStyle"
+        android:drawableStart="@drawable/ic_menu_share"
+        android:text="Invite Friends" />
+
+    <Button
+        android:id="@+id/rate"
+        style="@style/moreButtonStyle"
+        android:drawableStart="@drawable/if_star"
+        android:text="Rate The App" />
+
+    <Button
+        android:id="@+id/feedback"
+        style="@style/moreButtonStyle"
+        android:drawableStart="@drawable/ic_edit_black_24dp"
+        android:text="Send Feedback" />
+
+    <!--<Button-->
+        <!--android:id="@+id/settings"-->
+        <!--style="@style/moreButtonStyle"-->
+        <!--android:drawableStart="@drawable/if_settings"-->
+        <!--android:text="Settings" />-->
+
+
+</LinearLayout>

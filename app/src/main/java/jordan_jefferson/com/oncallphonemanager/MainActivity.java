@@ -17,6 +17,7 @@ import androidx.work.WorkManager;
 import jordan_jefferson.com.oncallphonemanager.callmanagerservices.CallManagerWorker;
 import jordan_jefferson.com.oncallphonemanager.callmanager.CallManagerFragment;
 import jordan_jefferson.com.oncallphonemanager.contacts.ContactListFragment;
+import jordan_jefferson.com.oncallphonemanager.more.MoreFragment;
 import jordan_jefferson.com.oncallphonemanager.onboarding.OnBoardingActivity;
 
 public class MainActivity extends BaseActivity
@@ -64,6 +65,7 @@ public class MainActivity extends BaseActivity
         if(savedInstanceState != null){
             callManagerFragment = getSupportFragmentManager().findFragmentByTag(CALL_FRAG_TAG);
             contactListFramgent = getSupportFragmentManager().findFragmentByTag(CONTACT_FRAG_TAG);
+            moreFragment = getSupportFragmentManager().findFragmentByTag(MORE_FRAG_TAG);
             bottomNavigationView.setSelectedItemId(savedInstanceState.getInt(CURRENT_SELECTION_KEY));
         }else{
             bottomNavigationView.setSelectedItemId(R.id.navigation_call_manager);
@@ -102,6 +104,12 @@ public class MainActivity extends BaseActivity
                 Log.d(TAG, "Contacts Selected");
                 break;
             case R.id.navigation_about:
+                if(moreFragment == null){
+                    moreFragment = new MoreFragment();
+                    addFragment(moreFragment, MORE_FRAG_TAG);
+                }else {
+                    swapFragments(moreFragment);
+                }
                 Log.d(TAG, "More Selected");
                 break;
         }
