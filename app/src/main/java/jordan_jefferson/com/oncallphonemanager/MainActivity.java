@@ -2,6 +2,7 @@ package jordan_jefferson.com.oncallphonemanager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -9,6 +10,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.MenuItem;
+
+import com.squareup.leakcanary.LeakCanary;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,6 +22,7 @@ import jordan_jefferson.com.oncallphonemanager.callmanager.CallManagerFragment;
 import jordan_jefferson.com.oncallphonemanager.contacts.ContactListFragment;
 import jordan_jefferson.com.oncallphonemanager.more.MoreFragment;
 import jordan_jefferson.com.oncallphonemanager.onboarding.OnBoardingActivity;
+import jordan_jefferson.com.oncallphonemanager.utils.PermissionUtils;
 
 public class MainActivity extends BaseActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -44,8 +48,9 @@ public class MainActivity extends BaseActivity
 //            // This process is dedicated to LeakCanary for heap analysis.
 //            // You should not init your app in this process.
 //            return;
+//        }else{
+//            LeakCanary.install(getApplication());
 //        }
-//        LeakCanary.install(getApplication());
         // Normal app init code...
 
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -151,6 +156,14 @@ public class MainActivity extends BaseActivity
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(CURRENT_SELECTION_KEY, bottomNavigationView.getSelectedItemId());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PermissionUtils.checkAllPermissions(findViewById(R.id.coordinator));
+        }
     }
 
     public static void queueCallManagerWorker(long delayDurationSeconds){

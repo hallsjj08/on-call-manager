@@ -36,6 +36,6 @@
     <string name="save"><u>Save</u></string>
     <string name="done"><u>Done</u></string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="permission_description">All permissions are needed for this app to function properly.
+    Permissions highlighted in red are still needed.</string>
 </resources>

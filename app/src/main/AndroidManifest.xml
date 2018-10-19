@@ -55,7 +55,8 @@
         <activity
             android:name=".contacts.ContactInfoActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".more.AboutActivity"></activity>
+        <activity android:name=".more.AboutActivity" />
+        <activity android:name=".permissions.PermissionsNeededActivity"></activity>
     </application>
 
 </manifest>

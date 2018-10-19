@@ -21,4 +21,8 @@
     <color name="boardingScreenTwo">#16bc7d</color>
 
     <color name="boardingScreenOne">#203d8c</color>
+
+    <color name="highImportanceForeground">#33FF0000</color>
+
+    <color name="goodCheckForeground">#3300FF00</color>
 </resources>
