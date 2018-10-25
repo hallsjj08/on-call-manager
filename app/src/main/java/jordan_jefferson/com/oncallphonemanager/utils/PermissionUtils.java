@@ -25,7 +25,7 @@ import jordan_jefferson.com.oncallphonemanager.permissions.PermissionsNeededActi
 public class PermissionUtils {
 
     private static final String[] PERMISSIONS = {Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.READ_CALL_LOG,};
+            Manifest.permission.READ_CALL_LOG, Manifest.permission.FOREGROUND_SERVICE};
 
     public static boolean permissionsGranted(Context context){
 
@@ -43,14 +43,6 @@ public class PermissionUtils {
         if(!permissionsGranted(fragment.getContext())){
            fragment.requestPermissions(PERMISSIONS, 1);
         }
-
-//        if(!fragment.shouldShowRequestPermissionRationale(PERMISSIONS[0]) ||
-//                !fragment.shouldShowRequestPermissionRationale(PERMISSIONS[1])){
-//            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-//            Uri uri = Uri.fromParts("package", fragment.getContext().getPackageName(), null);
-//            intent.setData(uri);
-//            fragment.startActivity(intent);
-//        }
     }
 
     public static boolean isNotificationAccessGranted(Context context){

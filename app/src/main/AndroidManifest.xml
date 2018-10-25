@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -23,6 +24,7 @@
             android:name=".onboarding.OnBoardingActivity"
             android:label="@string/title_activity_on_boarding"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -37,11 +39,13 @@
 
         <receiver
             android:name=".callmanagerservices.IncomingCallReceiver"
-            android:enabled="false">
+            android:enabled="false"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
+
         <receiver
             android:name=".callmanagerservices.BootCompletedReceiver"
             android:enabled="true">
@@ -56,7 +60,8 @@
             android:name=".contacts.ContactInfoActivity"
             android:theme="@style/AppTheme" />
         <activity android:name=".more.AboutActivity" />
-        <activity android:name=".permissions.PermissionsNeededActivity"></activity>
+
+        <activity android:name=".permissions.PermissionsNeededActivity"/>
     </application>
 
 </manifest>

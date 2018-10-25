@@ -1,39 +1,42 @@
 package jordan_jefferson.com.oncallphonemanager.callmanagerservices
 
+import android.app.Notification
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.database.ContentObserver
+import android.graphics.Color
+import android.graphics.drawable.Icon
 import android.media.AudioManager
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
+import android.support.v4.app.NotificationCompat
+import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import android.util.Log
+import jordan_jefferson.com.oncallphonemanager.R
 import jordan_jefferson.com.oncallphonemanager.data.ContactRepository
 import jordan_jefferson.com.oncallphonemanager.utils.PermissionUtils
-import java.util.*
-import java.util.concurrent.TimeUnit
-import kotlin.concurrent.timerTask
 
-class IncomingCallService : Service() {
+class IncomingCallService : Service(), ITelephony {
 
-    val TAG = "Incoming Call Service"
+    private val TAG = "Incoming Call Service"
+    private val notificationChanelId = "call_service"
     private lateinit var am: AudioManager
     private var ringtone: Ringtone? = null
     private var previousRingerMode: Int = 0
     private var previousRingerVolume: Int = 0
 
+    lateinit var telephonyManager: TelephonyManager
+
     private lateinit var contactRepository: ContactRepository
     private lateinit var regexNumbers: List<String>
     private lateinit var settingsContentObserver: SettingsContentObserver
-
-    private var lastState = TelephonyManager.CALL_STATE_IDLE
-
-    private var timer = Timer()
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -45,44 +48,71 @@ class IncomingCallService : Service() {
     override fun onCreate() {
         super.onCreate()
 
+        startForegroundService()
+
+        Log.d(TAG, "Created")
+
+        telephonyManager = this.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        telephonyManager.listen(CustomPhoneStateListener(this), PhoneStateListener.LISTEN_CALL_STATE)
+
+
         am = this.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
         contactRepository = ContactRepository(this)
         regexNumbers = contactRepository.regexNumbersBlocking
+    }
 
-        timer.schedule(timerTask { stopSelf() },
-                TimeUnit.MILLISECONDS.convert(3L, TimeUnit.MINUTES))
+    override fun incomingCall(phoneStateListener: CustomPhoneStateListener, incomingNumber: String?) {
+        Log.d(TAG, "Incoming Call Called")
+        if(incomingNumber == null || incomingNumber.isEmpty()) return
+        val isMatch = phoneNumberAnalyzer(incomingNumber, regexNumbers)
+        if(isMatch) {
+            checkAndEnableRinger(applicationContext)
+        }else{
+            telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE)
+            stopSelf()
+        }
+    }
+
+    private fun startForegroundService(){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create the NotificationChannel
+            val name = "On Call Phone Manager"
+            val descriptionText = "Processing incoming call."
+            val importance = NotificationManager.IMPORTANCE_LOW
+            val mChannel = NotificationChannel(notificationChanelId, name, importance)
+            mChannel.description = descriptionText
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(mChannel)
+        }
+
+        val notificationBuilder = NotificationCompat.Builder(this, notificationChanelId)
+        val notification = notificationBuilder.setOngoing(true)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("On Call")
+                .setContentText("You have an incoming call")
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .setAutoCancel(true)
+                .build()
+
+        startForeground(1337, notification)
+
+    }
+
+    override fun destroyService(phoneStateListener: CustomPhoneStateListener) {
+        Log.d(TAG, "Destroy Service Called")
+        telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE)
+        disableRinger()
+        stopSelf()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
         Log.d(TAG, "Start Command: ${Thread.currentThread().name}")
-
-        if (intent != null && intent.action == TelephonyManager.ACTION_PHONE_STATE_CHANGED) {
-
-            val bundle = intent.extras!!.getBundle("PHONE STATE")
-
-            val stateStr = bundle!!.getString(TelephonyManager.EXTRA_STATE)
-            var number = ""
-            var state = 0
-
-            when (stateStr) {
-                TelephonyManager.EXTRA_STATE_IDLE -> {
-                    state = TelephonyManager.CALL_STATE_IDLE
-                }
-                TelephonyManager.EXTRA_STATE_OFFHOOK -> state = TelephonyManager.CALL_STATE_OFFHOOK
-                TelephonyManager.EXTRA_STATE_RINGING -> {
-                    state = TelephonyManager.CALL_STATE_RINGING
-                    number = bundle.getString(TelephonyManager.EXTRA_INCOMING_NUMBER, "")
-                    Log.d(TAG, number)
-                }
-            }
-
-
-            onCallStateChanged(state, number, regexNumbers, this)
-        }
-
-        return START_NOT_STICKY
+        return START_STICKY
     }
 
     /**
@@ -93,47 +123,8 @@ class IncomingCallService : Service() {
      */
     override fun onDestroy() {
         Log.d(TAG, "Destroyed")
-        disableRinger()
-        timer.purge()
         super.onDestroy()
-    }
-
-    private fun onCallStateChanged(state: Int, incomingNumber: String, regexNumbers: List<String>, context: Context) {
-
-        if (lastState == state) {
-            return
-        }
-
-        resetTimer()
-
-        try {
-
-            when (state) {
-                TelephonyManager.CALL_STATE_RINGING -> if (!incomingNumber.isEmpty()) {
-                    Log.d(TAG, "Ringing")
-                    val isMatch = phoneNumberAnalyzer(incomingNumber, regexNumbers)
-                    checkAndEnableRinger(isMatch, context)
-                    lastState = TelephonyManager.CALL_STATE_RINGING
-                }
-
-                TelephonyManager.CALL_STATE_OFFHOOK -> {
-                    Log.d(TAG, "Off Hook")
-                    disableRinger()
-                    timer.cancel()
-                    lastState = TelephonyManager.CALL_STATE_OFFHOOK
-                }
-
-                TelephonyManager.CALL_STATE_IDLE -> {
-                    Log.d(TAG, "Idle")
-                    disableRinger()
-                    lastState = TelephonyManager.CALL_STATE_IDLE
-                }
-            }
-        } catch (e: SecurityException) {
-            Log.e("ERROR", "Permissions are denied")
-            e.printStackTrace()
-        }
-
+        stopForeground(true)
     }
 
     private fun phoneNumberAnalyzer(incomingNumber: String, regexNumbers: List<String>?): Boolean {
@@ -157,8 +148,8 @@ class IncomingCallService : Service() {
         return false
     }
 
-    private fun checkAndEnableRinger(isMatch: Boolean, context: Context) {
-        if (isMatch && am.ringerMode != AudioManager.RINGER_MODE_NORMAL) {
+    private fun checkAndEnableRinger(context: Context) {
+        if (am.ringerMode != AudioManager.RINGER_MODE_NORMAL) {
 
             val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)!!
             if(ringtone == null) ringtone = RingtoneManager.getRingtone(this, uri)!!
@@ -193,13 +184,6 @@ class IncomingCallService : Service() {
             am.ringerMode = previousRingerMode
             this.contentResolver.unregisterContentObserver(settingsContentObserver)
         }
-    }
-
-    private fun resetTimer(){
-        timer.cancel()
-        timer.purge()
-        timer = Timer()
-        timer.schedule(timerTask { stopSelf() }, TimeUnit.MILLISECONDS.convert(3L, TimeUnit.MINUTES))
     }
 
     private class SettingsContentObserver(val am: AudioManager, val incomingCallService: IncomingCallService,
