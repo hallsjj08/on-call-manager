@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinator"
@@ -15,8 +15,8 @@
         android:layout="@layout/add_contact_stub"
         android:visibility="gone"/>
 
-<android.support.v7.widget.RecyclerView
-    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+<androidx.recyclerview.widget.RecyclerView
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/recyclerView"
@@ -24,7 +24,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
 
-<android.support.design.widget.FloatingActionButton
+<com.google.android.material.floatingactionbutton.FloatingActionButton
 android:id="@+id/floatingActionButton"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
@@ -36,4 +36,4 @@ android:layout_gravity="bottom|end"
 app:srcCompat="@android:drawable/ic_input_add"
 android:focusable="true"/>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

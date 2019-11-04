@@ -9,8 +9,8 @@ Parameters:
     _contactRegexNumber: A number used to compare with incoming phone calls stored in a local database.
  */
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
