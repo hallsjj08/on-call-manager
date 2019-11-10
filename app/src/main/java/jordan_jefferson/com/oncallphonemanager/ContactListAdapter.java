@@ -21,12 +21,14 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView tvInitial;
         public TextView tvContactName;
+        public TextView tvContactNumber;
 
         ViewHolder(View itemView) {
             super(itemView);
 
             tvInitial = itemView.findViewById(R.id.circle_text);
             tvContactName = itemView.findViewById(R.id.tvContactName);
+            tvContactNumber = itemView.findViewById(R.id.tvContactNumber);
 
             itemView.setOnClickListener(this);
 
@@ -73,6 +75,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             holder.tvInitial.setText("#");
             holder.tvContactName.setText(mContacts.get(position).get_contactDisplayNumber());
         }
+
+        holder.tvContactNumber.setText(mContacts.get(position).get_contactDisplayNumber());
     }
 
     public void setContacts(List<Contact> contacts){
