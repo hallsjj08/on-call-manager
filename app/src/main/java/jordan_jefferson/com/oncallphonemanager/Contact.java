@@ -26,6 +26,8 @@ public class Contact implements Serializable{
     private String _contactRegexNumber;
 
 
+    Contact() { }
+
     Contact(String contactName, String companyName, String contactDisplayNumber, String contactRegexNumber){
         this._contactName = contactName;
         this._companyName = companyName;

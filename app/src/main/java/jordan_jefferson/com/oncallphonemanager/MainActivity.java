@@ -51,14 +51,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install(getApplication());
-        // Normal app init code...
-
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         // Check if we need to display our OnboardingFragment
         if (!mSharedPreferences.getBoolean(

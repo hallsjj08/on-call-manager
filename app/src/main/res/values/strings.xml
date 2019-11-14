@@ -5,7 +5,7 @@
     <string name="last_name">Last Name</string>
     <string name="first_name">First Name</string>
     <string name="company">Company</string>
-    <string name="submit">Submit</string>
+    <string name="submit">Done</string>
     <string name="phone">Phone</string>
     <string name="digits">0123456789+()</string>
     <string name="area_code">Area Code</string>
@@ -14,11 +14,11 @@
     <string name="update">Update</string>
     <string name="company_name_hint">Company Name</string>
     <string name="contact_name_hint">Contact Name</string>
-    <string name="phone_number_hint">Phone Number*</string>
+    <string name="phone_number_hint">Phone Number</string>
     <string name="required">* Required</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Trash Button to Delete Contacts.</string>
-    <string name="first_initial">C</string>
+    <string name="contact_initials">CN</string>
     <string name="contact_name">Contact Name</string>
     <string name="company_name">Company</string>
     <string name="phone_num">###-###-####</string>
@@ -35,4 +35,7 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
+    <string name="add_contact_image">Add Contact Image</string>
+    <string name="remove_contact">remove</string>
+    <string name="no_contacts">No Contacts</string>
 </resources>

@@ -2,6 +2,8 @@ package jordan_jefferson.com.oncallphonemanager;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,26 +11,20 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/*
-An adapter class that displays Contacts in the recyclerview.
- */
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ViewHolder> {
 
     private List<Contact> mContacts;
     private RecyclerViewItemClickListener mItemListener;
 
-    //This Viewholder class implements OnClickListener and returns the view and position of the item clicked.
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView tvInitial;
         public TextView tvContactName;
-        public TextView tvContactNumber;
 
         ViewHolder(View itemView) {
             super(itemView);
 
             tvInitial = itemView.findViewById(R.id.circle_text);
             tvContactName = itemView.findViewById(R.id.tvContactName);
-            tvContactNumber = itemView.findViewById(R.id.tvContactNumber);
 
             itemView.setOnClickListener(this);
 
@@ -65,18 +61,18 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        if(!mContacts.get(position).get_contactName().isEmpty()){
-            holder.tvInitial.setText(mContacts.get(position).get_contactName().charAt(0) + "");
-            holder.tvContactName.setText(mContacts.get(position).get_contactName());
-        }else if(!mContacts.get(position).get_companyName().isEmpty()){
-            holder.tvInitial.setText(mContacts.get(position).get_companyName().charAt(0));
-            holder.tvContactName.setText(mContacts.get(position).get_companyName());
-        }else{
-            holder.tvInitial.setText("#");
-            holder.tvContactName.setText(mContacts.get(position).get_contactDisplayNumber());
-        }
+        Contact contact = mContacts.get(position);
 
-        holder.tvContactNumber.setText(mContacts.get(position).get_contactDisplayNumber());
+        if(!TextUtils.isEmpty(contact.get_contactName())){
+            holder.tvInitial.setText(contact.get_contactName().substring(0,1));
+            holder.tvContactName.setText(mContacts.get(position).get_contactName());
+        }else if(!TextUtils.isEmpty(contact.get_companyName())){
+            holder.tvInitial.setText(contact.get_companyName().substring(0,1));
+            holder.tvContactName.setText(mContacts.get(position).get_companyName());
+        }else if(!TextUtils.isEmpty(contact.get_contactDisplayNumber())){
+            holder.tvInitial.setText("#");
+            holder.tvContactName.setText(contact.get_contactDisplayNumber());
+        }
     }
 
     public void setContacts(List<Contact> contacts){
