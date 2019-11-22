@@ -36,7 +36,7 @@ public class ContactInfoActivity extends AppCompatActivity implements TextWatche
         setContentView(R.layout.activity_contact_info);
         ActionBar actionBar = getSupportActionBar();
         if(getIntent().hasExtra(ContactListFragment.EXTRA_CONTACT)) {
-            contact = (Contact) getIntent().getSerializableExtra(ContactListFragment.EXTRA_CONTACT);
+            contact = getIntent().getParcelableExtra(ContactListFragment.EXTRA_CONTACT);
         }
 
         if(actionBar != null) {
@@ -58,7 +58,6 @@ public class ContactInfoActivity extends AppCompatActivity implements TextWatche
             etContactName.setText(contact.get_contactName());
             etCompanyName.setText(contact.get_companyName());
             etPhone.setText(contact.get_contactDisplayNumber());
-            bSubmit.setText(R.string.update);
             numberFormatted = true;
         } else {
             etPhone.setOnFocusChangeListener(this);
@@ -70,6 +69,7 @@ public class ContactInfoActivity extends AppCompatActivity implements TextWatche
             @Override
             public void onClick(View v) {
                 updateContact();
+                finish();
             }
         });
     }

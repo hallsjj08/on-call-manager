@@ -20,26 +20,22 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-/*
-A Fragment that displays the a list of contacts. This class sets up the RecyclerView, the Adapter,
-and the interface to handle onItemClickEvents
- */
-public class ContactListFragment extends Fragment implements RecyclerViewItemClickListener<Contact>, Observer<List<Contact>> {
+public class AlarmScheduleListFragment extends Fragment implements RecyclerViewItemClickListener<AlarmSchedule>, Observer<List<AlarmSchedule>> {
 
-    private ContactListAdapter adapter;
-    private ContactViewModel viewModel;
+    private AlarmSchedulerListAdapter adapter;
+    private AlarmScheduleViewModel viewModel;
     private TextView tvNoContacts;
 
     public static final String FRAGMENT_TAG = "ContactListFragment";
-    public static final String EXTRA_CONTACT = "extra_contact";
+    public static final String EXTRA_ALARM_SCHEDULE = "EXTRA_ALARM_SCHEDULE";
 
-    public static ContactListFragment newInstance(){
-        ContactListFragment contactListFragment = new ContactListFragment();
+    public static AlarmScheduleListFragment newInstance(){
+        AlarmScheduleListFragment fragment = new AlarmScheduleListFragment();
 
         Bundle bundle = new Bundle();
-        contactListFragment.setArguments(bundle);
+        fragment.setArguments(bundle);
 
-        return contactListFragment;
+        return fragment;
     }
 
     @Override
@@ -59,10 +55,10 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
-        adapter = new ContactListAdapter(this);
+        adapter = new AlarmSchedulerListAdapter(this);
         mRecyclerView.setAdapter(adapter);
 
-        viewModel = ViewModelProviders.of(this).get(ContactViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(AlarmScheduleViewModel.class);
         tvNoContacts = view.findViewById(R.id.no_contacts);
 
         FloatingActionButton fab = view.findViewById(R.id.floatingActionButton);
@@ -79,7 +75,7 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
     @Override
     public void onResume() {
         super.onResume();
-        viewModel.getContacts().observe(this, this);
+        viewModel.getAlarmSchedules().observe(this, this);
     }
 
     /*
@@ -87,26 +83,26 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
     ContactInfoActivity where the user can update or delete the contact.
     */
     @Override
-    public void recyclerViewItemClicked(View v, Contact contact){
-        launchContactInfoActivity(contact);
+    public void recyclerViewItemClicked(View v, AlarmSchedule alarmSchedule){
+        launchContactInfoActivity(alarmSchedule);
     }
 
-    private void launchContactInfoActivity(@Nullable Contact contact) {
+    private void launchContactInfoActivity(@Nullable AlarmSchedule alarmSchedule) {
         Intent intent = new Intent();
-        intent.setClass(getContext(), ContactInfoActivity.class);
-        if(contact != null) intent.putExtra(EXTRA_CONTACT, contact);
+        intent.setClass(getContext(), WhitelistAlarmInfoActivity.class);
+        if(alarmSchedule != null) intent.putExtra(EXTRA_ALARM_SCHEDULE, alarmSchedule);
         getContext().startActivity(intent);
     }
 
     @Override
-    public void onChanged(List<Contact> contacts) {
-        if (contacts != null) {
-            if (contacts.isEmpty()) {
+    public void onChanged(List<AlarmSchedule> alarmSchedules) {
+        if (alarmSchedules != null) {
+            if (alarmSchedules.isEmpty()) {
                 tvNoContacts.setVisibility(View.VISIBLE);
             } else if (tvNoContacts != null) {
                 tvNoContacts.setVisibility(View.GONE);
             }
-            adapter.setContacts(contacts);
+            adapter.setAlarms(alarmSchedules);
         }
     }
 }

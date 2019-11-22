@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WhitelistAlarmInfoActivity">
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/schedule_name"
+        android:hint="Whitelist Name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/start_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:gravity="start|center_vertical"
+        android:paddingStart="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/schedule_name"
+        tools:text="Start: 8:00 PM" />
+
+    <Button
+        android:id="@+id/end_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:gravity="start|center_vertical"
+        android:paddingStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_time"
+        tools:text="End: 12:00 AM" />
+
+    <Button
+        android:id="@+id/sunday"
+        style="@style/SelectableDayStyle"
+        android:text="S"
+        app:layout_constraintTop_toBottomOf="@id/end_time"
+        app:layout_constraintEnd_toStartOf="@id/monday"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/monday"
+        style="@style/SelectableDayStyle"
+        android:text="M"
+        app:layout_constraintTop_toBottomOf="@id/end_time"
+        app:layout_constraintEnd_toStartOf="@id/tuesday"
+        app:layout_constraintStart_toEndOf="@id/sunday" />
+
+    <Button
+        android:id="@+id/tuesday"
+        style="@style/SelectableDayStyle"
+        android:text="T"
+        app:layout_constraintTop_toBottomOf="@id/end_time"
+        app:layout_constraintEnd_toStartOf="@id/wednesday"
+        app:layout_constraintStart_toEndOf="@id/monday" />
+
+    <Button
+        android:id="@+id/wednesday"
+        style="@style/SelectableDayStyle"
+        android:text="W"
+        app:layout_constraintTop_toBottomOf="@id/end_time"
+        app:layout_constraintEnd_toStartOf="@id/thursday"
+        app:layout_constraintStart_toEndOf="@id/tuesday" />
+
+    <Button
+        android:id="@+id/thursday"
+        style="@style/SelectableDayStyle"
+        android:text="T"
+        app:layout_constraintTop_toBottomOf="@id/end_time"
+        app:layout_constraintEnd_toStartOf="@id/friday"
+        app:layout_constraintStart_toEndOf="@id/wednesday" />
+
+    <Button
+        android:id="@+id/friday"
+        style="@style/SelectableDayStyle"
+        android:text="F"
+        app:layout_constraintTop_toBottomOf="@id/end_time"
+        app:layout_constraintEnd_toStartOf="@id/saturday"
+        app:layout_constraintStart_toEndOf="@id/thursday" />
+
+    <Button
+        android:id="@+id/saturday"
+        style="@style/SelectableDayStyle"
+        android:text="S"
+        app:layout_constraintTop_toBottomOf="@id/end_time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/friday" />
+
+    <Button
+        android:id="@+id/button_alarm_schedule_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Done"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saturday" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

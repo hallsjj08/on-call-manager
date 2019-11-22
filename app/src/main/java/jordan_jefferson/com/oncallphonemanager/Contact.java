@@ -1,25 +1,16 @@
 package jordan_jefferson.com.oncallphonemanager;
 
-/*
-Parameters:
-    _id: an autoincremented id associated with class DBManager.
-    _contactName: User defined contactName stored in a local database.
-    _companyName: User defined companyName stored in a local database.
-    _contactDisplayNumber: User defined phone number stored in a local database.
-    _contactRegexNumber: A number used to compare with incoming phone calls stored in a local database.
- */
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.io.Serializable;
-
 @Entity(tableName = "contacts")
-public class Contact implements Serializable{
+public class Contact implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private int _id;
-
     private String _contactName;
     private String _companyName;
     private String _contactDisplayNumber;
@@ -33,6 +24,40 @@ public class Contact implements Serializable{
         this._companyName = companyName;
         this._contactDisplayNumber = contactDisplayNumber;
         this._contactRegexNumber = contactRegexNumber;
+    }
+
+    protected Contact(Parcel in) {
+        _id = in.readInt();
+        _contactName = in.readString();
+        _companyName = in.readString();
+        _contactDisplayNumber = in.readString();
+        _contactRegexNumber = in.readString();
+    }
+
+    public static final Creator<Contact> CREATOR = new Creator<Contact>() {
+        @Override
+        public Contact createFromParcel(Parcel in) {
+            return new Contact(in);
+        }
+
+        @Override
+        public Contact[] newArray(int size) {
+            return new Contact[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(_id);
+        dest.writeString(_contactName);
+        dest.writeString(_companyName);
+        dest.writeString(_contactDisplayNumber);
+        dest.writeString(_contactRegexNumber);
     }
 
     public int get_id() {
@@ -74,5 +99,4 @@ public class Contact implements Serializable{
     public void set_contactRegexNumber(String _contactRegexNumber) {
         this._contactRegexNumber = _contactRegexNumber;
     }
-
 }
