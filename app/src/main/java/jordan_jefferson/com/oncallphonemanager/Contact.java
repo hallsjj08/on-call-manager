@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey;
 public class Contact implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
-    private int _id;
+    private long _id;
     private String _contactName;
     private String _companyName;
     private String _contactDisplayNumber;
@@ -27,7 +27,7 @@ public class Contact implements Parcelable {
     }
 
     protected Contact(Parcel in) {
-        _id = in.readInt();
+        _id = in.readLong();
         _contactName = in.readString();
         _companyName = in.readString();
         _contactDisplayNumber = in.readString();
@@ -53,20 +53,18 @@ public class Contact implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(_id);
+        dest.writeLong(_id);
         dest.writeString(_contactName);
         dest.writeString(_companyName);
         dest.writeString(_contactDisplayNumber);
         dest.writeString(_contactRegexNumber);
     }
 
-    public int get_id() {
+    public long get_id() {
         return _id;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
-    }
+    public void set_id(long _id) { this._id = _id; }
 
     public String get_contactName() {
         return _contactName;

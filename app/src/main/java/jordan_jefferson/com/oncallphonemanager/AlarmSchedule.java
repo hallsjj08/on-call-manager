@@ -17,7 +17,7 @@ import java.util.Locale;
 public class AlarmSchedule implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
-    private int _id;
+    private long _id;
     private String name;
     private int startHour;
     private int startMinute;
@@ -40,7 +40,7 @@ public class AlarmSchedule implements Parcelable {
     }
 
     protected AlarmSchedule(Parcel in) {
-        _id = in.readInt();
+        _id = in.readLong();
         name = in.readString();
         startHour = in.readInt();
         startMinute = in.readInt();
@@ -69,7 +69,7 @@ public class AlarmSchedule implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(_id);
+        dest.writeLong(_id);
         dest.writeString(name);
         dest.writeInt(startHour);
         dest.writeInt(startMinute);
@@ -79,11 +79,11 @@ public class AlarmSchedule implements Parcelable {
         dest.writeBooleanArray(repeatDays);
     }
 
-    public int get_id() {
+    public long get_id() {
         return _id;
     }
 
-    public void set_id(int _id) {
+    public void set_id(long _id) {
         this._id = _id;
     }
 
@@ -209,5 +209,11 @@ public class AlarmSchedule implements Parcelable {
     @Ignore
     public void setOnTimeUpdateListener(OnTimeUpdatedListener listener) {
         this.listener = listener;
+    }
+
+    public class AlarmScheduleEnable {
+        private long _id;
+        private boolean enabled;
+
     }
 }

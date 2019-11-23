@@ -87,8 +87,13 @@ public class ContactListFragment extends Fragment implements RecyclerViewItemCli
     ContactInfoActivity where the user can update or delete the contact.
     */
     @Override
-    public void recyclerViewItemClicked(View v, Contact contact){
+    public void onRecyclerViewItemClicked(View v, Contact contact){
         launchContactInfoActivity(contact);
+    }
+
+    @Override
+    public void onRecyclerViewItemIsEnabledChange(View v, Contact data) {
+        //Ignored as there are no views to enable a contact for anything.
     }
 
     private void launchContactInfoActivity(@Nullable Contact contact) {

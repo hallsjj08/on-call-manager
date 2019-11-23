@@ -3,6 +3,8 @@ package jordan_jefferson.com.oncallphonemanager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,10 +17,12 @@ public class AlarmSchedulerListAdapter extends RecyclerView.Adapter<AlarmSchedul
     private List<AlarmSchedule> alarmSchedules;
     private RecyclerViewItemClickListener mItemListener;
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+            CompoundButton.OnCheckedChangeListener {
         public TextView tvName;
         public TextView tvStartTime;
         public TextView tvEndTime;
+        public Switch enabled;
         public TextView[] days;
 
         ViewHolder(View itemView) {
@@ -27,6 +31,7 @@ public class AlarmSchedulerListAdapter extends RecyclerView.Adapter<AlarmSchedul
             tvName = itemView.findViewById(R.id.tvScheduleName);
             tvStartTime = itemView.findViewById(R.id.tvStartTime);
             tvEndTime = itemView.findViewById(R.id.tvEndTime);
+            enabled = itemView.findViewById(R.id.switch_alarm_enabled);
             days = new TextView[] { itemView.findViewById(R.id.tvSunday),
                     itemView.findViewById(R.id.tvMonday),
                     itemView.findViewById(R.id.tvTuesday),
@@ -35,6 +40,7 @@ public class AlarmSchedulerListAdapter extends RecyclerView.Adapter<AlarmSchedul
                     itemView.findViewById(R.id.tvFriday),
                     itemView.findViewById(R.id.tvSaturday) };
 
+            enabled.setOnCheckedChangeListener(this);
             itemView.setOnClickListener(this);
 
         }
@@ -47,8 +53,15 @@ public class AlarmSchedulerListAdapter extends RecyclerView.Adapter<AlarmSchedul
         @Override
         public void onClick(View v) {
 
-            mItemListener.recyclerViewItemClicked(v, alarmSchedules.get(this.getAdapterPosition()));
+            mItemListener.onRecyclerViewItemClicked(v, alarmSchedules.get(this.getAdapterPosition()));
 
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            AlarmSchedule schedule = alarmSchedules.get(this.getAdapterPosition());
+            schedule.setEnabled(isChecked);
+            mItemListener.onRecyclerViewItemIsEnabledChange(buttonView, schedule);
         }
     }
 
@@ -75,6 +88,7 @@ public class AlarmSchedulerListAdapter extends RecyclerView.Adapter<AlarmSchedul
         holder.tvName.setText(alarmSchedule.getName());
         holder.tvStartTime.setText(alarmSchedule.getStartTimeString(false));
         holder.tvEndTime.setText(alarmSchedule.getEndTimeString(false));
+        holder.enabled.setChecked(alarmSchedule.isEnabled());
 
         boolean[] selectedDays = alarmSchedule.getRepeatDays();
         for(int i = 0; i < selectedDays.length; i++) {

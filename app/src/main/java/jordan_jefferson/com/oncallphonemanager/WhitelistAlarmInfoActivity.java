@@ -3,6 +3,8 @@ package jordan_jefferson.com.oncallphonemanager;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 public class WhitelistAlarmInfoActivity extends AppCompatActivity implements View.OnClickListener,
-        OnTimeUpdatedListener, TimePickerDialog.OnTimeSetListener {
+        OnTimeUpdatedListener, TimePickerDialog.OnTimeSetListener, TextWatcher {
 
     AlarmScheduleViewModel viewModel;
     AlarmSchedule schedule;
@@ -27,6 +29,7 @@ public class WhitelistAlarmInfoActivity extends AppCompatActivity implements Vie
     Button bEndTime;
     Button[] days;
     boolean[] daysSelected;
+    boolean infoUpdated = false;
     int selectedTimeId = 0;
 
     TimePickerDialog timePickerDialog;
@@ -42,9 +45,14 @@ public class WhitelistAlarmInfoActivity extends AppCompatActivity implements Vie
             schedule = getIntent().getParcelableExtra(AlarmScheduleListFragment.EXTRA_ALARM_SCHEDULE);
         }
 
-        if(schedule == null) schedule = new AlarmSchedule();
+        if(schedule == null) {
+            infoUpdated = true;
+            schedule = new AlarmSchedule();
+        }
 
         etName = findViewById(R.id.schedule_name);
+        if(schedule.getName() != null) etName.setText(schedule.getName());
+        etName.addTextChangedListener(this);
         bStartTime = findViewById(R.id.start_time);
         bStartTime.setOnClickListener(this);
         bEndTime = findViewById(R.id.end_time);
@@ -62,6 +70,7 @@ public class WhitelistAlarmInfoActivity extends AppCompatActivity implements Vie
                     daysSelected[i] = days[i].isSelected();
                 }
 
+                schedule.setEnabled(infoUpdated);
                 schedule.setName(etName.getText().toString());
                 viewModel.insertAlarmSchedule(schedule);
                 finish();
@@ -93,6 +102,7 @@ public class WhitelistAlarmInfoActivity extends AppCompatActivity implements Vie
     public void onClick(View v) {
 
         int id = v.getId();
+        infoUpdated = true;
 
         switch (id) {
             case R.id.start_time:
@@ -162,5 +172,20 @@ public class WhitelistAlarmInfoActivity extends AppCompatActivity implements Vie
         if (imm != null && getCurrentFocus() != null) {
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        infoUpdated = true;
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 }

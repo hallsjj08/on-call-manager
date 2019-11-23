@@ -83,8 +83,13 @@ public class AlarmScheduleListFragment extends Fragment implements RecyclerViewI
     ContactInfoActivity where the user can update or delete the contact.
     */
     @Override
-    public void recyclerViewItemClicked(View v, AlarmSchedule alarmSchedule){
+    public void onRecyclerViewItemClicked(View v, AlarmSchedule alarmSchedule){
         launchContactInfoActivity(alarmSchedule);
+    }
+
+    @Override
+    public void onRecyclerViewItemIsEnabledChange(View v, AlarmSchedule data) {
+        viewModel.insertAlarmSchedule(data);
     }
 
     private void launchContactInfoActivity(@Nullable AlarmSchedule alarmSchedule) {

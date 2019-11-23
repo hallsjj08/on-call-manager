@@ -33,7 +33,7 @@ public class AlarmScheduleRepository {
         @Override
         protected Void doInBackground(AlarmSchedule... alarmSchedules) {
 
-            asyncTaskDao.insertContact(alarmSchedules[0]);
+            asyncTaskDao.insertAlarmSchedule(alarmSchedules[0]);
             return null;
 
         }

@@ -4,6 +4,8 @@ import android.view.View;
 
 public interface RecyclerViewItemClickListener<T> {
 
-    void recyclerViewItemClicked(View v, T data);
+    void onRecyclerViewItemClicked(View v, T data);
+
+    void onRecyclerViewItemIsEnabledChange(View v, T data);
 
 }

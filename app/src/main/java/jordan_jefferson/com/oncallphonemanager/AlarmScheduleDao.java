@@ -16,7 +16,7 @@ public interface AlarmScheduleDao {
     LiveData<List<AlarmSchedule>> getAlarmSchedues();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insertContact(AlarmSchedule schedule);
+    long insertAlarmSchedule(AlarmSchedule schedule);
 
     @Delete
     void delete(AlarmSchedule schedule);
